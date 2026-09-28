@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= pageTitle || "Local Business Directory" %></title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+        .customer-page {
+            min-height: 100vh;
+            background: #f7f3ef;
+        }
+
+        .customer-navbar {
+            min-height: 80px;
+            background: #211d1e;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 8%;
+            gap: 24px;
+        }
+
+        .customer-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+        .customer-brand-logo {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #8B3A3A;
+            color: #fff;
+            font-size: 17px;
+            font-weight: 800;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .customer-brand-name {
+            display: inline-block;
+        }
+
+        .customer-logout {
+            color: #fff;
+            background: #ff6b5d;
+            text-decoration: none;
+            padding: 13px 22px;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+
+        .customer-main {
+            width: min(1080px, 90%);
+            margin: 0 auto;
+            padding: 60px 0 90px;
+        }
+
+        .customer-eyebrow {
+            color: #ff6256;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            margin-bottom: 18px;
+        }
+
+        .customer-title {
+            margin: 0;
+            font-size: clamp(38px, 5vw, 52px);
+            line-height: 1.08;
+            color: #211d1e;
+            letter-spacing: -1.8px;
+        }
+
+        .customer-description {
+            color: #6f6764;
+            font-size: 17px;
+            margin: 22px 0 30px;
+            max-width: 720px;
+        }
+
+        .customer-mode-links {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+
+        .mode-link {
+            text-decoration: none;
+            border: 1px solid #ded8d3;
+            background: #fff;
+            color: #211d1e;
+            border-radius: 999px;
+            padding: 13px 20px;
+            font-weight: 700;
+        }
+
+        .mode-link:hover,
+        .mode-link.active {
+            background: #8B3A3A;
+            border-color: #8B3A3A;
+            color: #fff;
+        }
+
+        .search-panel,
+        .nearby-box {
+            background: #fff;
+            border: 1px solid #e7e0db;
+            border-radius: 22px;
+            padding: 28px;
+            margin-bottom: 36px;
+            box-shadow: 0 14px 40px rgba(33, 29, 30, .06);
+        }
+
+        .review-highlight {
+            border-top: 4px solid #ff6b5d;
+        }
+
+        .search-panel-title {
+            margin: 0 0 7px;
+            font-size: 22px;
+            color: #211d1e;
+        }
+
+        .search-panel-text,
+        .nearby-box > p {
+            margin: 0 0 20px;
+            color: #766e6a;
+        }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr auto;
+            gap: 12px;
+        }
+
+        .search-form input,
+        .search-form select,
+        .nearby-controls select {
+            width: 100%;
+            min-height: 48px;
+            box-sizing: border-box;
+            border: 1px solid #dcd5d0;
+            border-radius: 12px;
+            background: #fff;
+            padding: 0 14px;
+            font: inherit;
+            color: #211d1e;
+            outline: none;
+        }
+
+        .search-form input:focus,
+        .search-form select:focus,
+        .nearby-controls select:focus {
+            border-color: #8B3A3A;
+            box-shadow: 0 0 0 3px rgba(139, 58, 58, .10);
+        }
+
+        .search-button,
+        .location-btn {
+            min-height: 48px;
+            border: 0;
+            border-radius: 12px;
+            padding: 0 20px;
+            background: #8B3A3A;
+            color: #fff;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .search-button:hover,
+        .location-btn:hover {
+            background: #6F2D2D;
+        }
+
+        .nearby-box h2 {
+            margin: 0 0 8px;
+            color: #211d1e;
+            font-size: 28px;
+        }
+
+        .nearby-controls {
+            display: grid;
+            grid-template-columns: 190px 1fr;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .location-btn {
+            width: fit-content;
+        }
+
+        #locationStatus {
+            grid-column: 1 / -1;
+            border-radius: 12px;
+            background: #f3eee9;
+            color: #756c67;
+            padding: 14px;
+            font-size: 14px;
+        }
+
+        #locationStatus.success-status {
+            background: #edf7ef;
+            color: #26733a;
+        }
+
+        #locationStatus.error-status {
+            background: #fff0ef;
+            color: #a3332d;
+        }
+
+        .result-info {
+            margin: 12px 0 24px;
+        }
+
+        .result-info h2 {
+            margin: 0 0 7px;
+            color: #211d1e;
+            font-size: 28px;
+        }
+
+        .result-info p {
+            margin: 0;
+            color: #766e6a;
+        }
+
+        .business-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .business-card {
+            overflow: hidden;
+            background: #fff;
+            border: 1px solid #e7e0db;
+            border-radius: 20px;
+            box-shadow: 0 14px 35px rgba(33, 29, 30, .06);
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+
+        .business-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 45px rgba(33, 29, 30, .10);
+        }
+
+        .business-image,
+        .no-image {
+            display: block;
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            background: #eee7e1;
+        }
+
+        .no-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #857b75;
+            font-weight: 700;
+        }
+
+        .business-content {
+            padding: 23px;
+        }
+
+        .business-content h2 {
+            margin: 0 0 7px;
+            color: #211d1e;
+            font-size: 24px;
+        }
+
+        .category {
+            display: inline-block;
+            margin: 0 0 13px;
+            color: #8B3A3A;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .description {
+            color: #6f6764;
+            line-height: 1.65;
+            margin: 0 0 13px;
+        }
+
+        .location,
+        .rating {
+            margin: 8px 0;
+            color: #5f5753;
+            font-size: 14px;
+        }
+
+        .rating {
+            font-weight: 700;
+        }
+
+        .view-btn {
+            display: inline-flex;
+            margin-top: 15px;
+            min-height: 44px;
+            padding: 0 17px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: #211d1e;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .view-btn:hover {
+            background: #8B3A3A;
+        }
+
+        .no-business {
+            background: #fff;
+            border: 1px solid #e7e0db;
+            border-radius: 20px;
+            text-align: center;
+            padding: 55px 25px;
+            color: #6f6764;
+        }
+
+        .no-business h2 {
+            color: #211d1e;
+            margin-top: 0;
+        }
+
+        .review-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
+            padding: 7px 11px;
+            border-radius: 999px;
+            background: #fff0ed;
+            color: #8B3A3A;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .login-required-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(20, 17, 18, .68);
+            backdrop-filter: blur(7px);
+        }
+
+        .login-required-modal {
+            width: min(460px, 100%);
+            background: #fff;
+            border-radius: 22px;
+            padding: 34px;
+            box-shadow: 0 30px 80px rgba(0,0,0,.28);
+            text-align: center;
+        }
+
+        .login-required-icon {
+            width: 58px;
+            height: 58px;
+            margin: 0 auto 17px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff0ed;
+            font-size: 25px;
+        }
+
+        .login-required-modal h2 {
+            margin: 0 0 10px;
+            color: #211d1e;
+        }
+
+        .login-required-modal p {
+            margin: 0 0 23px;
+            color: #6f6764;
+            line-height: 1.6;
+        }
+
+        .login-required-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .login-required-actions a,
+        .login-required-actions button {
+            min-height: 45px;
+            padding: 0 18px;
+            border-radius: 10px;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .login-required-actions a {
+            display: inline-flex;
+            align-items: center;
+            background: #8B3A3A;
+            color: #fff;
+        }
+
+        .login-required-actions button {
+            border: 1px solid #d9d1cc;
+            background: #fff;
+            color: #211d1e;
+        }
+
+        @media (max-width: 800px) {
+            .customer-navbar {
+                padding: 0 5%;
+            }
+
+            .search-form {
+                grid-template-columns: 1fr;
+            }
+
+            .business-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .customer-navbar {
+                flex-wrap: wrap;
+                padding: 15px 5%;
+            }
+
+            .nearby-controls {
+                grid-template-columns: 1fr;
+            }
+
+            .location-btn {
+                width: 100%;
+            }
+
+            .login-required-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body class="customer-page">
+
+<header class="customer-navbar">
+    <a href="/" class="customer-brand">
+        <span class="customer-brand-logo">L</span>
+        <span class="customer-brand-name">Local Business</span>
+    </a>
+
+    <% if (isCustomer) { %>
+        <a href="/logout" class="customer-logout">Logout</a>
+    <% } else { %>
+        <a href="/login" class="customer-logout">Log In</a>
+    <% } %>
+</header>
+
+<main class="customer-main">
+
+    <div class="customer-eyebrow">LOCAL DISCOVERIES</div>
+
+    <h1 class="customer-title">
+        <%= pageTitle || "Explore Local Businesses" %>
+    </h1>
+
+    <p class="customer-description">
+        <%= pageDescription || "Find businesses, explore services and read reviews." %>
+    </p>
+
+    <div class="customer-mode-links">
+
+        <a href="/customer?mode=nearby"
+           class="mode-link <%= pageMode === 'nearby' ? 'active' : '' %>">
+            📍 Discover Near You
+        </a>
+
+        <a href="/customer?mode=reviews"
+           class="mode-link <%= pageMode === 'reviews' ? 'active' : '' %>">
+            ⭐ Real Reviews
+        </a>
+    </div>
+
+    <% if (pageMode === "discover") { %>
+
+        <section class="search-panel">
+            <h2 class="search-panel-title">Search Local Businesses</h2>
+
+            <p class="search-panel-text">
+                Search by business name or choose the type of business you want.
+            </p>
+
+            <form method="GET" action="/customer" class="search-form">
+                <input type="hidden" name="mode" value="discover">
+
+                <input
+                    type="search"
+                    name="q"
+                    value="<%= search || '' %>"
+                    placeholder="Search business name..."
+                    aria-label="Search business"
+                >
+
+                <select name="category" aria-label="Business type">
+                    <option value="all">All Business Types</option>
+
+                    <% (categories || []).forEach(function(category) { %>
+                        <option
+                            value="<%= category %>"
+                            <%= String(selectedCategory || '').toLowerCase() === String(category).toLowerCase() ? 'selected' : '' %>
+                        >
+                            <%= category %>
+                        </option>
+                    <% }); %>
+                </select>
+
+                <button type="submit" class="search-button">
+                    Search
+                </button>
+            </form>
+        </section>
+
+        <div class="result-info">
+            <h2>Businesses</h2>
+            <p>
+                <%= (businesses || []).length %>
+                business<%= (businesses || []).length === 1 ? '' : 'es' %>
+                available for exploration.
+            </p>
+        </div>
+
+    <% } else if (pageMode === "nearby") { %>
+
+        <section class="nearby-box">
+            <h2>📍 Find Businesses Near You</h2>
+
+            <p>
+                Choose a business type and use your location to find nearby places.
+            </p>
+
+            <form
+                method="GET"
+                action="/customer"
+                class="search-form"
+                style="margin-bottom:18px;"
+            >
+                <input type="hidden" name="mode" value="nearby">
+
+                <input
+                    type="search"
+                    name="q"
+                    value="<%= search || '' %>"
+                    placeholder="Search nearby business..."
+                    aria-label="Search nearby business"
+                >
+
+                <select name="category" aria-label="Nearby business type">
+                    <option value="all">All Business Types</option>
+
+                    <% (categories || []).forEach(function(category) { %>
+                        <option
+                            value="<%= category %>"
+                            <%= String(selectedCategory || '').toLowerCase() === String(category).toLowerCase() ? 'selected' : '' %>
+                        >
+                            <%= category %>
+                        </option>
+                    <% }); %>
+                </select>
+
+                <button type="submit" class="search-button">
+                    Apply
+                </button>
+            </form>
+
+            <% if (isCustomer) { %>
+
+                <div class="nearby-controls">
+
+                    <select id="radius" aria-label="Search radius">
+                        <option value="1" <%= Number(radius || 5) === 1 ? "selected" : "" %>>
+                            Within 1 km
+                        </option>
+                        <option value="5" <%= Number(radius || 5) === 5 ? "selected" : "" %>>
+                            Within 5 km
+                        </option>
+                        <option value="10" <%= Number(radius || 5) === 10 ? "selected" : "" %>>
+                            Within 10 km
+                        </option>
+                        <option value="25" <%= Number(radius || 5) === 25 ? "selected" : "" %>>
+                            Within 25 km
+                        </option>
+                        <option value="50" <%= Number(radius || 5) === 50 ? "selected" : "" %>>
+                            Within 50 km
+                        </option>
+                    </select>
+
+                    <button
+                        type="button"
+                        id="findNearMeBtn"
+                        class="location-btn"
+                    >
+                        📍 Use My Location
+                    </button>
+
+                    <div id="locationStatus">
+                        <% if (nearbySearch) { %>
+                            Showing businesses within
+                            <strong><%= radius %> km</strong>
+                            of your location.
+                        <% } else { %>
+                            Your location has not been selected yet.
+                        <% } %>
+                    </div>
+
+                </div>
+
+            <% } else { %>
+
+                <div class="no-business">
+                    <h2>Customer access required</h2>
+                    <p>
+                        Sign in as a customer to use location-based discovery.
+                    </p>
+                </div>
+
+            <% } %>
+
+            <% if (nearbySearch) { %>
+
+                <div class="result-info">
+                    <h2>Nearby Businesses</h2>
+                    <p>
+                        Found <strong><%= (businesses || []).length %></strong>
+                        business<%= (businesses || []).length === 1 ? '' : 'es' %>
+                        within <strong><%= radius %> km</strong>.
+                    </p>
+                </div>
+
+            <% } %>
+
+        </section>
+
+    <% } else if (pageMode === "reviews") { %>
+
+        <section class="search-panel review-highlight">
+
+            <span class="review-badge">⭐ BUSINESS &amp; REVIEWS</span>
+
+            <h2 class="search-panel-title">
+                Read Real Customer Reviews
+            </h2>
+
+            <p class="search-panel-text">
+                Select a business type or search for a business to see its ratings
+                and customer feedback.
+            </p>
+
+            <form method="GET" action="/customer" class="search-form">
+
+                <input type="hidden" name="mode" value="reviews">
+
+                <input
+                    type="search"
+                    name="q"
+                    value="<%= search || '' %>"
+                    placeholder="Search a business..."
+                    aria-label="Search business reviews"
+                >
+
+                <select name="category" aria-label="Review business type">
+                    <option value="all">All Business Types</option>
+
+                    <% (categories || []).forEach(function(category) { %>
+                        <option
+                            value="<%= category %>"
+                            <%= String(selectedCategory || '').toLowerCase() === String(category).toLowerCase() ? 'selected' : '' %>
+                        >
+                            <%= category %>
+                        </option>
+                    <% }); %>
+                </select>
+
+                <button type="submit" class="search-button">
+                    Search Reviews
+                </button>
+
+            </form>
+        </section>
+
+        <div class="result-info">
+            <h2>Businesses &amp; Reviews</h2>
+            <p>
+                Choose <strong>Read Reviews</strong> on a business to open its
+                review details.
+            </p>
+        </div>
+
+    <% } %>
+
+    <% if (!businesses || businesses.length === 0) { %>
+
+        <div class="no-business">
+
+            <% if (pageMode === "nearby" && !nearbySearch && isCustomer) { %>
+
+                <h2>Use your location to begin</h2>
+                <p>
+                    Choose a business type above, then click
+                    <strong>Use My Location</strong>.
+                </p>
+
+            <% } else if (pageMode === "nearby" && !isCustomer) { %>
+
+                <h2>Log in as a customer</h2>
+                <p>
+                    Location-based discovery is available after customer login.
+                </p>
+
+            <% } else if (pageMode === "reviews") { %>
+
+                <h2>No reviewed businesses found</h2>
+                <p>
+                    Try another business name or category.
+                </p>
+
+            <% } else { %>
+
+                <h2>No businesses found</h2>
+                <p>
+                    Try another business name or business type.
+                </p>
+
+            <% } %>
+
+        </div>
+
+    <% } else { %>
+
+        <div class="business-grid">
+
+            <% businesses.forEach(function(business) { %>
+
+                <article class="business-card">
+
+                    <% if (business.images && business.images.length > 0) { %>
+
+                        <img
+                            src="<%= business.images[0] %>"
+                            alt="<%= business.name %>"
+                            class="business-image"
+                        >
+
+                    <% } else if (business.image) { %>
+
+                        <img
+                            src="<%= business.image %>"
+                            alt="<%= business.name %>"
+                            class="business-image"
+                        >
+
+                    <% } else { %>
+
+                        <div class="no-image">No Image</div>
+
+                    <% } %>
+
+                    <div class="business-content">
+
+                        <h2><%= business.name %></h2>
+
+                        <p class="category">
+                            <%= business.category || "Local Business" %>
+                        </p>
+
+                        <% if (business.description) { %>
+
+                            <p class="description">
+                                <%= business.description %>
+                            </p>
+
+                        <% } %>
+
+                        <% if (pageMode === "nearby") { %>
+
+                            <p class="location">
+                                📍 <%= business.city || "Local area" %>
+                            </p>
+
+                        <% } %>
+
+                        <p class="rating">
+                            ⭐
+                            <%= Number(business.averageRating || 0).toFixed(1) %>
+                            ·
+                            <%= Number(business.reviewCount || 0) %>
+                            review<%= Number(business.reviewCount || 0) === 1 ? '' : 's' %>
+                        </p>
+
+                        <% if (pageMode === "reviews") { %>
+
+                            <a
+                                href="/business/<%= business._id %>"
+                                class="view-btn"
+                            >
+                                Read Reviews →
+                            </a>
+
+                        <% } else { %>
+
+                            <a
+                                href="/business/<%= business._id %>"
+                                class="view-btn"
+                            >
+                                View Business →
+                            </a>
+
+                        <% } %>
+
+                    </div>
+                </article>
+
+            <% }); %>
+
+        </div>
+
+    <% } %>
+
+</main>
+
+<% if (loginRequired) { %>
+
+    <div
+        class="login-required-overlay"
+        id="loginRequiredOverlay"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="loginRequiredTitle"
+    >
+
+        <div class="login-required-modal">
+
+            <div class="login-required-icon">🔐</div>
+
+            <h2 id="loginRequiredTitle">
+                Login Required
+            </h2>
+
+            <p>
+                Please log in as a customer to use location-based discovery
+                and find businesses near you.
+            </p>
+
+            <div class="login-required-actions">
+
+                <a href="/login">
+                    Log In as Customer
+                </a>
+
+                <button
+                    type="button"
+                    id="closeLoginRequired"
+                >
+                    Continue Exploring
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+<% } %>
+
+<script>
+(function () {
+    "use strict";
+
+    const findNearMeBtn = document.getElementById("findNearMeBtn");
+    const radiusSelect = document.getElementById("radius");
+    const locationStatus = document.getElementById("locationStatus");
+
+    if (findNearMeBtn && radiusSelect && locationStatus) {
+
+        findNearMeBtn.addEventListener("click", function () {
+
+            if (!navigator.geolocation) {
+                locationStatus.textContent =
+                    "Your browser does not support location services.";
+                locationStatus.className = "error-status";
+                return;
+            }
+
+            findNearMeBtn.disabled = true;
+            findNearMeBtn.textContent = "📍 Getting Your Location...";
+
+            locationStatus.textContent =
+                "Please allow location access in your browser.";
+            locationStatus.className = "";
+
+            navigator.geolocation.getCurrentPosition(
+
+                function (position) {
+
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    const radius = radiusSelect.value;
+
+                    const params =
+                        new URLSearchParams(window.location.search);
+
+                    params.set("latitude", latitude);
+                    params.set("longitude", longitude);
+                    params.set("radius", radius);
+
+                    window.location.href =
+                        "/customer/nearby?" + params.toString();
+                },
+
+                function (error) {
+
+                    findNearMeBtn.disabled = false;
+                    findNearMeBtn.textContent = "📍 Use My Location";
+                    locationStatus.className = "error-status";
+
+                    if (error.code === error.PERMISSION_DENIED) {
+
+                        locationStatus.textContent =
+                            "Location permission was denied. Please allow location access and try again.";
+
+                    } else if (error.code === error.POSITION_UNAVAILABLE) {
+
+                        locationStatus.textContent =
+                            "Your location could not be determined. Please try again.";
+
+                    } else if (error.code === error.TIMEOUT) {
+
+                        locationStatus.textContent =
+                            "Location request timed out. Please try again.";
+
+                    } else {
+
+                        locationStatus.textContent =
+                            "Unable to get your location. Please try again.";
+
+                    }
+                },
+
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0
+                }
+            );
+        });
+    }
+
+    const closeLoginRequired =
+        document.getElementById("closeLoginRequired");
+
+    const loginRequiredOverlay =
+        document.getElementById("loginRequiredOverlay");
+
+    if (closeLoginRequired && loginRequiredOverlay) {
+
+        closeLoginRequired.addEventListener("click", function () {
+            window.location.href = "/customer?mode=discover";
+        });
+    }
+
+    if (loginRequiredOverlay) {
+
+        loginRequiredOverlay.addEventListener("click", function (event) {
+
+            if (event.target === loginRequiredOverlay) {
+                window.location.href = "/customer?mode=discover";
+            }
+        });
+    }
+
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2017 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Login | Local Business Directory</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <style>
+
+        /* =====================================================
+           RESET
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+
+            font-family: "Inter", Arial, sans-serif;
+
+            color: #171717;
+
+            background: #f7f5f3;
+
+            min-height: 100vh;
+
+            overflow: hidden;
+        }
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+
+
+        /* =====================================================
+           BACKGROUND PAGE
+        ====================================================== */
+
+        .background-page {
+
+            position: fixed;
+
+            inset: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            overflow: hidden;
+
+            background:
+                radial-gradient(
+                    circle at 15% 25%,
+                    rgba(139, 58, 58, 0.28),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 85% 70%,
+                    rgba(111, 45, 45, 0.18),
+                    transparent 32%
+                ),
+                #f7f5f3;
+
+            filter: blur(2px);
+
+            transform: scale(1.02);
+
+            z-index: 1;
+        }
+
+
+
+        /* =====================================================
+           BACKGROUND NAVBAR
+        ====================================================== */
+
+        .background-navbar {
+
+            height: 75px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 7%;
+
+            background: rgba(255,255,255,0.90);
+
+            border-bottom: 1px solid #e7dfda;
+        }
+
+
+        .background-logo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            color: #171717;
+
+            font-size: 18px;
+
+            font-weight: 800;
+        }
+
+
+        .background-logo-box {
+
+            width: 40px;
+
+            height: 40px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: #8b3a3a;
+
+            color: #fff;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+
+        .background-links {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 30px;
+
+            color: #66605c;
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+
+        .background-button {
+
+            padding: 12px 21px;
+
+            border-radius: 8px;
+
+            background: #8b3a3a;
+
+            color: #fff;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+
+        /* =====================================================
+           BACKGROUND HERO
+        ====================================================== */
+
+        .background-hero {
+
+            min-height: 510px;
+
+            padding: 100px 8%;
+
+            display: flex;
+
+            align-items: center;
+
+            background:
+                linear-gradient(
+                    120deg,
+                    rgba(255,255,255,0.92),
+                    rgba(245,239,236,0.85)
+                );
+        }
+
+
+        .background-hero-content {
+
+            max-width: 700px;
+        }
+
+
+        .background-small-title {
+
+            margin-bottom: 18px;
+
+            color: #8b3a3a;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.5px;
+        }
+
+
+        .background-hero h1 {
+
+            margin: 0 0 18px;
+
+            color: #1c1715;
+
+            font-size: 58px;
+
+            line-height: 1.08;
+
+            letter-spacing: -2px;
+        }
+
+
+        .background-hero p {
+
+            max-width: 650px;
+
+            margin: 0 0 30px;
+
+            color: #706965;
+
+            font-size: 17px;
+
+            line-height: 1.7;
+        }
+
+
+        .background-actions {
+
+            display: flex;
+
+            gap: 12px;
+        }
+
+
+        .background-action-main {
+
+            padding: 14px 24px;
+
+            border-radius: 8px;
+
+            background: #8b3a3a;
+
+            color: white;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .background-action-secondary {
+
+            padding: 14px 24px;
+
+            border: 1px solid #d0c7c2;
+
+            border-radius: 8px;
+
+            background: rgba(255,255,255,0.7);
+
+            color: #5f5955;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+
+        /* =====================================================
+           BACKGROUND CARDS
+        ====================================================== */
+
+        .background-cards {
+
+            display: flex;
+
+            gap: 20px;
+
+            padding: 35px 8%;
+
+            background: #ffffff;
+        }
+
+
+        .background-card {
+
+            flex: 1;
+
+            height: 145px;
+
+            padding: 25px;
+
+            border: 1px solid #eee7e2;
+
+            border-radius: 12px;
+
+            background: #faf9f8;
+        }
+
+
+        .background-card h3 {
+
+            margin: 0 0 10px;
+
+            color: #282320;
+
+            font-size: 16px;
+        }
+
+
+        .background-card p {
+
+            margin: 0;
+
+            color: #88817d;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+
+
+        /* =====================================================
+           DARK + BLUR OVERLAY
+        ====================================================== */
+
+        .login-overlay {
+
+            position: fixed;
+
+            inset: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            background:
+                rgba(10, 8, 8, 0.55);
+
+            backdrop-filter: blur(9px);
+
+            -webkit-backdrop-filter: blur(9px);
+
+            z-index: 10;
+        }
+
+
+
+        /* =====================================================
+           LOGIN POPUP
+        ====================================================== */
+
+        .login-modal {
+
+            position: fixed;
+
+            top: 50%;
+
+            left: 50%;
+
+            width: min(430px, calc(100% - 30px));
+
+            max-height: calc(100vh - 40px);
+
+            overflow-y: auto;
+
+            padding: 34px;
+
+            background: #ffffff;
+
+            border: 1px solid #e5ded9;
+
+            border-radius: 17px;
+
+            box-shadow:
+                0 30px 80px rgba(0,0,0,0.30);
+
+            transform:
+                translate(-50%, -50%);
+
+            z-index: 20;
+
+            animation:
+                loginPopupIn
+                0.28s
+                ease;
+        }
+
+
+        @keyframes loginPopupIn {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translate(-50%, -47%)
+                    scale(0.95);
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translate(-50%, -50%)
+                    scale(1);
+            }
+        }
+
+
+
+        /* =====================================================
+           CLOSE BUTTON
+        ====================================================== */
+
+        .login-close {
+
+            position: absolute;
+
+            top: 11px;
+
+            right: 12px;
+
+            width: 36px;
+
+            height: 36px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border: none;
+
+            border-radius: 50%;
+
+            background: transparent;
+
+            color: #777;
+
+            font-size: 27px;
+
+            line-height: 1;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .login-close:hover {
+
+            background: #f2eeee;
+
+            color: #8b3a3a;
+
+            transform: rotate(90deg);
+        }
+
+
+
+        /* =====================================================
+           LOGIN HEADER
+        ====================================================== */
+
+        .login-header {
+
+            margin-bottom: 26px;
+
+            text-align: center;
+        }
+
+
+        .login-brand {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            margin-bottom: 13px;
+
+            color: #8b3a3a;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+
+        .login-brand::before {
+
+            content: "LB";
+
+            width: 27px;
+
+            height: 27px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 7px;
+
+            background: #8b3a3a;
+
+            color: #fff;
+
+            font-size: 8px;
+
+            letter-spacing: 0;
+        }
+
+
+        .login-header h1 {
+
+            margin: 0 0 7px;
+
+            color: #171717;
+
+            font-size: 28px;
+
+            font-weight: 800;
+
+            letter-spacing: -0.7px;
+        }
+
+
+        .login-header p {
+
+            margin: 0;
+
+            color: #817a76;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+
+
+        /* =====================================================
+           FORM
+        ====================================================== */
+
+        .form-group {
+
+            margin-bottom: 17px;
+        }
+
+
+        .form-group label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #282422;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        .input-wrapper {
+
+            position: relative;
+        }
+
+
+        .input-icon {
+
+            position: absolute;
+
+            top: 50%;
+
+            left: 13px;
+
+            transform: translateY(-50%);
+
+            color: #9a918c;
+
+            font-size: 14px;
+
+            pointer-events: none;
+        }
+
+
+        .form-group input {
+
+            width: 100%;
+
+            height: 48px;
+
+            padding:
+                0 13px 0 38px;
+
+            border: 1px solid #d9d4d0;
+
+            border-radius: 8px;
+
+            outline: none;
+
+            background: #ffffff;
+
+            color: #222;
+
+            font-size: 13px;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .form-group input::placeholder {
+
+            color: #aaa29d;
+        }
+
+
+        .form-group input:hover {
+
+            border-color: #bbb3ae;
+        }
+
+
+        .form-group input:focus {
+
+            border-color: #8b3a3a;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(139,58,58,0.11);
+        }
+
+
+
+        /* =====================================================
+           LOGIN BUTTON
+        ====================================================== */
+
+        .login-button {
+
+            width: 100%;
+
+            height: 49px;
+
+            margin-top: 3px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #8b3a3a;
+
+            color: #fff;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 7px 18px
+                rgba(139,58,58,0.18);
+
+            transition:
+                background 0.2s ease,
+                transform 0.15s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .login-button:hover {
+
+            background: #6f2d2d;
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 10px 23px
+                rgba(139,58,58,0.23);
+        }
+
+
+        .login-button:active {
+
+            transform: translateY(0);
+        }
+
+
+        .login-button:disabled {
+
+            opacity: 0.65;
+
+            cursor: not-allowed;
+
+            transform: none;
+        }
+
+
+
+        /* =====================================================
+           REGISTER SWITCH
+        ====================================================== */
+
+        .register-switch {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            flex-wrap: wrap;
+
+            gap: 5px;
+
+            margin-top: 21px;
+
+            color: #77716d;
+
+            font-size: 12px;
+
+            text-align: center;
+        }
+
+
+        .register-switch a {
+
+            color: #8b3a3a;
+
+            font-weight: 700;
+        }
+
+
+        .register-switch a:hover {
+
+            color: #6f2d2d;
+
+            text-decoration: underline;
+        }
+
+
+
+        /* =====================================================
+           TOAST MESSAGE
+           OUTSIDE LOGIN FORM
+        ====================================================== */
+
+        .auth-toast {
+
+            position: fixed;
+
+            top: 28px;
+
+            left: 50%;
+
+            min-width: 300px;
+
+            max-width: 440px;
+
+            padding: 14px 18px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            border-radius: 10px;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 15px 45px
+                rgba(0,0,0,0.28);
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            transform:
+                translate(-50%, -20px);
+
+            transition:
+                opacity 0.25s ease,
+                transform 0.25s ease,
+                visibility 0.25s ease;
+
+            z-index: 100000;
+        }
+
+
+        .auth-toast.show {
+
+            opacity: 1;
+
+            visibility: visible;
+
+            transform:
+                translate(-50%, 0);
+        }
+
+
+        .auth-toast.success {
+
+            background: #f0fdf4;
+
+            border: 1px solid #86efac;
+
+            color: #166534;
+        }
+
+
+        .auth-toast.error {
+
+            background: #fef2f2;
+
+            border: 1px solid #fca5a5;
+
+            color: #991b1b;
+        }
+
+
+        .auth-toast-icon {
+
+            width: 25px;
+
+            height: 25px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 50%;
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: 800;
+        }
+
+
+        .auth-toast.success
+        .auth-toast-icon {
+
+            background: #22c55e;
+        }
+
+
+        .auth-toast.error
+        .auth-toast-icon {
+
+            background: #ef4444;
+        }
+
+
+        .auth-toast-text {
+
+            flex: 1;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            line-height: 1.4;
+        }
+
+
+
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .background-navbar {
+
+                padding: 0 20px;
+            }
+
+
+            .background-links {
+
+                display: none;
+            }
+
+
+            .background-hero {
+
+                padding: 70px 25px;
+            }
+
+
+            .background-hero h1 {
+
+                font-size: 42px;
+            }
+
+
+            .background-cards {
+
+                padding: 25px;
+
+                flex-direction: column;
+            }
+
+
+            .login-modal {
+
+                width: calc(100% - 25px);
+
+                padding: 28px 21px;
+
+                border-radius: 15px;
+            }
+
+
+            .login-header h1 {
+
+                font-size: 24px;
+            }
+
+
+            .auth-toast {
+
+                top: 18px;
+
+                left: 15px;
+
+                right: 15px;
+
+                min-width: 0;
+
+                max-width: none;
+
+                transform:
+                    translateY(-20px);
+            }
+
+
+            .auth-toast.show {
+
+                transform:
+                    translateY(0);
+            }
+
+        }
+
+
+        @media (max-width: 400px) {
+
+            .login-modal {
+
+                padding:
+                    25px 17px;
+            }
+
+
+            .login-header h1 {
+
+                font-size: 22px;
+            }
+
+        }
+
+
+        /* ===== PASSWORD FIELD ===== */
+
+            .password-form-group {
+                width: 100%;
+            }
+
+            .password-field-wrapper {
+                position: relative;
+                width: 100%;
+            }
+
+            .password-field-wrapper input {
+                width: 100%;
+                box-sizing: border-box;
+                padding-right: 50px;
+            }
+
+            /* Lock icon */
+            .password-field-wrapper .input-icon {
+                position: absolute;
+                left: 14px;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 2;
+                pointer-events: none;
+            }
+
+            /* Eye button */
+            .password-toggle {
+                position: absolute !important;
+                right: 10px !important;
+                top: 50% !important;
+                transform: translateY(-50%) !important;
+
+                width: 36px !important;
+                height: 36px !important;
+
+                padding: 0 !important;
+                margin: 0 !important;
+
+                border: none !important;
+                background: transparent !important;
+
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+
+                cursor: pointer !important;
+                z-index: 20 !important;
+            }
+
+            .password-toggle svg {
+                width: 21px;
+                height: 21px;
+                display: block;
+                color: #777;
+            }
+
+            .password-toggle:hover svg {
+                color: #963d3d;
+            }
+
+            /* Forgot password */
+            .forgot-password-row {
+                width: 100%;
+                display: flex;
+                justify-content: flex-end;
+                margin-top: 6px;
+            }
+
+            .forgot-password-button {
+                padding: 0 !important;
+                margin: 0 !important;
+
+                border: none !important;
+                background: transparent !important;
+
+                color: #963d3d !important;
+
+                font-size: 14px !important;
+                font-weight: 600 !important;
+
+                cursor: pointer !important;
+            }
+
+            .forgot-password-button:hover {
+                text-decoration: underline;
+            }
+
+        /* ===== MAKE LOGIN CONTROLS CLICKABLE ===== */
+        .login-modal,
+        .login-modal form,
+        .login-modal input,
+        .login-modal button,
+        .login-modal a {
+            pointer-events: auto;
+        }
+
+        .password-field-wrapper {
+            position: relative;
+        }
+
+        .password-field-wrapper input {
+            padding-right: 52px !important;
+            pointer-events: auto !important;
+            user-select: text !important;
+            -webkit-user-select: text !important;
+        }
+
+        .password-toggle {
+            pointer-events: auto !important;
+            touch-action: manipulation;
+        }
+
+        /* ===== FORGOT PASSWORD MODAL ===== */
+        .forgot-password-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: min(430px, calc(100% - 30px));
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            padding: 34px;
+            background: #fff;
+            border: 1px solid #e5ded9;
+            border-radius: 17px;
+            box-shadow: 0 30px 80px rgba(0,0,0,.30);
+            z-index: 1000;
+        }
+
+        .forgot-password-modal.active {
+            display: block;
+        }
+
+        .forgot-password-modal h2 {
+            margin: 0 0 8px;
+            text-align: center;
+            font-size: 26px;
+            color: #171717;
+        }
+
+        .forgot-password-modal p {
+            margin: 0 0 22px;
+            text-align: center;
+            color: #817a76;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .forgot-step { display: none; }
+        .forgot-step.active { display: block; }
+
+        .forgot-step .form-group { margin-bottom: 17px; }
+
+        .forgot-step input {
+            width: 100%;
+            height: 48px;
+            padding: 0 13px;
+            border: 1px solid #d9d4d0;
+            border-radius: 8px;
+            outline: none;
+            background: #fff;
+            color: #222;
+            font-size: 13px;
+            pointer-events: auto;
+        }
+
+        .forgot-step input:focus {
+            border-color: #8b3a3a;
+            box-shadow: 0 0 0 3px rgba(139,58,58,.11);
+        }
+
+        .forgot-action {
+            width: 100%;
+            height: 49px;
+            border: none;
+            border-radius: 8px;
+            background: #8b3a3a;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .forgot-action:disabled { opacity: .65; cursor: not-allowed; }
+
+        .forgot-back {
+            display: block;
+            width: 100%;
+            margin-top: 15px;
+            padding: 8px;
+            border: none;
+            background: transparent;
+            color: #8b3a3a;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .forgot-password-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10,8,8,.55);
+            backdrop-filter: blur(9px);
+            -webkit-backdrop-filter: blur(9px);
+            z-index: 900;
+        }
+
+        .password-toggle svg { pointer-events: none; }
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     BACKGROUND PAGE
+========================================================= -->
+
+<div class="background-page">
+
+
+    <!-- NAVBAR -->
+
+    <div class="background-navbar">
+
+        <div class="background-logo">
+
+            <span class="background-logo-box">
+                LB
+            </span>
+
+            <span>
+                Local Business
+            </span>
+
+        </div>
+
+
+        <div class="background-links">
+
+            <span>
+                Discover
+            </span>
+
+            <span>
+                How It Works
+            </span>
+
+            <span>
+                Categories
+            </span>
+
+        </div>
+
+
+        <div class="background-button">
+            Get Started
+        </div>
+
+    </div>
+
+
+
+    <!-- HERO -->
+
+    <section class="background-hero">
+
+        <div class="background-hero-content">
+
+            <div class="background-small-title">
+                DISCOVER BUSINESSES AROUND YOU
+            </div>
+
+
+            <h1>
+                Your city has more to offer.
+            </h1>
+
+
+            <p>
+                Discover trusted local businesses,
+                explore services near you, and support
+                the people who make your community special.
+            </p>
+
+
+            <div class="background-actions">
+
+                <span class="background-action-main">
+                    Explore Businesses →
+                </span>
+
+                <span class="background-action-secondary">
+                    List Your Business
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- CARDS -->
+
+    <section class="background-cards">
+
+        <div class="background-card">
+
+            <h3>
+                100+ Local Businesses
+            </h3>
+
+            <p>
+                Find trusted businesses and services
+                in your community.
+            </p>
+
+        </div>
+
+
+        <div class="background-card">
+
+            <h3>
+                20+ Categories
+            </h3>
+
+            <p>
+                Explore restaurants, shops, services
+                and more.
+            </p>
+
+        </div>
+
+
+        <div class="background-card">
+
+            <h3>
+                1K+ Happy Customers
+            </h3>
+
+            <p>
+                Connect with businesses that people
+                already trust.
+            </p>
+
+        </div>
+
+    </section>
+
+
+</div>
+
+
+
+<!-- =========================================================
+     DARK + BLUR OVERLAY
+========================================================= -->
+
+<div class="login-overlay"></div>
+
+
+
+<!-- =========================================================
+     SUCCESS / ERROR POPUP
+     THIS IS OUTSIDE THE LOGIN FORM
+========================================================= -->
+
+<div
+    id="authToast"
+    class="auth-toast"
+    role="alert"
+    aria-live="polite"
+>
+
+    <span
+        id="authToastIcon"
+        class="auth-toast-icon"
+    ></span>
+
+    <span
+        id="authToastText"
+        class="auth-toast-text"
+    ></span>
+
+</div>
+
+
+
+
+<!-- =========================================================
+     FORGOT PASSWORD MODAL
+========================================================= -->
+<div class="forgot-password-overlay" id="forgotPasswordOverlay" hidden></div>
+
+<div class="forgot-password-modal" id="forgotPasswordModal" role="dialog" aria-modal="true" aria-labelledby="forgotPasswordTitle">
+    <button type="button" class="login-close" id="forgotPasswordClose" aria-label="Close">&times;</button>
+
+    <div id="forgotStepEmail" class="forgot-step active">
+        <h2 id="forgotPasswordTitle">Forgot Password?</h2>
+        <p>Enter your email address and we will send you a verification code.</p>
+        <form id="forgotEmailForm">
+            <div class="form-group">
+                <label for="forgotEmail">Email Address</label>
+                <input type="email" id="forgotEmail" placeholder="Enter your email" autocomplete="email" required>
+            </div>
+            <button type="submit" class="forgot-action" id="sendOtpButton">Send Verification Code</button>
+        </form>
+        <button type="button" class="forgot-back" id="backToLoginFromForgot">← Back to Login</button>
+    </div>
+
+    <div id="forgotStepOtp" class="forgot-step">
+        <h2>Verify Code</h2>
+        <p>Enter the 6-digit verification code sent to your email.</p>
+        <form id="verifyOtpForm">
+            <div class="form-group">
+                <label for="forgotOtp">Verification Code</label>
+                <input type="text" id="forgotOtp" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" placeholder="Enter 6-digit code" required>
+            </div>
+            <button type="submit" class="forgot-action" id="verifyOtpButton">Verify Code</button>
+        </form>
+        <button type="button" class="forgot-back" id="resendOtpButton">Resend Code</button>
+        <button type="button" class="forgot-back" id="backToEmailButton">← Change Email</button>
+    </div>
+
+    <div id="forgotStepReset" class="forgot-step">
+        <h2>Create New Password</h2>
+        <p>Enter your new password below.</p>
+        <form id="resetPasswordForm">
+            <div class="form-group">
+                <label for="newPassword">New Password</label>
+                <div class="password-field-wrapper">
+                    <input type="password" id="newPassword" placeholder="Enter new password" minlength="6" required>
+                    <button type="button" class="password-toggle" id="toggleNewPassword" aria-label="Show password" title="Show password">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="confirmNewPassword">Confirm Password</label>
+                <div class="password-field-wrapper">
+                    <input type="password" id="confirmNewPassword" placeholder="Confirm new password" minlength="6" required>
+                    <button type="button" class="password-toggle" id="toggleConfirmPassword" aria-label="Show password" title="Show password">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <button type="submit" class="forgot-action" id="resetPasswordButton">Reset Password</button>
+        </form>
+    </div>
+</div>
+
+<!-- =========================================================
+     LOGIN POPUP
+========================================================= -->
+
+<div
+    class="login-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="loginTitle"
+>
+
+
+    <!-- CLOSE -->
+
+    <button
+        type="button"
+        class="login-close"
+        id="loginClose"
+        aria-label="Close"
+    >
+        &times;
+    </button>
+
+
+
+    <!-- HEADER -->
+
+    <div class="login-header">
+
+        <div class="login-brand">
+            LOCAL BUSINESS
+        </div>
+
+
+        <h1 id="loginTitle">
+            Welcome back.
+        </h1>
+
+
+        <p>
+            Sign in to your Local Business account.
+        </p>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         LOGIN FORM
+    ====================================================== -->
+
+    <form
+        id="loginForm"
+        action="/login"
+        method="POST"
+    >
+
+
+        <!-- EMAIL -->
+
+        <div class="form-group">
+
+            <label for="email">
+                Email Address
+            </label>
+
+
+            <div class="input-wrapper">
+
+                <span class="input-icon">
+                    ✉
+                </span>
+
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    autocomplete="email"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+
+        <div class="form-group password-form-group">
+
+    <label for="password">Password</label>
+
+    <div class="password-field-wrapper">
+
+        <span class="input-icon">🔒</span>
+
+        <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required
+        >
+
+        <button
+            type="button"
+            id="togglePassword"
+            class="password-toggle"
+            aria-label="Show password"
+            title="Show password"
+        >
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+        </button>
+
+    </div>
+
+    <div class="forgot-password-row">
+        <button
+            type="button"
+            id="forgotPasswordButton"
+            class="forgot-password-button"
+        >
+            Forgot Password?
+        </button>
+    </div>
+
+</div>
+
+
+        <!-- LOGIN BUTTON -->
+
+        <button
+            type="submit"
+            class="login-button"
+            id="loginButton"
+        >
+            Login
+        </button>
+
+
+    </form>
+
+
+
+    <!-- REGISTER -->
+
+    <div class="register-switch">
+
+        <span>
+            Don't have an account?
+        </span>
+
+
+        <a href="/register">
+            Create an account →
+        </a>
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* =========================
+       PASSWORD EYE
+    ========================= */
+    function setupPasswordToggle(buttonId, inputId) {
+        const button = document.getElementById(buttonId);
+        const input = document.getElementById(inputId);
+        if (!button || !input) return;
+
+        button.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const show = input.type === "password";
+            input.type = show ? "text" : "password";
+            button.setAttribute("aria-label", show ? "Hide password" : "Show password");
+            button.setAttribute("title", show ? "Hide password" : "Show password");
+            input.focus();
+        });
+    }
+
+    setupPasswordToggle("togglePassword", "password");
+    setupPasswordToggle("toggleNewPassword", "newPassword");
+    setupPasswordToggle("toggleConfirmPassword", "confirmNewPassword");
+
+    /* =========================
+       LOGIN CLOSE BUTTON
+    ========================= */
+    const loginClose = document.getElementById("loginClose");
+
+    if (loginClose) {
+        loginClose.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            window.location.href = "/";
+        });
+    }
+
+    /* =========================
+       LOGIN FORM
+    ========================= */
+    const loginForm = document.getElementById("loginForm");
+    const loginButton = document.getElementById("loginButton");
+    const loginEmail = document.getElementById("email");
+    const loginPassword = document.getElementById("password");
+
+    function showLoginToast(message, type) {
+        const toast = document.getElementById("authToast");
+        const icon = document.getElementById("authToastIcon");
+        const text = document.getElementById("authToastText");
+
+        if (!toast || !icon || !text) {
+            alert(message);
+            return;
+        }
+
+        toast.className = "auth-toast " + type + " show";
+        icon.textContent = type === "success" ? "✓" : "✕";
+        text.textContent = message;
+
+        clearTimeout(window.__loginToastTimer);
+        window.__loginToastTimer = setTimeout(function () {
+            toast.classList.remove("show");
+        }, type === "success" ? 3500 : 4500);
+    }
+
+    async function getLoginResponseData(response) {
+        const contentType = response.headers.get("content-type") || "";
+
+        if (contentType.includes("application/json")) {
+            return await response.json();
+        }
+
+        const text = await response.text();
+        return {
+            success: response.ok,
+            message: text || "Something went wrong."
+        };
+    }
+
+    if (loginForm) {
+        loginForm.addEventListener("submit", async function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const email = loginEmail ? loginEmail.value.trim() : "";
+            const password = loginPassword ? loginPassword.value : "";
+
+            if (!email || !password) {
+                showLoginToast("Please enter your email and password.", "error");
+                return;
+            }
+
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showLoginToast("Please enter a valid email address.", "error");
+                return;
+            }
+
+            if (loginButton) {
+                loginButton.disabled = true;
+                loginButton.textContent = "Logging in...";
+            }
+
+            try {
+                const response = await fetch("/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "X-Requested-With": "XMLHttpRequest"
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password
+                    })
+                });
+
+                const data = await getLoginResponseData(response);
+
+                if (response.ok && data.success !== false) {
+                    showLoginToast(data.message || "Login successful!", "success");
+
+                    /* Give the success message time to appear before redirecting. */
+                    setTimeout(function () {
+                        window.location.href = data.redirect || "/customer";
+                    }, 1200);
+
+                    return;
+                }
+
+                showLoginToast(
+                    data.message || "Invalid email or password.",
+                    "error"
+                );
+            } catch (error) {
+                console.error("Login error:", error);
+                showLoginToast(
+                    "Unable to connect to the server. Please try again.",
+                    "error"
+                );
+            } finally {
+                if (loginButton) {
+                    loginButton.disabled = false;
+                    loginButton.textContent = "Login";
+                }
+            }
+        });
+    }
+
+    /* =========================
+       FORGOT PASSWORD
+    ========================= */
+    const forgotButton = document.getElementById("forgotPasswordButton");
+    const forgotModal = document.getElementById("forgotPasswordModal");
+    const forgotOverlay = document.getElementById("forgotPasswordOverlay");
+    const forgotClose = document.getElementById("forgotPasswordClose");
+    const backToLogin = document.getElementById("backToLoginFromForgot");
+    const backToEmail = document.getElementById("backToEmailButton");
+    const forgotEmailForm = document.getElementById("forgotEmailForm");
+    const verifyOtpForm = document.getElementById("verifyOtpForm");
+    const resetPasswordForm = document.getElementById("resetPasswordForm");
+    const resendButton = document.getElementById("resendOtpButton");
+    const emailInput = document.getElementById("forgotEmail");
+    const otpInput = document.getElementById("forgotOtp");
+    const newPasswordInput = document.getElementById("newPassword");
+    const confirmPasswordInput = document.getElementById("confirmNewPassword");
+
+    let resetEmail = "";
+
+    function showForgotStep(id) {
+        document.querySelectorAll("#forgotPasswordModal .forgot-step").forEach(function (step) {
+            step.classList.remove("active");
+        });
+        const step = document.getElementById(id);
+        if (step) step.classList.add("active");
+    }
+
+    function openForgotPassword() {
+        if (!forgotModal || !forgotOverlay) return;
+        forgotModal.classList.add("active");
+        forgotOverlay.hidden = false;
+        showForgotStep("forgotStepEmail");
+        setTimeout(function () { if (emailInput) emailInput.focus(); }, 50);
+    }
+
+    function closeForgotPassword() {
+        if (!forgotModal || !forgotOverlay) return;
+        forgotModal.classList.remove("active");
+        forgotOverlay.hidden = true;
+    }
+
+    function toast(message, type) {
+        const toast = document.getElementById("authToast");
+        const icon = document.getElementById("authToastIcon");
+        const text = document.getElementById("authToastText");
+        if (!toast || !icon || !text) { alert(message); return; }
+        toast.className = "auth-toast " + type + " show";
+        icon.textContent = type === "success" ? "✓" : "✕";
+        text.textContent = message;
+        clearTimeout(window.__forgotToastTimer);
+        window.__forgotToastTimer = setTimeout(function () { toast.classList.remove("show"); }, 4500);
+    }
+
+    async function responseData(response) {
+        const contentType = response.headers.get("content-type") || "";
+        if (contentType.includes("application/json")) return await response.json();
+        const text = await response.text();
+        return { success: response.ok, message: text || "Something went wrong." };
+    }
+
+    async function sendOtp() {
+        const email = emailInput.value.trim();
+        if (!email) { toast("Please enter your email address.", "error"); return false; }
+        const button = document.getElementById("sendOtpButton");
+        button.disabled = true;
+        button.textContent = "Sending...";
+        try {
+            const response = await fetch("/forgot-password/request", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "Accept": "application/json", "X-Requested-With": "XMLHttpRequest" },
+                body: JSON.stringify({ email: email })
+            });
+            const data = await responseData(response);
+            if (!response.ok || data.success === false) {
+                toast(data.message || "Could not send verification code.", "error");
+                return false;
+            }
+            resetEmail = email;
+            showForgotStep("forgotStepOtp");
+            toast(data.message || "Verification code sent to your email.", "success");
+            setTimeout(function () { if (otpInput) otpInput.focus(); }, 50);
+            return true;
+        } catch (error) {
+            console.error(error);
+            toast("Unable to connect to the server. Please try again.", "error");
+            return false;
+        } finally {
+            button.disabled = false;
+            button.textContent = "Send Verification Code";
+        }
+    }
+
+    if (forgotButton) forgotButton.addEventListener("click", function (e) { e.preventDefault(); openForgotPassword(); });
+    if (forgotClose) forgotClose.addEventListener("click", closeForgotPassword);
+    if (forgotOverlay) forgotOverlay.addEventListener("click", closeForgotPassword);
+    if (backToLogin) backToLogin.addEventListener("click", closeForgotPassword);
+    if (backToEmail) backToEmail.addEventListener("click", function () { showForgotStep("forgotStepEmail"); });
+
+    if (forgotEmailForm) forgotEmailForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        await sendOtp();
+    });
+
+    if (resendButton) resendButton.addEventListener("click", async function () {
+        if (!resetEmail) return;
+        emailInput.value = resetEmail;
+        await sendOtp();
+    });
+
+    if (verifyOtpForm) verifyOtpForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const otp = otpInput.value.trim();
+        if (!/^[0-9]{6}$/.test(otp)) { toast("Please enter the 6-digit verification code.", "error"); return; }
+        const button = document.getElementById("verifyOtpButton");
+        button.disabled = true;
+        button.textContent = "Verifying...";
+        try {
+            const response = await fetch("/forgot-password/verify", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "Accept": "application/json", "X-Requested-With": "XMLHttpRequest" },
+                body: JSON.stringify({ email: resetEmail, otp: otp })
+            });
+            const data = await responseData(response);
+            if (!response.ok || data.success === false) { toast(data.message || "Invalid verification code.", "error"); return; }
+            showForgotStep("forgotStepReset");
+            toast(data.message || "Code verified. Create your new password.", "success");
+            setTimeout(function () { if (newPasswordInput) newPasswordInput.focus(); }, 50);
+        } catch (error) {
+            console.error(error);
+            toast("Unable to verify the code. Please try again.", "error");
+        } finally {
+            button.disabled = false;
+            button.textContent = "Verify Code";
+        }
+    });
+
+    if (resetPasswordForm) resetPasswordForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const password = newPasswordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+        if (password.length < 6) { toast("Password must be at least 6 characters.", "error"); return; }
+        if (password !== confirmPassword) { toast("Passwords do not match.", "error"); return; }
+        const button = document.getElementById("resetPasswordButton");
+        button.disabled = true;
+        button.textContent = "Resetting...";
+        try {
+            const response = await fetch("/forgot-password/reset", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "Accept": "application/json", "X-Requested-With": "XMLHttpRequest" },
+                body: JSON.stringify({ email: resetEmail, password: password, confirmPassword: confirmPassword })
+            });
+            const data = await responseData(response);
+            if (!response.ok || data.success === false) { toast(data.message || "Could not reset the password.", "error"); return; }
+            toast(data.message || "Password reset successfully!", "success");
+            setTimeout(function () {
+                closeForgotPassword();
+                const loginEmail = document.getElementById("email");
+                if (loginEmail) loginEmail.value = resetEmail;
+                const loginPassword = document.getElementById("password");
+                if (loginPassword) { loginPassword.value = ""; loginPassword.focus(); }
+            }, 1200);
+        } catch (error) {
+            console.error(error);
+            toast("Unable to reset the password. Please try again.", "error");
+        } finally {
+            button.disabled = false;
+            button.textContent = "Reset Password";
+        }
+    });
+
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") closeForgotPassword();
+    });
+});
+</script>
+
+
+</body>
+
+</html>

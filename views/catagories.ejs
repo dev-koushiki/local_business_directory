@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Customer Dashboard</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+            color: #222;
+        }
+
+        /* NAVBAR */
+
+        .navbar {
+            background: #111827;
+            color: white;
+            padding: 18px 50px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .logout {
+            background: #ef4444;
+            padding: 9px 16px;
+            border-radius: 6px;
+        }
+
+        /* HERO */
+
+        .hero {
+            background: white;
+            text-align: center;
+            padding: 70px 20px;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .search-box input {
+            width: 400px;
+            padding: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .search-box button {
+            padding: 14px 25px;
+            border: none;
+            background: #2563eb;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        /* CATEGORIES */
+
+        .section {
+            padding: 50px;
+        }
+
+        .section h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 30px;
+        }
+
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .category {
+            background: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .category:hover {
+            transform: translateY(-5px);
+        }
+
+        .category h3 {
+            margin-bottom: 10px;
+        }
+
+        .category p {
+            color: #777;
+        }
+
+        /* BUSINESS */
+
+        .businesses {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .business-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .business-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .business-card p {
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .view-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 18px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        /* FOOTER */
+
+        footer {
+            margin-top: 50px;
+            background: #111827;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                gap: 10px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .search-box {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .search-box input {
+                width: 90%;
+            }
+
+            .section {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            LocalBiz
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/customer">
+                Home
+            </a>
+
+            <a href="/explore">
+                Explore
+            </a>
+
+            <a href="/login" class="logout">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <h1>
+            Discover Local Businesses
+        </h1>
+
+        <p>
+            Find the best businesses, services and places near you.
+        </p>
+
+        <form class="search-box" action="/explore" method="GET">
+
+            <input
+                type="text"
+                name="search"
+                placeholder="Search for a business..."
+            >
+
+            <button type="submit">
+                Search
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <!-- CATEGORIES -->
+
+    <section class="section">
+
+        <h2>
+            Browse Categories
+        </h2>
+
+        <div class="categories">
+
+            <div class="category">
+                <h3>🍔 Restaurants</h3>
+                <p>Find great places to eat</p>
+            </div>
+
+            <div class="category">
+                <h3>💇 Salons</h3>
+                <p>Beauty and grooming services</p>
+            </div>
+
+            <div class="category">
+                <h3>🏥 Healthcare</h3>
+                <p>Doctors and medical services</p>
+            </div>
+
+            <div class="category">
+                <h3>🔧 Services</h3>
+                <p>Professional local services</p>
+            </div>
+
+            <div class="category">
+                <h3>🛍️ Shopping</h3>
+                <p>Local shops and stores</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FEATURED BUSINESSES -->
+
+    <section class="section">
+
+        <h2>
+            Featured Businesses
+        </h2>
+
+        <div class="businesses">
+
+            <div class="business-card">
+
+                <h3>
+                    Local Restaurant
+                </h3>
+
+                <p>
+                    📍 Your City
+                </p>
+
+                <p>
+                    ⭐ 4.5 Rating
+                </p>
+
+                <a href="/explore" class="view-btn">
+                    View Business
+                </a>
+
+            </div>
+
+
+            <div class="business-card">
+
+                <h3>
+                    Beauty Salon
+                </h3>
+
+                <p>
+                    📍 Your City
+                </p>
+
+                <p>
+                    ⭐ 4.7 Rating
+                </p>
+
+                <a href="/explore" class="view-btn">
+                    View Business
+                </a>
+
+            </div>
+
+
+            <div class="business-card">
+
+                <h3>
+                    Local Services
+                </h3>
+
+                <p>
+                    📍 Your City
+                </p>
+
+                <p>
+                    ⭐ 4.6 Rating
+                </p>
+
+                <a href="/explore" class="view-btn">
+                    View Business
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <p>
+            © 2026 LocalBiz - Local Business Directory
+        </p>
+
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,2818 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Add Business | Local Business</title>
+
+
+<style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            min-height: 100%;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #171717;
+            background: #f5f5f5;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* The actual page that should remain visible behind the popup. */
+        .background-page {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            z-index: 1;
+            pointer-events: none;
+            filter: blur(7px) brightness(.72);
+            transform: scale(1.02);
+            transform-origin: center;
+        }
+
+        /* =====================================================
+           LOGIN-STYLE BACKDROP
+           The area behind the white Edit Business card becomes
+           blurred + slightly darkened, while the card stays sharp.
+        ====================================================== */
+
+        .overlay {
+            /*
+             * Login-style popup backdrop.
+             *
+             * The page underneath remains visible, but becomes
+             * blurred and darkened. The Edit Business card itself
+             * stays completely sharp.
+             */
+            position: fixed;
+            inset: 0;
+
+            width: 100%;
+            height: 100vh;
+
+            padding: 28px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            overflow-y: auto;
+
+            /* Same grey/dimmed appearance as the Login popup */
+            background: rgba(35, 32, 32, .43);
+
+            /* Blur whatever is actually behind this popup */
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+
+            z-index: 9999;
+        }
+
+        .modal {
+            /* Sharp Edit Business popup */
+            width: min(1000px, 100%);
+
+            max-height: calc(100vh - 56px);
+            overflow-y: auto;
+
+            background: #ffffff;
+
+            border-radius: 22px;
+
+            padding: 38px 42px 48px;
+
+            box-shadow:
+                0 30px 90px rgba(0, 0, 0, .30),
+                0 8px 30px rgba(0, 0, 0, .14);
+
+            position: relative;
+
+            z-index: 10000;
+
+            /* Never blur the popup itself */
+            -webkit-backdrop-filter: none;
+            backdrop-filter: none;
+        }
+
+        .back {
+            color: #555;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back:hover {
+            color: #8b3a3a;
+        }
+
+        h1 {
+            margin: 20px 0 7px;
+            color: #8b3a3a;
+            font-size: 34px;
+        }
+
+        .intro {
+            color: #777;
+            line-height: 1.6;
+            margin: 0 0 30px;
+        }
+
+        .section {
+            border-top: 1px solid #eee;
+            padding-top: 27px;
+            margin-top: 27px;
+        }
+
+        .section h2 {
+            font-size: 21px;
+            margin: 0 0 7px;
+        }
+
+        .section p {
+            color: #777;
+            margin: 0 0 20px;
+            font-size: 14px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .group {
+            margin-bottom: 17px;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .req {
+            color: #d93025;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 13px;
+            border: 1px solid #d7d7d7;
+            border-radius: 9px;
+            font: inherit;
+            outline: none;
+            background: #fff;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #8b3a3a;
+            box-shadow: 0 0 0 3px rgba(139, 58, 58, .08);
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .chip {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: #f7eaea;
+            border-radius: 20px;
+            padding: 7px 10px;
+            font-size: 13px;
+        }
+
+        .chip button {
+            border: 0;
+            background: none;
+            color: #8b3a3a;
+            cursor: pointer;
+            font-weight: 700;
+            padding: 0;
+            font-size: 16px;
+        }
+
+        .repeat-box {
+            background: #fafafa;
+            border: 1px solid #eee;
+            border-radius: 13px;
+            padding: 15px;
+        }
+
+        .addrow {
+            display: grid;
+            grid-template-columns: 1.2fr 1.6fr .8fr auto;
+            gap: 10px;
+            align-items: end;
+            margin-bottom: 10px;
+        }
+
+        .offerrow {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr .8fr auto;
+            gap: 10px;
+            align-items: end;
+            margin-bottom: 10px;
+        }
+
+        .remove {
+            border: 0;
+            background: none;
+            color: #8b3a3a;
+            cursor: pointer;
+            font-weight: 700;
+            padding: 10px;
+            white-space: nowrap;
+        }
+
+        .smallbtn {
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 8px;
+            padding: 9px 12px;
+            cursor: pointer;
+        }
+
+        .smallbtn:hover {
+            border-color: #8b3a3a;
+            color: #8b3a3a;
+        }
+        .hours {
+            display: grid;
+            grid-template-columns: 110px minmax(0, 1fr) 95px;
+            gap: 16px;
+            align-items: start;
+            margin-bottom: 14px;
+            padding: 16px;
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 14px;
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        .hours .day {
+            font-weight: 800;
+            padding-top: 13px;
+            font-size: 15px;
+        }
+
+        /* One TOTAL box containing both periods. */
+        .hours-periods {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+        }
+
+        .hours-period {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            padding: 12px;
+            border: 1px solid #e6e6e6;
+            border-radius: 11px;
+            background: #fafafa;
+            box-sizing: border-box;
+            min-width: 0;
+        }
+
+        .period-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: #444;
+            margin-bottom: 2px;
+        }
+
+        .time-group {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 7px;
+            min-width: 0;
+        }
+
+        .time-label {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            color: #888;
+            margin: 0 0 4px 2px;
+            text-transform: uppercase;
+            letter-spacing: .03em;
+        }
+
+        .time-group select {
+            width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+            padding: 9px 7px;
+        }
+
+        .closed-label {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 7px;
+            margin: 0;
+            padding-top: 13px;
+            white-space: nowrap;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .closed-label input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .hours-row-disabled .hours-periods {
+            opacity: .45;
+        }
+
+        .hours-row-disabled .time-group select {
+            cursor: not-allowed;
+        }
+
+        .hours-note {
+            background: #f8f8f8;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 10px 12px;
+            color: #666;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 14px;
+        }
+
+
+        .period-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .add-period-btn,
+        .remove-period-btn {
+            border: 1px solid #d6d6d6;
+            background: #fff;
+            color: #8b3a3a;
+            border-radius: 8px;
+            padding: 8px 11px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .add-period-btn:hover,
+        .remove-period-btn:hover {
+            border-color: #8b3a3a;
+            background: #fff7f7;
+        }
+
+        .period-help {
+            font-size: 11px;
+            color: #777;
+            line-height: 1.3;
+        }
+
+    .checkgrid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .check {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        border: 1px solid #e3e3e3;
+        padding: 10px;
+        border-radius: 9px;
+        background: white;
+        cursor: pointer;
+        min-height: 40px;
+    }
+
+    .check:hover {
+        border-color: #c9c9c9;
+        background: #fafafa;
+    }
+
+    .check input {
+        width: auto;
+        margin: 0;
+        flex: 0 0 auto;
+    }
+.check {
+            border: 1px solid #e3e3e3;
+            padding: 10px;
+            border-radius: 9px;
+            background: #fff;
+            cursor: pointer;
+        }
+.social {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .photos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 10px 0 15px;
+        }
+
+        .photos img {
+            width: 110px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .no-photos {
+            color: #888;
+            font-size: 14px;
+            padding: 15px;
+            background: #fafafa;
+            border-radius: 10px;
+        }
+
+        .location {
+            background: #faf7f7;
+            border: 1px solid #eadede;
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        .locbtn {
+            border: 1px solid #8b3a3a;
+            background: #fff;
+            color: #8b3a3a;
+            padding: 11px 15px;
+            border-radius: 9px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .locbtn:hover {
+            background: #8b3a3a;
+            color: white;
+        }
+
+        .locbtn:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        .status {
+            font-size: 13px;
+            color: #666;
+            margin-top: 10px;
+            line-height: 1.5;
+        }
+
+        .submit {
+            width: 100%;
+            border: 0;
+            background: #8b3a3a;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 28px;
+        }
+
+        .submit:hover {
+            background: #722f2f;
+        }
+
+        .submit:disabled {
+            opacity: .65;
+            cursor: not-allowed;
+        }
+
+        .help {
+            font-size: 12px !important;
+            color: #888 !important;
+            margin-top: 6px !important;
+            margin-bottom: 0 !important;
+        }
+
+        @media (max-width: 700px) {
+            .overlay {
+                padding: 10px;
+            }
+
+            .modal {
+                padding: 25px 18px;
+            }
+
+            .grid,
+            .social,
+            .checkgrid {
+                grid-template-columns: 1fr;
+            }
+
+            .addrow,
+            .offerrow,
+            .hours {
+                grid-template-columns: 1fr;
+            }
+
+            .hours {
+                grid-template-columns: 1fr;
+            }
+
+            .hours .day,
+            .closed-label {
+                padding-top: 0;
+            }
+
+            .hours-period {
+                grid-template-columns: 1fr;
+            }
+
+            .time-group {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+        }
+    
+        @media (max-width: 900px) {
+            .hours {
+                grid-template-columns: 1fr;
+            }
+
+            .hours .day,
+            .closed-label {
+                padding-top: 0;
+            }
+
+            .hours-periods {
+                grid-template-columns: 1fr;
+            }
+
+            .time-group {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+
+        /* Add Business-specific header alignment */
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+        }
+
+        /* Add Business photo guidance */
+        .photo-note {
+            background: #f8f8f8;
+            border-radius: 9px;
+            padding: 11px;
+            font-size: 13px;
+            color: #666;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 700px) {
+            .checkgrid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+</style>
+
+</head>
+
+
+<body>
+
+<!--
+    The real previous/dashboard page is shown behind the popup.
+    It is blurred and darkened by the CSS above.
+-->
+<iframe
+    class="background-page"
+    src="/owner"
+    title="Previous page background"
+    aria-hidden="true"
+></iframe>
+
+<div class="overlay">
+
+<main class="modal">
+
+
+<div class="top">
+
+<a
+    class="back"
+    href="/owner"
+>
+    ← Back to Dashboard
+</a>
+
+</div>
+
+
+<h1>
+    Add Business
+</h1>
+
+
+<p class="intro">
+
+    Create a complete business profile.
+    Customers will see the information
+    you choose to provide.
+
+</p>
+
+
+<form
+    action="/owner/business/add"
+    method="POST"
+    enctype="multipart/form-data"
+    id="businessForm"
+>
+
+
+<!-- =====================================================
+     BASIC INFORMATION
+===================================================== -->
+
+<section class="section">
+
+<h2>
+    🏢 Basic Information
+</h2>
+
+<p>
+    These details identify your business.
+</p>
+
+
+<div class="grid">
+
+
+<div class="group">
+
+<label>
+    Business Name
+    <span class="req">*</span>
+</label>
+
+<input
+    name="name"
+    required
+    placeholder="e.g. Food Zone"
+>
+
+</div>
+
+
+<div class="group">
+
+<label>
+    Category
+    <span class="req">*</span>
+</label>
+
+<input
+    name="category"
+    required
+    placeholder="Restaurant, Salon, Clinic, Grocery..."
+>
+
+</div>
+
+
+<div class="group full">
+
+<label>
+    Description
+    <span class="req">*</span>
+</label>
+
+<textarea
+    name="description"
+    required
+    placeholder="Tell customers what your business offers..."
+></textarea>
+
+</div>
+
+
+<div class="group">
+
+<label>
+    Price Range
+</label>
+
+<select name="priceRange">
+
+<option value="">
+    Select
+</option>
+
+<option value="₹">
+    ₹ — Budget
+</option>
+
+<option value="₹₹">
+    ₹₹ — Moderate
+</option>
+
+<option value="₹₹₹">
+    ₹₹₹ — Premium
+</option>
+
+<option value="₹₹₹₹">
+    ₹₹₹₹ — Luxury
+</option>
+
+</select>
+
+</div>
+
+
+<div class="group">
+
+<label>
+    Established / Since
+</label>
+
+<input
+    name="establishedYear"
+    placeholder="e.g. 2018"
+>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     CONTACT
+===================================================== -->
+
+<section class="section">
+
+<h2>
+    📍 Contact & Address
+</h2>
+
+<p>
+    Help customers find and contact you.
+</p>
+
+
+<div class="grid">
+
+
+<div class="group full">
+
+<label>
+    Address
+    <span class="req">*</span>
+</label>
+
+<input
+    name="address"
+    required
+    placeholder="Street, building, area"
+>
+
+</div>
+
+
+<div class="group">
+
+<label>
+    City
+    <span class="req">*</span>
+</label>
+
+<input
+    name="city"
+    required
+    placeholder="City"
+>
+
+</div>
+
+
+<div class="group">
+
+<label>
+    Pincode
+</label>
+
+<input
+    name="pincode"
+    inputmode="numeric"
+    placeholder="e.g. 712101"
+>
+
+</div>
+
+
+<div class="group">
+
+<label>
+    Phone
+</label>
+
+<input
+    name="phone"
+    type="tel"
+    placeholder="Business phone"
+>
+
+</div>
+
+
+<div class="group">
+
+<label>
+    Email
+</label>
+
+<input
+    name="email"
+    type="email"
+    placeholder="business@example.com"
+>
+
+</div>
+
+
+<div class="group full">
+
+<label>
+    Website
+</label>
+
+<input
+    name="website"
+    type="url"
+    placeholder="https://example.com"
+>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     PHOTOS
+===================================================== -->
+
+<section class="section">
+
+<h2>
+    📸 Business Photos
+</h2>
+
+<p>
+    Add photos of your storefront, interior,
+    products, menu, team or services.
+</p>
+
+
+<div class="group">
+
+<input
+    type="file"
+    name="imageFiles"
+    accept="image/jpeg,image/png,image/webp"
+    multiple
+>
+
+
+<div class="photo-note">
+
+Up to 10 JPG, PNG or WebP images.
+Maximum 5MB each.
+The first photo becomes the main photo.
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     SPECIALITIES
+===================================================== -->
+
+<section class="section">
+
+<h2>
+    ⭐ Specialities & Suitable For
+</h2>
+
+<p>
+    These are optional and work for any type
+    of business.
+</p>
+
+
+<div class="grid">
+
+
+<div class="group">
+
+<label>
+    Specialities / Highlights
+</label>
+
+<input
+    id="specialtyInput"
+    placeholder="Type one and press Enter"
+>
+
+<div
+    id="specialtyChips"
+    class="chips"
+></div>
+
+<input
+    type="hidden"
+    name="specialties"
+    id="specialties"
+>
+
+</div>
+
+
+<div class="group">
+
+<label>
+    Suitable For
+</label>
+
+<input
+    id="suitableInput"
+    placeholder="e.g. Families, Students"
+>
+
+<div
+    id="suitableChips"
+    class="chips"
+></div>
+
+<input
+    type="hidden"
+    name="suitableFor"
+    id="suitableFor"
+>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     SERVICES
+===================================================== -->
+
+<section class="section">
+
+<h2>
+    🛠️ Services
+</h2>
+
+<p>
+    Add the services customers can get
+    from this business.
+</p>
+
+
+<div class="repeat-box">
+
+<div id="serviceRows"></div>
+
+<button
+    type="button"
+    class="smallbtn"
+    onclick="addService()"
+>
+    + Add Service
+</button>
+
+</div>
+
+
+<input
+    type="hidden"
+    name="services"
+    id="services"
+>
+
+</section>
+
+
+<!-- =====================================================
+     PRODUCTS
+===================================================== -->
+
+<section class="section">
+
+<h2>
+    🛍️ Products / Services / Menu
+</h2>
+
+<p>
+    Use this for products, menu items,
+    packages, treatments, courses or anything
+    customers may buy.
+</p>
+
+
+<div class="repeat-box">
+
+<div id="itemRows"></div>
+
+<button
+    type="button"
+    class="smallbtn"
+    onclick="addItem()"
+>
+    + Add Item
+</button>
+
+</div>
+
+
+<input
+    type="hidden"
+    name="items"
+    id="items"
+>
+
+</section>
+
+
+<!-- =====================================================
+     HOURS
+===================================================== -->
+
+<section class="section">
+
+<h2>
+    🕐 Opening Hours
+</h2>
+
+<p>
+    Set the opening and closing time for each day.
+</p>
+
+<div class="hours-note">
+    Add one or two time periods for each day.
+    Example: <strong>10:00 AM–2:00 PM</strong> and
+    <strong>5:00 PM–11:00 PM</strong>.
+    Leave Period 2 unused if there is no break.
+</div>
+
+
+<div
+    class="repeat-box"
+    id="hoursBox"
+></div>
+
+
+<input
+    type="hidden"
+    name="hours"
+    id="hours"
+>
+
+</section>
+
+
+<!-- =====================================================
+     AMENITIES
+===================================================== -->
+
+<section class="section">
+
+<h2>
+    ✨ Amenities & Facilities
+</h2>
+
+<p>
+    Select everything customers can expect.
+</p>
+
+
+<div
+    class="checkgrid"
+    id="amenityChecks"
+></div>
+
+
+<input
+    type="hidden"
+    name="amenities"
+    id="amenities"
+>
+
+</section>
+
+
+<!-- =====================================================
+     PAYMENT
+===================================================== -->
+
+<section class="section">
+
+<h2>
+    💳 Payment Methods
+</h2>
+
+<p>
+    Let customers know how they can pay.
+</p>
+
+
+<div
+    class="checkgrid"
+    id="paymentChecks"
+></div>
+
+
+<input
+    type="hidden"
+    name="paymentMethods"
+    id="paymentMethods"
+>
+
+</section>
+
+
+<!-- =====================================================
+     OFFERS
+===================================================== -->
+
+<section class="section">
+
+<h2>
+    🔥 Offers & Special Deals
+</h2>
+
+<p>
+    Optional promotions customers should know about.
+</p>
+
+
+<div class="repeat-box">
+
+<div id="offerRows"></div>
+
+<button
+    type="button"
+    class="smallbtn"
+    onclick="addOffer()"
+>
+    + Add Offer
+</button>
+
+</div>
+
+
+<input
+    type="hidden"
+    name="offers"
+    id="offers"
+>
+
+</section>
+
+
+<!-- =====================================================
+     SOCIAL
+===================================================== -->
+
+<section class="section">
+
+<h2>
+    📱 Social Media
+</h2>
+
+<p>
+    Optional public links.
+</p>
+
+
+<div class="social">
+
+<input
+    id="instagram"
+    placeholder="Instagram URL"
+>
+
+<input
+    id="facebook"
+    placeholder="Facebook URL"
+>
+
+<input
+    id="youtube"
+    placeholder="YouTube URL"
+>
+
+</div>
+
+
+<input
+    type="hidden"
+    name="socialLinks"
+    id="socialLinks"
+>
+
+</section>
+
+
+<!-- =====================================================
+     LOCATION
+===================================================== -->
+
+<section class="section">
+
+<h2>
+    📍 Exact Business Location
+</h2>
+
+<p>
+    Save coordinates so customers can use
+    the directions feature.
+</p>
+
+
+<div class="location">
+
+<button
+    type="button"
+    class="locbtn"
+    id="getLocationBtn"
+>
+    📍 Use My Current Location
+</button>
+
+
+<div
+    class="status"
+    id="locationStatus"
+>
+    Location has not been selected.
+</div>
+
+</div>
+
+
+<input
+    type="hidden"
+    name="latitude"
+    id="latitude"
+>
+
+
+<input
+    type="hidden"
+    name="longitude"
+    id="longitude"
+>
+
+</section>
+
+
+<!-- =====================================================
+     SUBMIT
+===================================================== -->
+
+<button
+    class="submit"
+    type="submit"
+>
+    Add Business
+</button>
+
+
+</form>
+
+
+</main>
+
+</div>
+
+
+<script>
+
+const days = [
+
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday"
+
+];
+
+
+const dayLabels = [
+
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday"
+
+];
+
+
+const amenities = [
+
+    "Wi-Fi",
+    "Air Conditioning",
+    "Parking",
+    "Outdoor Seating",
+    "Washroom",
+    "Wheelchair Accessible",
+    "Family Friendly",
+    "Pet Friendly",
+    "Home Delivery",
+    "Takeaway",
+    "Dine-in",
+    "Waiting Area"
+
+];
+
+
+const payments = [
+
+    "Cash",
+    "UPI",
+    "Credit / Debit Card",
+    "Digital Wallet",
+    "Bank Transfer"
+
+];
+
+
+let services = [];
+
+let items = [];
+
+let offers = [];
+
+let specialties = [];
+
+let suitableFor = [];
+
+
+// =====================================================
+// ESCAPE
+// =====================================================
+
+function esc(value = "") {
+
+    return String(value)
+        .replace(
+            /[&<>\"']/g,
+
+            character => ({
+
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                "\"": "&quot;",
+                "'": "&#39;"
+
+            }[character])
+
+        );
+
+}
+
+
+// =====================================================
+// CHIP INPUT
+// =====================================================
+
+function chipInput(
+
+    inputId,
+    boxId,
+    hiddenId,
+    array
+
+) {
+
+    const input =
+        document.getElementById(
+            inputId
+        );
+
+    const box =
+        document.getElementById(
+            boxId
+        );
+
+
+    function render() {
+
+        box.innerHTML =
+            array.map(
+
+                (item, index) => `
+
+                    <span class="chip">
+
+                        ${esc(item)}
+
+                        <button
+                            type="button"
+                            onclick="
+                                ${hiddenId === "specialties"
+                                    ? "specialties"
+                                    : "suitableFor"
+                                }.splice(${index},1);
+
+                                document
+                                    .getElementById("${boxId}")
+                                    .dispatchEvent(
+                                        new Event("change")
+                                    );
+                            "
+                        >
+                            ×
+                        </button>
+
+                    </span>
+
+                `
+
+            ).join("");
+
+
+        document.getElementById(
+            hiddenId
+        ).value =
+            JSON.stringify(array);
+
+    }
+
+
+    box.addEventListener(
+        "change",
+        render
+    );
+
+
+    input.addEventListener(
+        "keydown",
+
+        function(event) {
+
+            if (
+                event.key ===
+                "Enter"
+            ) {
+
+                event.preventDefault();
+
+
+                const value =
+                    input.value.trim();
+
+
+                if (
+                    value &&
+                    !array.includes(value)
+                ) {
+
+                    array.push(value);
+
+                }
+
+
+                input.value = "";
+
+
+                render();
+
+            }
+
+        }
+
+    );
+
+
+    render();
+
+}
+
+
+chipInput(
+    "specialtyInput",
+    "specialtyChips",
+    "specialties",
+    specialties
+);
+
+
+chipInput(
+    "suitableInput",
+    "suitableChips",
+    "suitableFor",
+    suitableFor
+);
+
+
+// =====================================================
+// SERVICES
+// =====================================================
+
+function addService(
+    value = ""
+) {
+
+    services.push(value);
+
+    renderServices();
+
+}
+
+
+function renderServices() {
+
+    document.getElementById(
+        "serviceRows"
+    ).innerHTML =
+
+        services.map(
+
+            (value, index) => `
+
+                <div class="addrow">
+
+                    <input
+                        value="${esc(value)}"
+                        placeholder="Service name"
+                        oninput="
+                            services[${index}] =
+                            this.value
+                        "
+                    >
+
+                    <button
+                        type="button"
+                        class="remove"
+                        onclick="
+                            services.splice(
+                                ${index},
+                                1
+                            );
+
+                            renderServices();
+                        "
+                    >
+                        Remove
+                    </button>
+
+                </div>
+
+            `
+
+        ).join("");
+
+
+    document.getElementById(
+        "services"
+    ).value =
+        JSON.stringify(
+            services.filter(
+                value =>
+                    value.trim()
+            )
+        );
+
+}
+
+
+// =====================================================
+// ITEMS
+// =====================================================
+
+function addItem(
+    value = {}
+) {
+
+    items.push({
+        ...value
+    });
+
+    renderItems();
+
+}
+
+
+function renderItems() {
+
+    document.getElementById(
+        "itemRows"
+    ).innerHTML =
+
+        items.map(
+
+            (item, index) => `
+
+                <div class="addrow">
+
+                    <input
+                        placeholder="Name"
+                        value="${esc(item.name)}"
+                        oninput="
+                            items[${index}].name =
+                            this.value
+                        "
+                    >
+
+                    <input
+                        placeholder="Description"
+                        value="${esc(item.description)}"
+                        oninput="
+                            items[${index}].description =
+                            this.value
+                        "
+                    >
+
+                    <input
+                        placeholder="Price"
+                        value="${esc(item.price)}"
+                        oninput="
+                            items[${index}].price =
+                            this.value
+                        "
+                    >
+
+                    <button
+                        type="button"
+                        class="remove"
+                        onclick="
+                            items.splice(
+                                ${index},
+                                1
+                            );
+
+                            renderItems();
+                        "
+                    >
+                        Remove
+                    </button>
+
+                </div>
+
+            `
+
+        ).join("");
+
+
+    document.getElementById(
+        "items"
+    ).value =
+        JSON.stringify(
+
+            items.filter(
+                item =>
+                    item.name &&
+                    item.name.trim()
+            )
+
+        );
+
+}
+
+
+// =====================================================
+// OFFERS
+// =====================================================
+
+function addOffer(
+    value = {}
+) {
+
+    offers.push({
+        ...value
+    });
+
+    renderOffers();
+
+}
+
+
+function renderOffers() {
+
+    document.getElementById(
+        "offerRows"
+    ).innerHTML =
+
+        offers.map(
+
+            (offer, index) => `
+
+                <div class="offerrow">
+
+                    <input
+                        placeholder="Offer title"
+                        value="${esc(offer.title)}"
+                        oninput="
+                            offers[${index}].title =
+                            this.value
+                        "
+                    >
+
+                    <input
+                        placeholder="Description"
+                        value="${esc(offer.description)}"
+                        oninput="
+                            offers[${index}].description =
+                            this.value
+                        "
+                    >
+
+                    <input
+                        placeholder="Valid until"
+                        value="${esc(offer.validUntil)}"
+                        oninput="
+                            offers[${index}].validUntil =
+                            this.value
+                        "
+                    >
+
+                    <button
+                        type="button"
+                        class="remove"
+                        onclick="
+                            offers.splice(
+                                ${index},
+                                1
+                            );
+
+                            renderOffers();
+                        "
+                    >
+                        Remove
+                    </button>
+
+                </div>
+
+            `
+
+        ).join("");
+
+
+    document.getElementById(
+        "offers"
+    ).value =
+        JSON.stringify(
+
+            offers.filter(
+                offer =>
+                    offer.title &&
+                    offer.title.trim()
+            )
+
+        );
+
+}
+
+
+// =====================================================
+// CHECKBOXES
+// =====================================================
+
+function renderChecks(
+
+    list,
+    containerId,
+    hiddenId
+
+) {
+
+    document.getElementById(
+        containerId
+    ).innerHTML =
+
+        list.map(
+
+            item => `
+
+                <label class="check">
+
+                    <input
+                        type="checkbox"
+                        value="${esc(item)}"
+                    >
+
+                    ${esc(item)}
+
+                </label>
+
+            `
+
+        ).join("");
+
+
+    document
+        .querySelectorAll(
+            "#" +
+            containerId +
+            " input"
+        )
+        .forEach(
+
+            checkbox => {
+
+                checkbox.addEventListener(
+                    "change",
+
+                    function() {
+
+                        document.getElementById(
+                            hiddenId
+                        ).value =
+
+                            JSON.stringify(
+
+                                [
+
+                                    ...document
+                                        .querySelectorAll(
+                                            "#" +
+                                            containerId +
+                                            " input:checked"
+                                        )
+
+                                ].map(
+                                    item =>
+                                        item.value
+                                )
+
+                            );
+
+                    }
+
+                );
+
+            }
+
+        );
+
+
+    document.getElementById(
+        hiddenId
+    ).value = "[]";
+
+}
+
+
+renderChecks(
+    amenities,
+    "amenityChecks",
+    "amenities"
+);
+
+
+renderChecks(
+    payments,
+    "paymentChecks",
+    "paymentMethods"
+);
+
+
+// =====================================================
+// HOURS
+// =====================================================
+
+function parseTimeParts(value) {
+
+    const raw = String(value || "").trim();
+
+    let match =
+        raw.match(/^([01]?\d|2[0-3]):([0-5]\d)$/);
+
+    if (match) {
+
+        const h = Number(match[1]);
+
+        return {
+            hour: String(h % 12 || 12),
+            minute: match[2],
+            period: h >= 12 ? "PM" : "AM"
+        };
+
+    }
+
+    match =
+        raw.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+
+    if (match) {
+
+        let h = Number(match[1]);
+
+        if (h < 1 || h > 12) {
+            h = 12;
+        }
+
+        return {
+            hour: String(h),
+            minute: match[2],
+            period: match[3].toUpperCase()
+        };
+
+    }
+
+    return {
+        hour: "12",
+        minute: "00",
+        period: "AM"
+    };
+
+}
+
+
+function timePartsTo24(hour, minute, period) {
+
+    let h = Number(hour);
+
+    if (!Number.isFinite(h) || h < 1 || h > 12) {
+        h = 12;
+    }
+
+    if (period === "AM") {
+        h = h === 12 ? 0 : h;
+    } else {
+        h = h === 12 ? 12 : h + 12;
+    }
+
+    return (
+        String(h).padStart(2, "0") +
+        ":" +
+        String(minute).padStart(2, "0")
+    );
+
+}
+
+
+function createTimeSelects(prefix, value) {
+
+    const parts = parseTimeParts(value);
+
+    const hourOptions =
+        Array.from({length: 12}, (_, i) => {
+
+            const h = String(i + 1);
+
+            return `
+                <option
+                    value="${h}"
+                    ${h === parts.hour ? "selected" : ""}
+                >
+                    ${h}
+                </option>
+            `;
+
+        }).join("");
+
+
+    const minuteOptions =
+        Array.from({length: 60}, (_, i) => {
+
+            const m = String(i).padStart(2, "0");
+
+            return `
+                <option
+                    value="${m}"
+                    ${m === parts.minute ? "selected" : ""}
+                >
+                    ${m}
+                </option>
+            `;
+
+        }).join("");
+
+
+    return `
+        <div class="time-group">
+            <div>
+                <span class="time-label">Hour</span>
+                <select data-time="${prefix}-hour">
+                    ${hourOptions}
+                </select>
+            </div>
+
+            <div>
+                <span class="time-label">Minute</span>
+                <select data-time="${prefix}-minute">
+                    ${minuteOptions}
+                </select>
+            </div>
+
+            <div>
+                <span class="time-label">AM / PM</span>
+                <select data-time="${prefix}-period">
+                    <option value="AM"
+                        ${parts.period === "AM" ? "selected" : ""}>
+                        AM
+                    </option>
+                    <option value="PM"
+                        ${parts.period === "PM" ? "selected" : ""}>
+                        PM
+                    </option>
+                </select>
+            </div>
+        </div>
+    `;
+
+}
+
+
+function createPeriodHTML(day, periodNumber, period, options = {}) {
+
+        const suffix =
+            periodNumber === 1
+                ? "period1"
+                : "period2";
+
+        const open =
+            period && period.open
+                ? period.open
+                : "";
+
+        const close =
+            period && period.close
+                ? period.close
+                : "";
+
+        const second =
+            periodNumber === 2;
+
+        const showRemove =
+            Boolean(options.showRemove);
+
+        return `
+            <div class="hours-period">
+
+                <div class="period-title">
+                    ${second
+                        ? "Period 2 (optional)"
+                        : "Business Hours"}
+                </div>
+
+                ${createTimeSelects(
+                    `${day}-${suffix}-open`,
+                    open
+                )}
+
+                ${createTimeSelects(
+                    `${day}-${suffix}-close`,
+                    close
+                )}
+
+                ${second
+                    ? `<div class="period-help">
+                           Use this only if the business closes and reopens later.
+                       </div>`
+                    : `<div class="period-help">
+                           Example: 6:00 AM – 10:00 PM
+                       </div>`}
+
+                ${showRemove
+                    ? `<div class="period-actions">
+                           <button
+                               type="button"
+                               class="remove-period-btn"
+                               data-remove-period="${day}"
+                           >
+                               − Remove second timing
+                           </button>
+                       </div>`
+                    : ""}
+
+            </div>
+        `;
+
+    }
+
+
+function readPeriod(day, periodNumber, row) {
+
+    const suffix =
+        periodNumber === 1
+            ? "period1"
+            : "period2";
+
+
+    const openHour =
+        row.querySelector(
+            `[data-time="${day}-${suffix}-open-hour"]`
+        );
+
+    const openMinute =
+        row.querySelector(
+            `[data-time="${day}-${suffix}-open-minute"]`
+        );
+
+    const openPeriod =
+        row.querySelector(
+            `[data-time="${day}-${suffix}-open-period"]`
+        );
+
+    const closeHour =
+        row.querySelector(
+            `[data-time="${day}-${suffix}-close-hour"]`
+        );
+
+    const closeMinute =
+        row.querySelector(
+            `[data-time="${day}-${suffix}-close-minute"]`
+        );
+
+    const closePeriod =
+        row.querySelector(
+            `[data-time="${day}-${suffix}-close-period"]`
+        );
+
+
+    if (
+        !openHour ||
+        !openMinute ||
+        !openPeriod ||
+        !closeHour ||
+        !closeMinute ||
+        !closePeriod
+    ) {
+        return {
+            open: "",
+            close: ""
+        };
+    }
+
+
+    const unused =
+        periodNumber === 2 &&
+        openHour.value === "12" &&
+        openMinute.value === "00" &&
+        openPeriod.value === "AM" &&
+        closeHour.value === "12" &&
+        closeMinute.value === "00" &&
+        closePeriod.value === "AM";
+
+
+    if (unused) {
+        return {
+            open: "",
+            close: ""
+        };
+    }
+
+
+    return {
+
+        open:
+            timePartsTo24(
+                openHour.value,
+                openMinute.value,
+                openPeriod.value
+            ),
+
+        close:
+            timePartsTo24(
+                closeHour.value,
+                closeMinute.value,
+                closePeriod.value
+            )
+
+    };
+
+}
+
+
+function updateHoursRowState(row) {
+
+    const closed =
+        row.querySelector(
+            '[data-part="closed"]'
+        ).checked;
+
+
+    row.classList.toggle(
+        "hours-row-disabled",
+        closed
+    );
+
+
+    row
+        .querySelectorAll(".time-group select")
+        .forEach(function(select) {
+            select.disabled = closed;
+        });
+
+}
+
+
+
+function renderHours() {
+
+    document.getElementById("hoursBox").innerHTML =
+
+        days.map(
+
+            (day, index) => `
+
+                <div
+                    class="hours"
+                    data-day="${day}"
+                >
+
+                    <span class="day">
+                        ${dayLabels[index]}
+                    </span>
+
+                    <div
+                        class="hours-periods"
+                        data-periods="${day}"
+                    >
+
+                        ${createPeriodHTML(
+                            day,
+                            1
+                        )}
+
+                        <div class="period-actions">
+                            <button
+                                type="button"
+                                class="add-period-btn"
+                                data-add-period="${day}"
+                            >
+                                + Add another timing
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <label class="closed-label">
+                        <input
+                            type="checkbox"
+                            data-day="${day}"
+                            data-part="closed"
+                        >
+                        Closed
+                    </label>
+
+                </div>
+
+            `
+
+        ).join("");
+
+
+    document
+        .querySelectorAll(
+            "#hoursBox select"
+        )
+        .forEach(function(select) {
+
+            select.addEventListener(
+                "change",
+                updateHours
+            );
+
+        });
+
+
+    document
+        .querySelectorAll(
+            '#hoursBox input[type="checkbox"]'
+        )
+        .forEach(function(checkbox) {
+
+            checkbox.addEventListener(
+                "change",
+                function() {
+
+                    updateHoursRowState(
+                        checkbox.closest(".hours")
+                    );
+
+                    updateHours();
+
+                }
+            );
+
+        });
+
+
+    document
+        .querySelectorAll(
+            "[data-add-period]"
+        )
+        .forEach(function(button) {
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    addSecondPeriod(
+                        button.dataset.addPeriod
+                    );
+
+                }
+            );
+
+        });
+
+
+    updateHours();
+
+}
+
+
+function addSecondPeriod(day) {
+
+    const row =
+        document.querySelector(
+            `.hours[data-day="${day}"]`
+        );
+
+    if (!row) {
+        return;
+    }
+
+    const periodsBox =
+        row.querySelector(
+            `.hours-periods[data-periods="${day}"]`
+        );
+
+    if (!periodsBox) {
+        return;
+    }
+
+    if (
+        periodsBox.querySelector(
+            `[data-time="${day}-period2-open-hour"]`
+        )
+    ) {
+        return;
+    }
+
+    const addButton =
+        periodsBox.querySelector(
+            "[data-add-period]"
+        );
+
+    if (addButton) {
+        addButton.parentElement.remove();
+    }
+
+    periodsBox.insertAdjacentHTML(
+        "beforeend",
+        createPeriodHTML(
+            day,
+            2
+        )
+    );
+
+    const newSelects =
+        periodsBox.querySelectorAll("select");
+
+    newSelects.forEach(function(select) {
+
+        select.addEventListener(
+            "change",
+            updateHours
+        );
+
+    });
+
+    const removeContainer =
+        document.createElement("div");
+
+    removeContainer.className =
+        "period-actions";
+
+    removeContainer.innerHTML = `
+        <button
+            type="button"
+            class="remove-period-btn"
+            data-remove-period="${day}"
+        >
+            − Remove second timing
+        </button>
+    `;
+
+    periodsBox.appendChild(
+        removeContainer
+    );
+
+    removeContainer
+        .querySelector("button")
+        .addEventListener(
+            "click",
+            function() {
+
+                removeSecondPeriod(day);
+
+            }
+        );
+
+    updateHours();
+
+}
+
+
+function removeSecondPeriod(day) {
+
+    const row =
+        document.querySelector(
+            `.hours[data-day="${day}"]`
+        );
+
+    if (!row) {
+        return;
+    }
+
+    const periodsBox =
+        row.querySelector(
+            `.hours-periods[data-periods="${day}"]`
+        );
+
+    if (!periodsBox) {
+        return;
+    }
+
+    const secondPeriod =
+        periodsBox.querySelector(
+            ".hours-period:nth-child(2)"
+        );
+
+    if (secondPeriod) {
+        secondPeriod.remove();
+    }
+
+    const removeButtonContainer =
+        periodsBox.querySelector(
+            ".remove-period-btn"
+        );
+
+    if (removeButtonContainer) {
+        removeButtonContainer.parentElement.remove();
+    }
+
+    if (
+        !periodsBox.querySelector(
+            "[data-add-period]"
+        )
+    ) {
+
+        periodsBox.insertAdjacentHTML(
+            "beforeend",
+            `
+                <div class="period-actions">
+                    <button
+                        type="button"
+                        class="add-period-btn"
+                        data-add-period="${day}"
+                    >
+                        + Add another timing
+                    </button>
+                </div>
+            `
+        );
+
+        periodsBox
+            .querySelector(
+                "[data-add-period]"
+            )
+            .addEventListener(
+                "click",
+                function() {
+
+                    addSecondPeriod(
+                        day
+                    );
+
+                }
+            );
+
+    }
+
+    updateHours();
+
+}
+
+
+function updateHours() {
+
+    const result = {};
+
+
+    days.forEach(function(day) {
+
+        const row =
+            document.querySelector(
+                `.hours[data-day="${day}"]`
+            );
+
+
+        if (!row) {
+            return;
+        }
+
+
+        const period1 =
+            readPeriod(
+                day,
+                1,
+                row
+            );
+
+
+        const period2 =
+            readPeriod(
+                day,
+                2,
+                row
+            );
+
+
+        const periods = [period1];
+
+
+        if (
+            period2.open ||
+            period2.close
+        ) {
+            periods.push(period2);
+        }
+
+
+        result[day] = {
+
+            open: period1.open,
+            close: period1.close,
+
+            periods: periods,
+
+            closed:
+                row.querySelector(
+                    '[data-part="closed"]'
+                ).checked
+
+        };
+
+    });
+
+
+    document.getElementById("hours").value =
+        JSON.stringify(result);
+
+}
+
+
+renderHours();
+
+// =====================================================
+// SOCIAL
+// =====================================================
+
+function updateSocial() {
+
+    document.getElementById(
+        "socialLinks"
+    ).value =
+
+        JSON.stringify({
+
+            instagram:
+                document.getElementById(
+                    "instagram"
+                ).value,
+
+            facebook:
+                document.getElementById(
+                    "facebook"
+                ).value,
+
+            youtube:
+                document.getElementById(
+                    "youtube"
+                ).value
+
+        });
+
+}
+
+
+document.getElementById(
+    "businessForm"
+).addEventListener(
+
+    "submit",
+
+    updateSocial
+
+);
+
+
+// =====================================================
+// LOCATION
+// =====================================================
+
+document.getElementById(
+    "getLocationBtn"
+).addEventListener(
+
+    "click",
+
+    function() {
+
+        const button =
+            document.getElementById(
+                "getLocationBtn"
+            );
+
+        const status =
+            document.getElementById(
+                "locationStatus"
+            );
+
+
+        if (
+            !navigator.geolocation
+        ) {
+
+            status.textContent =
+                "Geolocation is not supported by your browser.";
+
+            return;
+
+        }
+
+
+        button.disabled = true;
+
+        button.textContent =
+            "📍 Getting Location...";
+
+
+        status.textContent =
+            "Please allow location access.";
+
+
+        navigator.geolocation.getCurrentPosition(
+
+            function(position) {
+
+                const latitude =
+                    position.coords.latitude;
+
+                const longitude =
+                    position.coords.longitude;
+
+
+                document.getElementById(
+                    "latitude"
+                ).value =
+                    latitude;
+
+
+                document.getElementById(
+                    "longitude"
+                ).value =
+                    longitude;
+
+
+                status.textContent =
+
+                    `✓ Location selected
+                    (${latitude.toFixed(6)},
+                    ${longitude.toFixed(6)})`;
+
+
+                button.disabled =
+                    false;
+
+
+                button.textContent =
+                    "✓ Location Selected";
+
+            },
+
+
+            function() {
+
+                status.textContent =
+                    "Unable to get location. Please try again.";
+
+                button.disabled =
+                    false;
+
+                button.textContent =
+                    "📍 Use My Current Location";
+
+            },
+
+
+            {
+
+                enableHighAccuracy: true,
+
+                timeout: 10000,
+
+                maximumAge: 0
+
+            }
+
+        );
+
+    }
+
+);
+
+</script>
+
+
+</body>
+
+</html>
+
+<style>
+@media (max-width: 700px) {
+    .checkgrid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>

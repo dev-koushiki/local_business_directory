@@ -1,0 +1,3223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Business | Local Business</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            min-height: 100%;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #171717;
+            background: #f5f5f5;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* The actual page that should remain visible behind the popup. */
+        .background-page {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            z-index: 1;
+            pointer-events: none;
+            filter: blur(7px) brightness(.72);
+            transform: scale(1.02);
+            transform-origin: center;
+        }
+
+        /* =====================================================
+           LOGIN-STYLE BACKDROP
+           The area behind the white Edit Business card becomes
+           blurred + slightly darkened, while the card stays sharp.
+        ====================================================== */
+
+        .overlay {
+            /*
+             * Login-style popup backdrop.
+             *
+             * The page underneath remains visible, but becomes
+             * blurred and darkened. The Edit Business card itself
+             * stays completely sharp.
+             */
+            position: fixed;
+            inset: 0;
+
+            width: 100%;
+            height: 100vh;
+
+            padding: 28px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            overflow-y: auto;
+
+            /* Same grey/dimmed appearance as the Login popup */
+            background: rgba(35, 32, 32, .43);
+
+            /* Blur whatever is actually behind this popup */
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+
+            z-index: 9999;
+        }
+
+        .modal {
+            /* Sharp Edit Business popup */
+            width: min(1000px, 100%);
+
+            max-height: calc(100vh - 56px);
+            overflow-y: auto;
+
+            background: #ffffff;
+
+            border-radius: 22px;
+
+            padding: 38px 42px 48px;
+
+            box-shadow:
+                0 30px 90px rgba(0, 0, 0, .30),
+                0 8px 30px rgba(0, 0, 0, .14);
+
+            position: relative;
+
+            z-index: 10000;
+
+            /* Never blur the popup itself */
+            -webkit-backdrop-filter: none;
+            backdrop-filter: none;
+        }
+
+        .back {
+            color: #555;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back:hover {
+            color: #8b3a3a;
+        }
+
+        h1 {
+            margin: 20px 0 7px;
+            color: #8b3a3a;
+            font-size: 34px;
+        }
+
+        .intro {
+            color: #777;
+            line-height: 1.6;
+            margin: 0 0 30px;
+        }
+
+        .section {
+            border-top: 1px solid #eee;
+            padding-top: 27px;
+            margin-top: 27px;
+        }
+
+        .section h2 {
+            font-size: 21px;
+            margin: 0 0 7px;
+        }
+
+        .section p {
+            color: #777;
+            margin: 0 0 20px;
+            font-size: 14px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .group {
+            margin-bottom: 17px;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .req {
+            color: #d93025;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 13px;
+            border: 1px solid #d7d7d7;
+            border-radius: 9px;
+            font: inherit;
+            outline: none;
+            background: #fff;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #8b3a3a;
+            box-shadow: 0 0 0 3px rgba(139, 58, 58, .08);
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .chip {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: #f7eaea;
+            border-radius: 20px;
+            padding: 7px 10px;
+            font-size: 13px;
+        }
+
+        .chip button {
+            border: 0;
+            background: none;
+            color: #8b3a3a;
+            cursor: pointer;
+            font-weight: 700;
+            padding: 0;
+            font-size: 16px;
+        }
+
+        .repeat-box {
+            background: #fafafa;
+            border: 1px solid #eee;
+            border-radius: 13px;
+            padding: 15px;
+        }
+
+        .addrow {
+            display: grid;
+            grid-template-columns: 1.2fr 1.6fr .8fr auto;
+            gap: 10px;
+            align-items: end;
+            margin-bottom: 10px;
+        }
+
+        .offerrow {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr .8fr auto;
+            gap: 10px;
+            align-items: end;
+            margin-bottom: 10px;
+        }
+
+        .remove {
+            border: 0;
+            background: none;
+            color: #8b3a3a;
+            cursor: pointer;
+            font-weight: 700;
+            padding: 10px;
+            white-space: nowrap;
+        }
+
+        .smallbtn {
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 8px;
+            padding: 9px 12px;
+            cursor: pointer;
+        }
+
+        .smallbtn:hover {
+            border-color: #8b3a3a;
+            color: #8b3a3a;
+        }
+        .hours {
+            display: grid;
+            grid-template-columns: 110px minmax(0, 1fr) 95px;
+            gap: 16px;
+            align-items: start;
+            margin-bottom: 14px;
+            padding: 16px;
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 14px;
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        .hours .day {
+            font-weight: 800;
+            padding-top: 13px;
+            font-size: 15px;
+        }
+
+        /* One TOTAL box containing both periods. */
+        .hours-periods {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+        }
+
+        .hours-period {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            padding: 12px;
+            border: 1px solid #e6e6e6;
+            border-radius: 11px;
+            background: #fafafa;
+            box-sizing: border-box;
+            min-width: 0;
+        }
+
+        .period-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: #444;
+            margin-bottom: 2px;
+        }
+
+        .time-group {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 7px;
+            min-width: 0;
+        }
+
+        .time-label {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            color: #888;
+            margin: 0 0 4px 2px;
+            text-transform: uppercase;
+            letter-spacing: .03em;
+        }
+
+        .time-group select {
+            width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+            padding: 9px 7px;
+        }
+
+        .closed-label {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 7px;
+            margin: 0;
+            padding-top: 13px;
+            white-space: nowrap;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .closed-label input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .hours-row-disabled .hours-periods {
+            opacity: .45;
+        }
+
+        .hours-row-disabled .time-group select {
+            cursor: not-allowed;
+        }
+
+        .hours-note {
+            background: #f8f8f8;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 10px 12px;
+            color: #666;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 14px;
+        }
+
+
+        .period-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .add-period-btn,
+        .remove-period-btn {
+            border: 1px solid #d6d6d6;
+            background: #fff;
+            color: #8b3a3a;
+            border-radius: 8px;
+            padding: 8px 11px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .add-period-btn:hover,
+        .remove-period-btn:hover {
+            border-color: #8b3a3a;
+            background: #fff7f7;
+        }
+
+        .period-help {
+            font-size: 11px;
+            color: #777;
+            line-height: 1.3;
+        }
+
+    .checkgrid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .check {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        border: 1px solid #e3e3e3;
+        padding: 10px;
+        border-radius: 9px;
+        background: white;
+        cursor: pointer;
+        min-height: 40px;
+    }
+
+    .check:hover {
+        border-color: #c9c9c9;
+        background: #fafafa;
+    }
+
+    .check input {
+        width: auto;
+        margin: 0;
+        flex: 0 0 auto;
+    }
+.check {
+            border: 1px solid #e3e3e3;
+            padding: 10px;
+            border-radius: 9px;
+            background: #fff;
+            cursor: pointer;
+        }
+.social {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .photos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 10px 0 15px;
+        }
+
+        .photos img {
+            width: 110px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .no-photos {
+            color: #888;
+            font-size: 14px;
+            padding: 15px;
+            background: #fafafa;
+            border-radius: 10px;
+        }
+
+        .location {
+            background: #faf7f7;
+            border: 1px solid #eadede;
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        .locbtn {
+            border: 1px solid #8b3a3a;
+            background: #fff;
+            color: #8b3a3a;
+            padding: 11px 15px;
+            border-radius: 9px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .locbtn:hover {
+            background: #8b3a3a;
+            color: white;
+        }
+
+        .locbtn:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        .status {
+            font-size: 13px;
+            color: #666;
+            margin-top: 10px;
+            line-height: 1.5;
+        }
+
+        .submit {
+            width: 100%;
+            border: 0;
+            background: #8b3a3a;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 28px;
+        }
+
+        .submit:hover {
+            background: #722f2f;
+        }
+
+        .submit:disabled {
+            opacity: .65;
+            cursor: not-allowed;
+        }
+
+        .help {
+            font-size: 12px !important;
+            color: #888 !important;
+            margin-top: 6px !important;
+            margin-bottom: 0 !important;
+        }
+
+        @media (max-width: 700px) {
+            .overlay {
+                padding: 10px;
+            }
+
+            .modal {
+                padding: 25px 18px;
+            }
+
+            .grid,
+            .social,
+            .checkgrid {
+                grid-template-columns: 1fr;
+            }
+
+            .addrow,
+            .offerrow,
+            .hours {
+                grid-template-columns: 1fr;
+            }
+
+            .hours {
+                grid-template-columns: 1fr;
+            }
+
+            .hours .day,
+            .closed-label {
+                padding-top: 0;
+            }
+
+            .hours-period {
+                grid-template-columns: 1fr;
+            }
+
+            .time-group {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+        }
+    
+        @media (max-width: 900px) {
+            .hours {
+                grid-template-columns: 1fr;
+            }
+
+            .hours .day,
+            .closed-label {
+                padding-top: 0;
+            }
+
+            .hours-periods {
+                grid-template-columns: 1fr;
+            }
+
+            .time-group {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+</style>
+</head>
+
+<body>
+
+<iframe
+    class="background-page"
+    src="/owner"
+    title="Dashboard background"
+    aria-hidden="true"
+></iframe>
+
+<div class="overlay">
+
+    <main class="modal">
+
+        <a class="back" href="/owner">
+            ← Back to Dashboard
+        </a>
+
+        <h1>Edit Business</h1>
+
+        <p class="intro">
+            Update every part of your public business profile.
+        </p>
+
+        <form
+            action="/owner/business/edit/<%= business && business._id ? business._id : '' %>"
+            method="POST"
+            enctype="multipart/form-data"
+            id="businessForm"
+        >
+
+            <!-- =====================================================
+                 BASIC INFORMATION
+            ====================================================== -->
+
+            <section class="section">
+
+                <h2>🏢 Basic Information</h2>
+
+                <p>
+                    Add the main information customers should know about your business.
+                </p>
+
+                <div class="grid">
+
+                    <div class="group">
+
+                        <label>
+                            Business Name
+                            <span class="req">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            name="name"
+                            required
+                            value="<%= business && business.name ? business.name : '' %>"
+                        >
+
+                    </div>
+
+
+                    <div class="group">
+
+                        <label>
+                            Category
+                            <span class="req">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            name="category"
+                            required
+                            value="<%= business && business.category ? business.category : '' %>"
+                        >
+
+                    </div>
+
+
+                    <div class="group full">
+
+                        <label>
+                            Description
+                            <span class="req">*</span>
+                        </label>
+
+                        <textarea
+                            name="description"
+                            required
+                        ><%= business && business.description ? business.description : '' %></textarea>
+
+                    </div>
+
+
+                    <div class="group">
+
+                        <label>
+                            Price Range
+                        </label>
+
+                        <select name="priceRange" id="priceRange">
+
+                            <option value="">
+                                Select
+                            </option>
+
+                            <option value="₹">
+                                ₹ — Budget
+                            </option>
+
+                            <option value="₹₹">
+                                ₹₹ — Moderate
+                            </option>
+
+                            <option value="₹₹₹">
+                                ₹₹₹ — Premium
+                            </option>
+
+                            <option value="₹₹₹₹">
+                                ₹₹₹₹ — Luxury
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="group">
+
+                        <label>
+                            Established / Since
+                        </label>
+
+                        <input
+                            type="number"
+                            name="establishedYear"
+                            min="1800"
+                            max="2100"
+                            value="<%= business && business.establishedYear ? business.establishedYear : '' %>"
+                        >
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================================================
+                 CONTACT
+            ====================================================== -->
+
+            <section class="section">
+
+                <h2>📍 Contact & Address</h2>
+
+                <p>
+                    Give customers the information they need to contact and visit you.
+                </p>
+
+                <div class="grid">
+
+                    <div class="group full">
+
+                        <label>
+                            Address
+                            <span class="req">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            name="address"
+                            required
+                            value="<%= business && business.address ? business.address : '' %>"
+                        >
+
+                    </div>
+
+
+                    <div class="group">
+
+                        <label>
+                            City
+                            <span class="req">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            name="city"
+                            required
+                            value="<%= business && business.city ? business.city : '' %>"
+                        >
+
+                    </div>
+
+
+                    <div class="group">
+
+                        <label>
+                            Pincode
+                        </label>
+
+                        <input
+                            type="text"
+                            name="pincode"
+                            inputmode="numeric"
+                            maxlength="10"
+                            value="<%= business && business.pincode ? business.pincode : '' %>"
+                        >
+
+                    </div>
+
+
+                    <div class="group">
+
+                        <label>
+                            Phone
+                        </label>
+
+                        <input
+                            type="tel"
+                            name="phone"
+                            value="<%= business && business.phone ? business.phone : '' %>"
+                        >
+
+                    </div>
+
+
+                    <div class="group">
+
+                        <label>
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            name="email"
+                            value="<%= business && business.email ? business.email : '' %>"
+                        >
+
+                    </div>
+
+
+                    <div class="group full">
+
+                        <label>
+                            Website
+                        </label>
+
+                        <input
+                            type="url"
+                            name="website"
+                            placeholder="https://example.com"
+                            value="<%= business && business.website ? business.website : '' %>"
+                        >
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================================================
+                 PHOTOS
+            ====================================================== -->
+
+            <section class="section">
+
+                <h2>📸 Business Photos</h2>
+
+                <p>
+                    Upload photos that customers will see on your business profile.
+                </p>
+
+                <div class="photos">
+
+                    <%
+                        const currentImages =
+                            business &&
+                            Array.isArray(business.images) &&
+                            business.images.length
+                                ? business.images
+                                : (
+                                    business && business.image
+                                        ? [business.image]
+                                        : []
+                                );
+                    %>
+
+                    <% if (currentImages.length) { %>
+
+                        <% currentImages.forEach(function(image) { %>
+
+                            <img
+                                src="<%= image %>"
+                                alt="Business photo"
+                            >
+
+                        <% }); %>
+
+                    <% } else { %>
+
+                        <div class="no-photos">
+                            No business photos uploaded yet.
+                        </div>
+
+                    <% } %>
+
+                </div>
+
+
+                <input
+                    type="file"
+                    name="imageFiles"
+                    accept="image/jpeg,image/png,image/webp"
+                    multiple
+                >
+
+                <input
+                    type="hidden"
+                    name="image"
+                    value="<%= business && business.image ? business.image : '' %>"
+                >
+
+                <input
+                    type="hidden"
+                    name="existingImages"
+                    id="existingImages"
+                    value="<%= JSON.stringify(currentImages) %>"
+                >
+
+                <p class="help">
+                    Select one or more images if you want to update the gallery.
+                </p>
+
+            </section>
+
+
+            <!-- =====================================================
+                 SPECIALTIES
+            ====================================================== -->
+
+            <section class="section">
+
+                <h2>⭐ Specialities & Suitable For</h2>
+
+                <p>
+                    Add highlights and tell customers who your business is suitable for.
+                </p>
+
+                <div class="grid">
+
+                    <div class="group">
+
+                        <label>
+                            Specialities / Highlights
+                        </label>
+
+                        <input
+                            type="text"
+                            id="specialtyInput"
+                            placeholder="Type and press Enter"
+                        >
+
+                        <div
+                            id="specialtyChips"
+                            class="chips"
+                        ></div>
+
+                        <input
+                            type="hidden"
+                            name="specialties"
+                            id="specialties"
+                        >
+
+                    </div>
+
+
+                    <div class="group">
+
+                        <label>
+                            Suitable For
+                        </label>
+
+                        <input
+                            type="text"
+                            id="suitableInput"
+                            placeholder="Type and press Enter"
+                        >
+
+                        <div
+                            id="suitableChips"
+                            class="chips"
+                        ></div>
+
+                        <input
+                            type="hidden"
+                            name="suitableFor"
+                            id="suitableFor"
+                        >
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================================================
+                 SERVICES
+            ====================================================== -->
+
+            <section class="section">
+
+                <h2>🛠️ Services</h2>
+
+                <p>
+                    Add the services your business provides.
+                </p>
+
+                <div class="repeat-box">
+
+                    <div id="serviceRows"></div>
+
+                    <button
+                        type="button"
+                        class="smallbtn"
+                        id="addServiceBtn"
+                    >
+                        + Add Service
+                    </button>
+
+                </div>
+
+                <input
+                    type="hidden"
+                    name="services"
+                    id="services"
+                >
+
+            </section>
+
+
+            <!-- =====================================================
+                 ITEMS
+            ====================================================== -->
+
+            <section class="section">
+
+                <h2>🛍️ Products / Services / Menu</h2>
+
+                <p>
+                    Add products, menu items or individual services with prices.
+                </p>
+
+                <div class="repeat-box">
+
+                    <div id="itemRows"></div>
+
+                    <button
+                        type="button"
+                        class="smallbtn"
+                        id="addItemBtn"
+                    >
+                        + Add Item
+                    </button>
+
+                </div>
+
+                <input
+                    type="hidden"
+                    name="items"
+                    id="items"
+                >
+
+            </section>
+
+
+            <!-- =====================================================
+                 OPENING HOURS
+            ====================================================== -->
+
+            <section class="section">
+
+                <h2>🕐 Opening Hours</h2>
+
+                <p>
+                    Set the opening and closing time for each day.
+                </p>
+
+                <div class="hours-note">
+                    Add one or two time periods for each day.
+                    Example: <strong>10:00 AM–2:00 PM</strong> and
+                    <strong>5:00 PM–11:00 PM</strong>.
+                    Keep the second period empty if the business operates continuously.
+                </div>
+
+                <div
+                    class="repeat-box"
+                    id="hoursBox"
+                ></div>
+
+                <input
+                    type="hidden"
+                    name="hours"
+                    id="hours"
+                >
+
+            </section>
+
+
+            <!-- =====================================================
+                 AMENITIES
+            ====================================================== -->
+
+            <section class="section">
+
+                <h2>✨ Amenities & Facilities</h2>
+
+                <p>
+                    Select the facilities available at your business.
+                </p>
+
+                <div
+                    class="checkgrid"
+                    id="amenityChecks"
+                ></div>
+
+                <input
+                    type="hidden"
+                    name="amenities"
+                    id="amenities"
+                >
+
+            </section>
+
+
+            <!-- =====================================================
+                 PAYMENT METHODS
+            ====================================================== -->
+
+            <section class="section">
+
+                <h2>💳 Payment Methods</h2>
+
+                <p>
+                    Select the payment methods accepted by your business.
+                </p>
+
+                <div
+                    class="checkgrid"
+                    id="paymentChecks"
+                ></div>
+
+                <input
+                    type="hidden"
+                    name="paymentMethods"
+                    id="paymentMethods"
+                >
+
+            </section>
+
+
+            <!-- =====================================================
+                 OFFERS
+            ====================================================== -->
+
+            <section class="section">
+
+                <h2>🔥 Offers & Special Deals</h2>
+
+                <p>
+                    Add current offers, discounts or special deals.
+                </p>
+
+                <div class="repeat-box">
+
+                    <div id="offerRows"></div>
+
+                    <button
+                        type="button"
+                        class="smallbtn"
+                        id="addOfferBtn"
+                    >
+                        + Add Offer
+                    </button>
+
+                </div>
+
+                <input
+                    type="hidden"
+                    name="offers"
+                    id="offers"
+                >
+
+            </section>
+
+
+            <!-- =====================================================
+                 SOCIAL MEDIA
+            ====================================================== -->
+
+            <section class="section">
+
+                <h2>📱 Social Media</h2>
+
+                <p>
+                    Add your business social media profiles.
+                </p>
+
+                <div class="social">
+
+                    <input
+                        type="url"
+                        id="instagram"
+                        placeholder="Instagram URL"
+                    >
+
+                    <input
+                        type="url"
+                        id="facebook"
+                        placeholder="Facebook URL"
+                    >
+
+                    <input
+                        type="url"
+                        id="youtube"
+                        placeholder="YouTube URL"
+                    >
+
+                </div>
+
+                <input
+                    type="hidden"
+                    name="socialLinks"
+                    id="socialLinks"
+                >
+
+            </section>
+
+
+            <!-- =====================================================
+                 LOCATION
+            ====================================================== -->
+
+            <section class="section">
+
+                <h2>📍 Exact Business Location</h2>
+
+                <p>
+                    Save the exact map location of your business.
+                </p>
+
+                <div class="location">
+
+                    <button
+                        type="button"
+                        class="locbtn"
+                        id="getLocationBtn"
+                    >
+                        📍 Update Current Location
+                    </button>
+
+                    <div
+                        class="status"
+                        id="locationStatus"
+                    >
+                        <%
+                            const hasLocation =
+                                business &&
+                                business.location &&
+                                Array.isArray(business.location.coordinates) &&
+                                business.location.coordinates.length >= 2;
+                        %>
+
+                        <% if (hasLocation) { %>
+
+                            Current coordinates are saved.
+                            Click the button to update them.
+
+                        <% } else { %>
+
+                            Location has not been selected yet.
+
+                        <% } %>
+                    </div>
+
+                </div>
+
+
+                <input
+                    type="hidden"
+                    name="latitude"
+                    id="latitude"
+                    value="<%= hasLocation ? business.location.coordinates[1] : '' %>"
+                >
+
+                <input
+                    type="hidden"
+                    name="longitude"
+                    id="longitude"
+                    value="<%= hasLocation ? business.location.coordinates[0] : '' %>"
+                >
+
+            </section>
+
+
+            <!-- =====================================================
+                 SUBMIT
+            ====================================================== -->
+
+            <button
+                class="submit"
+                type="submit"
+                id="submitButton"
+            >
+                Save Business Changes
+            </button>
+
+        </form>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    /* =========================================================
+       SAFE BUSINESS DATA
+    ========================================================= */
+
+    const business = <%- JSON.stringify(business || {}).replace(/</g, "\\u003c") %>;
+
+
+    /* =========================================================
+       ESCAPE HTML
+    ========================================================= */
+
+    function esc(value) {
+
+        if (value === null || value === undefined) {
+            return "";
+        }
+
+        return String(value).replace(
+            /[&<>"']/g,
+            function(character) {
+
+                const map = {
+                    "&": "&amp;",
+                    "<": "&lt;",
+                    ">": "&gt;",
+                    '"': "&quot;",
+                    "'": "&#39;"
+                };
+
+                return map[character];
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       SPECIALTIES
+    ========================================================= */
+
+    let specialties =
+        Array.isArray(business.specialties)
+            ? business.specialties.slice()
+            : [];
+
+
+    const specialtyInput =
+        document.getElementById("specialtyInput");
+
+    const specialtyChips =
+        document.getElementById("specialtyChips");
+
+    const specialtiesHidden =
+        document.getElementById("specialties");
+
+
+    function updateSpecialties() {
+
+        specialtyChips.innerHTML = "";
+
+        specialties.forEach(function(item, index) {
+
+            const chip = document.createElement("span");
+
+            chip.className = "chip";
+
+            chip.innerHTML =
+                esc(item) +
+                ' <button type="button" data-index="' +
+                index +
+                '">×</button>';
+
+            chip
+                .querySelector("button")
+                .addEventListener("click", function() {
+
+                    specialties.splice(index, 1);
+
+                    updateSpecialties();
+
+                });
+
+            specialtyChips.appendChild(chip);
+
+        });
+
+        specialtiesHidden.value =
+            JSON.stringify(
+                specialties.filter(function(item) {
+                    return String(item).trim() !== "";
+                })
+            );
+
+    }
+
+
+    specialtyInput.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key !== "Enter") {
+                return;
+            }
+
+            event.preventDefault();
+
+            const value =
+                specialtyInput.value.trim();
+
+            if (
+                value &&
+                !specialties.includes(value)
+            ) {
+
+                specialties.push(value);
+
+            }
+
+            specialtyInput.value = "";
+
+            updateSpecialties();
+
+        }
+    );
+
+
+    updateSpecialties();
+
+
+    /* =========================================================
+       SUITABLE FOR
+    ========================================================= */
+
+    let suitableFor =
+        Array.isArray(business.suitableFor)
+            ? business.suitableFor.slice()
+            : [];
+
+
+    const suitableInput =
+        document.getElementById("suitableInput");
+
+    const suitableChips =
+        document.getElementById("suitableChips");
+
+    const suitableHidden =
+        document.getElementById("suitableFor");
+
+
+    function updateSuitableFor() {
+
+        suitableChips.innerHTML = "";
+
+        suitableFor.forEach(function(item, index) {
+
+            const chip = document.createElement("span");
+
+            chip.className = "chip";
+
+            chip.innerHTML =
+                esc(item) +
+                ' <button type="button" data-index="' +
+                index +
+                '">×</button>';
+
+            chip
+                .querySelector("button")
+                .addEventListener("click", function() {
+
+                    suitableFor.splice(index, 1);
+
+                    updateSuitableFor();
+
+                });
+
+            suitableChips.appendChild(chip);
+
+        });
+
+        suitableHidden.value =
+            JSON.stringify(
+                suitableFor.filter(function(item) {
+                    return String(item).trim() !== "";
+                })
+            );
+
+    }
+
+
+    suitableInput.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key !== "Enter") {
+                return;
+            }
+
+            event.preventDefault();
+
+            const value =
+                suitableInput.value.trim();
+
+            if (
+                value &&
+                !suitableFor.includes(value)
+            ) {
+
+                suitableFor.push(value);
+
+            }
+
+            suitableInput.value = "";
+
+            updateSuitableFor();
+
+        }
+    );
+
+
+    updateSuitableFor();
+
+
+    /* =========================================================
+       SERVICES
+    ========================================================= */
+
+    let services =
+        Array.isArray(business.services)
+            ? business.services.slice()
+            : [];
+
+
+    const serviceRows =
+        document.getElementById("serviceRows");
+
+
+    function renderServices() {
+
+        serviceRows.innerHTML = "";
+
+        services.forEach(function(value, index) {
+
+            const row =
+                document.createElement("div");
+
+            row.className = "addrow";
+
+            row.innerHTML = `
+                <input
+                    type="text"
+                    placeholder="Service name"
+                    value="${esc(value)}"
+                >
+
+                <button
+                    type="button"
+                    class="remove"
+                >
+                    Remove
+                </button>
+            `;
+
+            const input =
+                row.querySelector("input");
+
+            const removeButton =
+                row.querySelector(".remove");
+
+
+            input.addEventListener(
+                "input",
+                function() {
+
+                    services[index] =
+                        input.value;
+
+                    updateServices();
+
+                }
+            );
+
+
+            removeButton.addEventListener(
+                "click",
+                function() {
+
+                    services.splice(index, 1);
+
+                    renderServices();
+
+                }
+            );
+
+
+            serviceRows.appendChild(row);
+
+        });
+
+        updateServices();
+
+    }
+
+
+    function updateServices() {
+
+        document.getElementById("services").value =
+            JSON.stringify(
+                services
+                    .map(function(value) {
+                        return String(value).trim();
+                    })
+                    .filter(function(value) {
+                        return value !== "";
+                    })
+            );
+
+    }
+
+
+    document
+        .getElementById("addServiceBtn")
+        .addEventListener(
+            "click",
+            function() {
+
+                services.push("");
+
+                renderServices();
+
+            }
+        );
+
+
+    renderServices();
+
+
+    /* =========================================================
+       ITEMS
+    ========================================================= */
+
+    let items =
+        Array.isArray(business.items)
+            ? business.items.map(function(item) {
+
+                const original =
+                    item && typeof item === "object"
+                        ? { ...item }
+                        : {};
+
+                return {
+                    ...original,
+
+                    name:
+                        item && item.name !== undefined
+                            ? String(item.name)
+                            : "",
+
+                    description:
+                        item && item.description !== undefined
+                            ? String(item.description)
+                            : "",
+
+                    price:
+                        item && item.price !== undefined
+                            ? String(item.price)
+                            : ""
+                };
+
+            })
+            : [];
+
+
+    const itemRows =
+        document.getElementById("itemRows");
+
+
+    function renderItems() {
+
+        itemRows.innerHTML = "";
+
+        items.forEach(function(item, index) {
+
+            const row =
+                document.createElement("div");
+
+            row.className = "addrow";
+
+            row.innerHTML = `
+                <input
+                    type="text"
+                    placeholder="Name"
+                    value="${esc(item.name)}"
+                >
+
+                <input
+                    type="text"
+                    placeholder="Description"
+                    value="${esc(item.description)}"
+                >
+
+                <input
+                    type="text"
+                    placeholder="Price"
+                    value="${esc(item.price)}"
+                >
+
+                <button
+                    type="button"
+                    class="remove"
+                >
+                    Remove
+                </button>
+            `;
+
+
+            const inputs =
+                row.querySelectorAll("input");
+
+
+            inputs[0].addEventListener(
+                "input",
+                function() {
+
+                    items[index].name =
+                        inputs[0].value;
+
+                    updateItems();
+
+                }
+            );
+
+
+            inputs[1].addEventListener(
+                "input",
+                function() {
+
+                    items[index].description =
+                        inputs[1].value;
+
+                    updateItems();
+
+                }
+            );
+
+
+            inputs[2].addEventListener(
+                "input",
+                function() {
+
+                    items[index].price =
+                        inputs[2].value;
+
+                    updateItems();
+
+                }
+            );
+
+
+            row
+                .querySelector(".remove")
+                .addEventListener(
+                    "click",
+                    function() {
+
+                        items.splice(index, 1);
+
+                        renderItems();
+
+                    }
+                );
+
+
+            itemRows.appendChild(row);
+
+        });
+
+        updateItems();
+
+    }
+
+
+    function updateItems() {
+
+        document.getElementById("items").value =
+            JSON.stringify(
+                items.filter(function(item) {
+
+                    return (
+                        item &&
+                        item.name &&
+                        item.name.trim() !== ""
+                    );
+
+                })
+            );
+
+    }
+
+
+    document
+        .getElementById("addItemBtn")
+        .addEventListener(
+            "click",
+            function() {
+
+                items.push({
+                    name: "",
+                    description: "",
+                    price: ""
+                });
+
+                renderItems();
+
+            }
+        );
+
+
+    renderItems();
+
+
+    /* =========================================================
+       OFFERS
+    ========================================================= */
+
+    let offers =
+        Array.isArray(business.offers)
+            ? business.offers.map(function(offer) {
+
+                const original =
+                    offer && typeof offer === "object"
+                        ? { ...offer }
+                        : {};
+
+                return {
+                    ...original,
+
+                    title:
+                        offer && offer.title !== undefined
+                            ? String(offer.title)
+                            : "",
+
+                    description:
+                        offer && offer.description !== undefined
+                            ? String(offer.description)
+                            : "",
+
+                    validUntil:
+                        offer && offer.validUntil !== undefined
+                            ? String(offer.validUntil)
+                            : ""
+                };
+
+            })
+            : [];
+
+
+    const offerRows =
+        document.getElementById("offerRows");
+
+
+    function renderOffers() {
+
+        offerRows.innerHTML = "";
+
+        offers.forEach(function(offer, index) {
+
+            const row =
+                document.createElement("div");
+
+            row.className = "offerrow";
+
+            row.innerHTML = `
+                <input
+                    type="text"
+                    placeholder="Offer title"
+                    value="${esc(offer.title)}"
+                >
+
+                <input
+                    type="text"
+                    placeholder="Description"
+                    value="${esc(offer.description)}"
+                >
+
+                <input
+                    type="date"
+                    value="${esc(offer.validUntil)}"
+                >
+
+                <button
+                    type="button"
+                    class="remove"
+                >
+                    Remove
+                </button>
+            `;
+
+
+            const inputs =
+                row.querySelectorAll("input");
+
+
+            inputs[0].addEventListener(
+                "input",
+                function() {
+
+                    offers[index].title =
+                        inputs[0].value;
+
+                    updateOffers();
+
+                }
+            );
+
+
+            inputs[1].addEventListener(
+                "input",
+                function() {
+
+                    offers[index].description =
+                        inputs[1].value;
+
+                    updateOffers();
+
+                }
+            );
+
+
+            inputs[2].addEventListener(
+                "change",
+                function() {
+
+                    offers[index].validUntil =
+                        inputs[2].value;
+
+                    updateOffers();
+
+                }
+            );
+
+
+            row
+                .querySelector(".remove")
+                .addEventListener(
+                    "click",
+                    function() {
+
+                        offers.splice(index, 1);
+
+                        renderOffers();
+
+                    }
+                );
+
+
+            offerRows.appendChild(row);
+
+        });
+
+        updateOffers();
+
+    }
+
+
+    function updateOffers() {
+
+        document.getElementById("offers").value =
+            JSON.stringify(
+                offers.filter(function(offer) {
+
+                    return (
+                        offer &&
+                        offer.title &&
+                        offer.title.trim() !== ""
+                    );
+
+                })
+            );
+
+    }
+
+
+    document
+        .getElementById("addOfferBtn")
+        .addEventListener(
+            "click",
+            function() {
+
+                offers.push({
+                    title: "",
+                    description: "",
+                    validUntil: ""
+                });
+
+                renderOffers();
+
+            }
+        );
+
+
+    renderOffers();
+
+
+    /* =========================================================
+       AMENITIES
+    ========================================================= */
+
+    const amenityList = [
+
+        "Wi-Fi",
+        "Air Conditioning",
+        "Parking",
+        "Outdoor Seating",
+        "Washroom",
+        "Wheelchair Accessible",
+        "Family Friendly",
+        "Pet Friendly",
+        "Home Delivery",
+        "Takeaway",
+        "Dine-in",
+        "Waiting Area"
+
+    ];
+
+
+    const selectedAmenities =
+        Array.isArray(business.amenities)
+            ? business.amenities
+            : [];
+
+
+    function createChecks(
+        list,
+        containerId,
+        hiddenId,
+        selected
+    ) {
+
+        const container =
+            document.getElementById(containerId);
+
+        const hidden =
+            document.getElementById(hiddenId);
+
+
+        container.innerHTML = "";
+
+        /*
+         * Keep database values that are not in the current standard list.
+         * This prevents unrelated edits from deleting old/custom options.
+         */
+        const options = Array.from(
+            new Set(
+                [...list, ...(Array.isArray(selected) ? selected : [])]
+            )
+        );
+
+
+        options.forEach(function(item) {
+
+            const label =
+                document.createElement("label");
+
+            label.className = "check";
+
+
+            const checkbox =
+                document.createElement("input");
+
+            checkbox.type = "checkbox";
+
+            checkbox.value = item;
+
+            checkbox.checked =
+                selected.includes(item);
+
+
+            label.appendChild(checkbox);
+
+            label.appendChild(
+                document.createTextNode(" " + item)
+            );
+
+
+            container.appendChild(label);
+
+        });
+
+
+        function update() {
+
+            const values =
+                Array.from(
+                    container.querySelectorAll(
+                        'input[type="checkbox"]:checked'
+                    )
+                ).map(function(checkbox) {
+                    return checkbox.value;
+                });
+
+
+            hidden.value =
+                JSON.stringify(values);
+
+        }
+
+
+        container
+            .querySelectorAll('input[type="checkbox"]')
+            .forEach(function(checkbox) {
+
+                checkbox.addEventListener(
+                    "change",
+                    update
+                );
+
+            });
+
+
+        update();
+
+    }
+
+
+    createChecks(
+        amenityList,
+        "amenityChecks",
+        "amenities",
+        selectedAmenities
+    );
+
+
+    /* =========================================================
+       PAYMENT METHODS
+    ========================================================= */
+
+    const paymentList = [
+
+        "Cash",
+        "UPI",
+        "Credit / Debit Card",
+        "Digital Wallet",
+        "Bank Transfer"
+
+    ];
+
+
+    const selectedPayments =
+        Array.isArray(business.paymentMethods)
+            ? business.paymentMethods
+            : [];
+
+
+    createChecks(
+        paymentList,
+        "paymentChecks",
+        "paymentMethods",
+        selectedPayments
+    );
+
+
+    /* =========================================================
+       OPENING HOURS
+       ---------------------------------------------------------
+       Supports:
+         1) One period: 10:00 AM - 2:00 PM
+         2) Split hours: 10:00 AM - 2:00 PM
+                           5:00 PM - 11:00 PM
+
+       Existing records with only {open, close, closed} continue
+       to load correctly. The hidden "hours" field stores:
+         periods: [{open, close}, {open, close}]
+       and also keeps open/close for backward compatibility.
+    ========================================================= */
+
+    const days = [
+        "monday", "tuesday", "wednesday",
+        "thursday", "friday", "saturday", "sunday"
+    ];
+
+    const labels = [
+        "Monday", "Tuesday", "Wednesday",
+        "Thursday", "Friday", "Saturday", "Sunday"
+    ];
+
+    const savedHours =
+        business.hours &&
+        typeof business.hours === "object"
+            ? business.hours
+            : {};
+
+
+    function parseTimeParts(value) {
+
+        const raw = String(value || "").trim();
+
+        let match =
+            raw.match(/^([01]?\d|2[0-3]):([0-5]\d)$/);
+
+        if (match) {
+
+            const h = Number(match[1]);
+
+            return {
+                hour: String(h % 12 || 12),
+                minute: match[2],
+                period: h >= 12 ? "PM" : "AM"
+            };
+
+        }
+
+        match =
+            raw.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+
+        if (match) {
+
+            let h = Number(match[1]);
+
+            if (h < 1 || h > 12) {
+                h = 12;
+            }
+
+            return {
+                hour: String(h),
+                minute: match[2],
+                period: match[3].toUpperCase()
+            };
+
+        }
+
+        return {
+            hour: "12",
+            minute: "00",
+            period: "AM"
+        };
+
+    }
+
+
+    function timePartsTo24(hour, minute, period) {
+
+        let h = Number(hour);
+
+        if (!Number.isFinite(h) || h < 1 || h > 12) {
+            h = 12;
+        }
+
+        if (period === "AM") {
+            h = h === 12 ? 0 : h;
+        } else {
+            h = h === 12 ? 12 : h + 12;
+        }
+
+        return (
+            String(h).padStart(2, "0") +
+            ":" +
+            String(minute).padStart(2, "0")
+        );
+
+    }
+
+
+    function normaliseSavedPeriods(saved) {
+
+        if (
+            saved &&
+            Array.isArray(saved.periods)
+        ) {
+
+            return saved.periods
+                .slice(0, 2)
+                .map(function(period) {
+
+                    return {
+                        open:
+                            period &&
+                            period.open !== undefined
+                                ? period.open
+                                : "",
+
+                        close:
+                            period &&
+                            period.close !== undefined
+                                ? period.close
+                                : ""
+                    };
+
+                });
+
+        }
+
+
+        /* Backward compatibility with old open/close records. */
+        if (
+            saved &&
+            (saved.open || saved.close)
+        ) {
+
+            return [
+                {
+                    open: saved.open || "",
+                    close: saved.close || ""
+                }
+            ];
+
+        }
+
+
+        return [
+            {
+                open: "",
+                close: ""
+            }
+        ];
+
+    }
+
+
+    function createTimeSelects(prefix, value) {
+
+        const parts = parseTimeParts(value);
+
+        const hourOptions =
+            Array.from({ length: 12 }, function(_, i) {
+
+                const h = String(i + 1);
+
+                return `
+                    <option
+                        value="${h}"
+                        ${h === parts.hour ? "selected" : ""}
+                    >
+                        ${h}
+                    </option>
+                `;
+
+            }).join("");
+
+
+        const minuteOptions =
+            Array.from({ length: 60 }, function(_, i) {
+
+                const m = String(i).padStart(2, "0");
+
+                return `
+                    <option
+                        value="${m}"
+                        ${m === parts.minute ? "selected" : ""}
+                    >
+                        ${m}
+                    </option>
+                `;
+
+            }).join("");
+
+
+        return `
+            <div class="time-group">
+                <div>
+                    <span class="time-label">Hour</span>
+                    <select data-time="${prefix}-hour">
+                        ${hourOptions}
+                    </select>
+                </div>
+
+                <div>
+                    <span class="time-label">Minute</span>
+                    <select data-time="${prefix}-minute">
+                        ${minuteOptions}
+                    </select>
+                </div>
+
+                <div>
+                    <span class="time-label">AM / PM</span>
+                    <select data-time="${prefix}-period">
+                        <option value="AM"
+                            ${parts.period === "AM" ? "selected" : ""}>
+                            AM
+                        </option>
+                        <option value="PM"
+                            ${parts.period === "PM" ? "selected" : ""}>
+                            PM
+                        </option>
+                    </select>
+                </div>
+            </div>
+        `;
+
+    }
+
+
+    
+    function createPeriodHTML(day, periodNumber, period, options = {}) {
+    
+            const suffix =
+                periodNumber === 1
+                    ? "period1"
+                    : "period2";
+    
+            const open =
+                period && period.open
+                    ? period.open
+                    : "";
+    
+            const close =
+                period && period.close
+                    ? period.close
+                    : "";
+    
+            const second =
+                periodNumber === 2;
+    
+            const showRemove =
+                Boolean(options.showRemove);
+    
+            return `
+                <div class="hours-period">
+    
+                    <div class="period-title">
+                        ${second
+                            ? "Period 2 (optional)"
+                            : "Business Hours"}
+                    </div>
+    
+                    ${createTimeSelects(
+                        `${day}-${suffix}-open`,
+                        open
+                    )}
+    
+                    ${createTimeSelects(
+                        `${day}-${suffix}-close`,
+                        close
+                    )}
+    
+                    ${second
+                        ? `<div class="period-help">
+                               Use this only if the business closes and reopens later.
+                           </div>`
+                        : `<div class="period-help">
+                               Example: 6:00 AM – 10:00 PM
+                           </div>`}
+    
+                    ${showRemove
+                        ? `<div class="period-actions">
+                               <button
+                                   type="button"
+                                   class="remove-period-btn"
+                                   data-remove-period="${day}"
+                               >
+                                   − Remove second timing
+                               </button>
+                           </div>`
+                        : ""}
+    
+                </div>
+            `;
+    
+        }
+
+
+    function readPeriod(day, periodNumber, row) {
+
+        const suffix =
+            periodNumber === 1
+                ? "period1"
+                : "period2";
+
+
+        const hour =
+            row.querySelector(
+                `[data-time="${day}-${suffix}-open-hour"]`
+            );
+
+        const minute =
+            row.querySelector(
+                `[data-time="${day}-${suffix}-open-minute"]`
+            );
+
+        const period =
+            row.querySelector(
+                `[data-time="${day}-${suffix}-open-period"]`
+            );
+
+        const closeHour =
+            row.querySelector(
+                `[data-time="${day}-${suffix}-close-hour"]`
+            );
+
+        const closeMinute =
+            row.querySelector(
+                `[data-time="${day}-${suffix}-close-minute"]`
+            );
+
+        const closePeriod =
+            row.querySelector(
+                `[data-time="${day}-${suffix}-close-period"]`
+            );
+
+
+        if (
+            !hour ||
+            !minute ||
+            !period ||
+            !closeHour ||
+            !closeMinute ||
+            !closePeriod
+        ) {
+            return {
+                open: "",
+                close: ""
+            };
+        }
+
+
+        const isUnusedSecondPeriod =
+            periodNumber === 2 &&
+            hour.value === "12" &&
+            minute.value === "00" &&
+            period.value === "AM" &&
+            closeHour.value === "12" &&
+            closeMinute.value === "00" &&
+            closePeriod.value === "AM";
+
+
+        if (isUnusedSecondPeriod) {
+            return {
+                open: "",
+                close: ""
+            };
+        }
+
+
+        return {
+            open:
+                timePartsTo24(
+                    hour.value,
+                    minute.value,
+                    period.value
+                ),
+
+            close:
+                timePartsTo24(
+                    closeHour.value,
+                    closeMinute.value,
+                    closePeriod.value
+                )
+        };
+
+    }
+
+
+    function updateHoursRowState(row) {
+
+        const closedInput =
+            row.querySelector('[data-part="closed"]');
+
+        const closed =
+            closedInput
+                ? closedInput.checked
+                : false;
+
+
+        row.classList.toggle(
+            "hours-row-disabled",
+            closed
+        );
+
+
+        row
+            .querySelectorAll(".time-group select")
+            .forEach(function(select) {
+                select.disabled = closed;
+            });
+
+    }
+
+
+    
+    function renderHours() {
+    
+            const hoursBox =
+                document.getElementById("hoursBox");
+    
+            hoursBox.innerHTML = "";
+    
+    
+            days.forEach(function(day, index) {
+    
+                const saved =
+                    savedHours[day] &&
+                    typeof savedHours[day] === "object"
+                        ? savedHours[day]
+                        : {};
+    
+                const periods =
+                    normaliseSavedPeriods(saved);
+    
+                const hasSecondPeriod =
+                    Array.isArray(periods) &&
+                    periods.length > 1 &&
+                    (
+                        periods[1].open ||
+                        periods[1].close
+                    );
+    
+                const row =
+                    document.createElement("div");
+    
+                row.className = "hours";
+                row.dataset.day = day;
+    
+                row.innerHTML = `
+                    <span class="day">
+                        ${labels[index]}
+                    </span>
+    
+                    <div class="hours-periods" data-periods="${day}">
+    
+                        ${createPeriodHTML(
+                            day,
+                            1,
+                            periods[0]
+                        )}
+    
+                        ${hasSecondPeriod
+                            ? createPeriodHTML(
+                                day,
+                                2,
+                                periods[1],
+                                { showRemove: true }
+                            )
+                            : ""}
+    
+                        ${!hasSecondPeriod
+                            ? `<div class="period-actions">
+                                   <button
+                                       type="button"
+                                       class="add-period-btn"
+                                       data-add-period="${day}"
+                                   >
+                                       + Add another timing
+                                   </button>
+                               </div>`
+                            : ""}
+                    </div>
+    
+                    <label class="closed-label">
+                        <input
+                            type="checkbox"
+                            data-day="${day}"
+                            data-part="closed"
+                            ${saved.closed ? "checked" : ""}
+                        >
+                        Closed
+                    </label>
+                `;
+    
+                hoursBox.appendChild(row);
+    
+                bindHoursRow(row);
+    
+            });
+    
+            updateHours();
+    
+        }
+    
+    
+        function bindHoursRow(row) {
+    
+            row
+                .querySelectorAll("select")
+                .forEach(function(select) {
+    
+                    select.addEventListener(
+                        "change",
+                        updateHours
+                    );
+    
+                });
+    
+            const closedInput =
+                row.querySelector(
+                    '[data-part="closed"]'
+                );
+    
+            if (closedInput) {
+    
+                closedInput.addEventListener(
+                    "change",
+                    function() {
+    
+                        updateHoursRowState(row);
+                        updateHours();
+    
+                    }
+                );
+    
+            }
+    
+            const addButton =
+                row.querySelector(
+                    "[data-add-period]"
+                );
+    
+            if (addButton) {
+    
+                addButton.addEventListener(
+                    "click",
+                    function() {
+    
+                        addSecondPeriod(
+                            row.dataset.day
+                        );
+    
+                    }
+                );
+    
+            }
+    
+            const removeButton =
+                row.querySelector(
+                    "[data-remove-period]"
+                );
+    
+            if (removeButton) {
+    
+                removeButton.addEventListener(
+                    "click",
+                    function() {
+    
+                        removeSecondPeriod(
+                            row.dataset.day
+                        );
+    
+                    }
+                );
+    
+            }
+    
+            updateHoursRowState(row);
+    
+        }
+    
+    
+        function addSecondPeriod(day) {
+    
+            const row =
+                document.querySelector(
+                    `.hours[data-day="${day}"]`
+                );
+    
+            if (!row) {
+                return;
+            }
+    
+            const periodsBox =
+                row.querySelector(
+                    `.hours-periods[data-periods="${day}"]`
+                );
+    
+            if (!periodsBox) {
+                return;
+            }
+    
+            if (
+                periodsBox.querySelector(
+                    `[data-time="${day}-period2-open-hour"]`
+                )
+            ) {
+                return;
+            }
+    
+            const addButton =
+                periodsBox.querySelector(
+                    "[data-add-period]"
+                );
+    
+            if (addButton) {
+                addButton.parentElement.remove();
+            }
+    
+            periodsBox.insertAdjacentHTML(
+                "beforeend",
+                createPeriodHTML(
+                    day,
+                    2,
+                    { open: "", close: "" },
+                    { showRemove: true }
+                )
+            );
+    
+            bindHoursRow(row);
+            updateHours();
+    
+        }
+    
+    
+        function removeSecondPeriod(day) {
+    
+            const row =
+                document.querySelector(
+                    `.hours[data-day="${day}"]`
+                );
+    
+            if (!row) {
+                return;
+            }
+    
+            const periodsBox =
+                row.querySelector(
+                    `.hours-periods[data-periods="${day}"]`
+                );
+    
+            if (!periodsBox) {
+                return;
+            }
+    
+            const secondPeriod =
+                periodsBox.querySelector(
+                    ".hours-period:nth-child(2)"
+                );
+    
+            if (secondPeriod) {
+                secondPeriod.remove();
+            }
+    
+            if (
+                !periodsBox.querySelector(
+                    "[data-add-period]"
+                )
+            ) {
+    
+                periodsBox.insertAdjacentHTML(
+                    "beforeend",
+                    `
+                        <div class="period-actions">
+                            <button
+                                type="button"
+                                class="add-period-btn"
+                                data-add-period="${day}"
+                            >
+                                + Add another timing
+                            </button>
+                        </div>
+                    `
+                );
+    
+            }
+    
+            bindHoursRow(row);
+            updateHours();
+    
+        }
+
+
+    function updateHours() {
+
+        const result = {};
+
+
+        days.forEach(function(day) {
+
+            const row =
+                document.querySelector(
+                    `.hours[data-day="${day}"]`
+                );
+
+
+            if (!row) {
+                return;
+            }
+
+
+            const closedInput =
+                row.querySelector(
+                    '[data-part="closed"]'
+                );
+
+
+            const original =
+                savedHours[day] &&
+                typeof savedHours[day] === "object"
+                    ? { ...savedHours[day] }
+                    : {};
+
+
+            const period1 =
+                readPeriod(
+                    day,
+                    1,
+                    row
+                );
+
+
+            const period2 =
+                readPeriod(
+                    day,
+                    2,
+                    row
+                );
+
+
+            const periods = [period1];
+
+
+            if (
+                period2.open ||
+                period2.close
+            ) {
+                periods.push(period2);
+            }
+
+
+            /*
+             * Preserve every old property for this day.
+             * The first period remains mirrored into open/close
+             * so old backend/public-page code still works.
+             */
+            result[day] = {
+
+                ...original,
+
+                open: period1.open,
+                close: period1.close,
+
+                periods: periods,
+
+                closed:
+                    closedInput
+                        ? closedInput.checked
+                        : Boolean(original.closed)
+
+            };
+
+        });
+
+
+        document.getElementById("hours").value =
+            JSON.stringify(result);
+
+    }
+
+
+    renderHours();
+
+
+    /* =========================================================
+       SOCIAL MEDIA
+    ========================================================= */
+
+    let social =
+        business.socialLinks &&
+        typeof business.socialLinks === "object"
+            ? { ...business.socialLinks }
+            : {};
+
+
+    document.getElementById("instagram").value =
+        social.instagram || "";
+
+
+    document.getElementById("facebook").value =
+        social.facebook || "";
+
+
+    document.getElementById("youtube").value =
+        social.youtube || "";
+
+
+    function updateSocial() {
+
+        /* Preserve social fields not displayed by this form. */
+        social.instagram =
+            document.getElementById("instagram").value.trim();
+
+        social.facebook =
+            document.getElementById("facebook").value.trim();
+
+        social.youtube =
+            document.getElementById("youtube").value.trim();
+
+        document.getElementById("socialLinks").value =
+            JSON.stringify(social);
+
+    }
+
+
+    document
+        .getElementById("instagram")
+        .addEventListener(
+            "input",
+            updateSocial
+        );
+
+
+    document
+        .getElementById("facebook")
+        .addEventListener(
+            "input",
+            updateSocial
+        );
+
+
+    document
+        .getElementById("youtube")
+        .addEventListener(
+            "input",
+            updateSocial
+        );
+
+
+    updateSocial();
+
+
+    /* =========================================================
+       PRICE RANGE
+    ========================================================= */
+
+    document.getElementById("priceRange").value =
+        business.priceRange || "";
+
+
+    /* =========================================================
+       LOCATION
+    ========================================================= */
+
+    document
+        .getElementById("getLocationBtn")
+        .addEventListener(
+            "click",
+            function() {
+
+                const button =
+                    document.getElementById(
+                        "getLocationBtn"
+                    );
+
+                const status =
+                    document.getElementById(
+                        "locationStatus"
+                    );
+
+
+                if (!navigator.geolocation) {
+
+                    status.textContent =
+                        "Geolocation is not supported by this browser.";
+
+                    return;
+
+                }
+
+
+                button.disabled = true;
+
+                button.textContent =
+                    "📍 Getting Location...";
+
+
+                navigator.geolocation.getCurrentPosition(
+
+                    function(position) {
+
+                        const latitude =
+                            position.coords.latitude;
+
+                        const longitude =
+                            position.coords.longitude;
+
+
+                        document.getElementById(
+                            "latitude"
+                        ).value =
+                            latitude;
+
+
+                        document.getElementById(
+                            "longitude"
+                        ).value =
+                            longitude;
+
+
+                        status.textContent =
+                            "✓ Location updated successfully (" +
+                            latitude.toFixed(6) +
+                            ", " +
+                            longitude.toFixed(6) +
+                            ")";
+
+
+                        button.disabled = false;
+
+                        button.textContent =
+                            "✓ Location Updated";
+
+                    },
+
+
+                    function(error) {
+
+                        let message =
+                            "Unable to get your location.";
+
+
+                        if (error.code === 1) {
+
+                            message =
+                                "Location permission was denied.";
+
+                        } else if (error.code === 2) {
+
+                            message =
+                                "Your location could not be determined.";
+
+                        } else if (error.code === 3) {
+
+                            message =
+                                "Location request timed out.";
+
+                        }
+
+
+                        status.textContent =
+                            message;
+
+
+                        button.disabled = false;
+
+                        button.textContent =
+                            "📍 Update Current Location";
+
+                    },
+
+
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    }
+
+                );
+
+            }
+        );
+
+
+    /* =========================================================
+       FORM SUBMIT
+    ========================================================= */
+
+    document
+        .getElementById("businessForm")
+        .addEventListener(
+            "submit",
+            function(event) {
+
+                /*
+                 * Make absolutely sure every dynamic
+                 * field is synchronized before submitting.
+                 */
+
+                updateSpecialties();
+
+                updateSuitableFor();
+
+                updateServices();
+
+                updateItems();
+
+                updateOffers();
+
+                updateHours();
+
+                updateSocial();
+
+
+                const submitButton =
+                    document.getElementById(
+                        "submitButton"
+                    );
+
+
+                submitButton.disabled = true;
+
+                submitButton.textContent =
+                    "Saving Changes...";
+
+            }
+        );
+
+</script>
+
+</body>
+</html>

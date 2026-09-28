@@ -1,0 +1,3777 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Local Business Directory | Discover Local</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Main stylesheet -->
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+
+    <style>
+        /* =========================================================
+           FEATURES - PREMIUM WATERMARK HOVER FLIP CARDS
+        ========================================================= */
+
+        .how-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 24px;
+            margin-top: 50px;
+        }
+
+        .feature-flip-card {
+            height: 300px;
+            perspective: 1400px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .feature-flip-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.32s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        /* Flip automatically when the mouse is over the card. */
+        .feature-flip-card:hover .feature-flip-inner {
+            transform: rotateY(180deg);
+        }
+
+        .feature-flip-front,
+        .feature-flip-back {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            border-radius: 26px;
+            overflow: hidden;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        .feature-flip-front {
+            border: 1px solid rgba(142, 61, 58, 0.12);
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-end;
+            background: linear-gradient(145deg, #fffafa 0%, #fff4ef 100%);
+            box-shadow: 0 12px 32px rgba(35, 20, 18, 0.08);
+            position: absolute;
+            isolation: isolate;
+            transition: box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+
+        /* Large watermark emoji across the card. */
+        .feature-flip-front::before {
+            content: attr(data-watermark);
+            position: absolute;
+            right: -42px;
+            top: -58px;
+            width: 260px;
+            height: 260px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 205px;
+            line-height: 1;
+            opacity: 0.16;
+            filter: saturate(0.85);
+            transform: rotate(-8deg);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .feature-flip-front::after {
+            content: '';
+            position: absolute;
+            width: 78px;
+            height: 5px;
+            left: 32px;
+            bottom: 24px;
+            border-radius: 99px;
+            background: linear-gradient(90deg, #9a3f3b, #ff735c);
+            opacity: 0.85;
+            z-index: 2;
+        }
+
+        .feature-flip-card:hover .feature-flip-front {
+            box-shadow: 0 24px 55px rgba(50, 25, 22, 0.15);
+            border-color: rgba(154, 63, 59, 0.25);
+        }
+
+        /* Individual card colors */
+        .feature-flip-card:nth-child(1) .feature-flip-front {
+            background: linear-gradient(145deg, #fff8f8 0%, #ffe3e1 100%);
+        }
+
+        .feature-flip-card:nth-child(2) .feature-flip-front {
+            background: linear-gradient(145deg, #fff8fa 0%, #ffe4e9 100%);
+        }
+
+        .feature-flip-card:nth-child(3) .feature-flip-front {
+            background: linear-gradient(145deg, #fffdf5 0%, #fff0c9 100%);
+        }
+
+        .feature-flip-card:nth-child(4) .feature-flip-front {
+            background: linear-gradient(145deg, #f7fff5 0%, #e3f3d8 100%);
+        }
+
+        .feature-flip-card:nth-child(5) .feature-flip-front {
+            background: linear-gradient(145deg, #f5f7ff 0%, #e1e7ff 100%);
+        }
+
+        .feature-flip-card:nth-child(6) .feature-flip-front {
+            background: linear-gradient(145deg, #faf7ff 0%, #e9e1ff 100%);
+        }
+
+        .feature-flip-card:nth-child(7) .feature-flip-front {
+            background: linear-gradient(145deg, #f2faff 0%, #dceeff 100%);
+        }
+
+        .feature-flip-card:nth-child(8) .feature-flip-front {
+            background: linear-gradient(145deg, #fff6f8 0%, #ffdfe7 100%);
+        }
+
+        /* Small emoji above the title. */
+        .feature-front-content {
+            position: relative;
+            z-index: 3;
+            width: 100%;
+        }
+
+        .feature-flip-icon {
+            position: relative;
+            width: 64px;
+            height: 64px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            line-height: 1;
+            background: #171516;
+            box-shadow: 0 10px 22px rgba(25, 18, 18, 0.18);
+            margin-bottom: 18px;
+            z-index: 4;
+        }
+
+        .feature-flip-front h3 {
+            margin: 0;
+            max-width: 250px;
+            font-size: 23px;
+            line-height: 1.15;
+            font-weight: 700;
+            color: #171516;
+            position: relative;
+            z-index: 3;
+        }
+
+        .feature-flip-message {
+            display: none !important;
+        }
+
+        .feature-flip-back {
+            transform: rotateY(180deg);
+            background:
+                radial-gradient(circle at 90% 15%, rgba(255, 125, 94, 0.35), transparent 30%),
+                linear-gradient(145deg, #1a1516 0%, #3b2020 55%, #74382d 100%);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            padding: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 24px 55px rgba(35, 17, 15, 0.22);
+        }
+
+        .feature-flip-back::before {
+            content: '';
+            position: absolute;
+            width: 190px;
+            height: 190px;
+            right: -90px;
+            top: -90px;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 50%;
+        }
+
+        .feature-flip-back::after {
+            content: '';
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            left: -60px;
+            bottom: -60px;
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            border-radius: 50%;
+        }
+
+        /* The back shows ONLY the description. */
+        .feature-flip-back .feature-flip-back-icon,
+        .feature-flip-back h3,
+        .feature-flip-back .feature-flip-back-hint {
+            display: none !important;
+        }
+
+        .feature-flip-back p {
+            display: block;
+            margin: 0;
+            max-width: 270px;
+            color: rgba(255, 255, 255, 0.92);
+            font-size: 15px;
+            line-height: 1.8;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 1100px) {
+            .how-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 650px) {
+            .how-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-flip-card {
+                height: 290px;
+            }
+        }
+
+        /* =====================================================
+           PASSWORD VISIBILITY + FORGOT PASSWORD TOAST
+        ===================================================== */
+        .password-field-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-field-wrapper input {
+            width: 100%;
+            padding-right: 50px !important;
+            box-sizing: border-box;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+            border: 0;
+            background: transparent;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            cursor: pointer;
+            color: #777;
+            z-index: 2;
+        }
+
+        .password-toggle:hover {
+            color: #8B3A3A;
+        }
+
+        .password-toggle svg {
+            width: 20px;
+            height: 20px;
+            pointer-events: none;
+        }
+
+        .forgot-password-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 7px;
+            margin-bottom: 18px;
+        }
+
+        .forgot-password-row button {
+            border: 0;
+            background: transparent;
+            padding: 0;
+            color: #8B3A3A;
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.2;
+            cursor: pointer;
+        }
+
+        .forgot-password-row button:hover {
+            text-decoration: underline;
+        }
+
+        /* Keep messages above BOTH login and forgot-password overlays. */
+        #authToast.auth-toast {
+            position: fixed !important;
+            left: 50% !important;
+            top: 24px !important;
+            right: auto !important;
+            bottom: auto !important;
+            transform: translateX(-50%) translateY(-12px) !important;
+            z-index: 100000 !important;
+            pointer-events: none;
+        }
+
+        #authToast.auth-toast.show {
+            transform: translateX(-50%) translateY(0) !important;
+        }
+
+        @media (max-width: 600px) {
+            #authToast.auth-toast {
+                width: calc(100% - 32px);
+                left: 16px !important;
+                transform: translateY(-12px) !important;
+            }
+
+            #authToast.auth-toast.show {
+                transform: translateY(0) !important;
+            }
+        }
+
+    
+/* =========================================================
+   DISCOVER CARDS - ULTRA MODERN / EDITORIAL EDITION
+   ========================================================= */
+
+.discover-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:22px;
+    margin-top:46px;
+}
+
+/* Main card */
+.discover-card{
+    --accent:#ff6655;
+    position:relative;
+    height:342px;
+    min-height:342px;
+    padding:24px;
+    border-radius:32px;
+    overflow:hidden;
+    isolation:isolate;
+    display:flex;
+    flex-direction:column;
+    text-decoration:none;
+    color:#171516;
+    border:1px solid rgba(38,28,27,.10);
+    box-shadow:
+        0 20px 45px rgba(38,27,24,.075),
+        0 3px 10px rgba(38,27,24,.035),
+        inset 0 1px 0 rgba(255,255,255,.95);
+    transition:
+        transform .42s cubic-bezier(.2,.75,.25,1),
+        box-shadow .42s ease,
+        border-color .42s ease;
+}
+
+/* Individual card palettes */
+.discover-card:nth-child(1){
+    --accent:#ff624f;
+    background:
+        radial-gradient(circle at 86% 11%,rgba(255,255,255,.95),transparent 24%),
+        linear-gradient(150deg,#fffaf8 0%,#ffe9e4 45%,#ffd7cf 100%);
+}
+
+.discover-card:nth-child(2){
+    --accent:#e92d82;
+    background:
+        radial-gradient(circle at 87% 11%,rgba(255,255,255,.95),transparent 24%),
+        linear-gradient(150deg,#fffafd 0%,#f8e5f2 45%,#f0d3e8 100%);
+}
+
+.discover-card:nth-child(3){
+    --accent:#eeb113;
+    background:
+        radial-gradient(circle at 87% 11%,rgba(255,255,255,.95),transparent 24%),
+        linear-gradient(150deg,#fffef9 0%,#fff2d5 45%,#ffe4ac 100%);
+}
+
+/* Ambient decorative rings */
+.discover-card::before{
+    content:"";
+    position:absolute;
+    width:250px;
+    height:250px;
+    right:-88px;
+    top:-108px;
+    border-radius:50%;
+    background:rgba(255,255,255,.31);
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,.30),
+        0 0 0 22px rgba(255,255,255,.065),
+        0 0 0 44px rgba(255,255,255,.035);
+    z-index:-3;
+    transition:transform .55s ease;
+}
+
+.discover-card::after{
+    content:"";
+    position:absolute;
+    width:180px;
+    height:180px;
+    left:-112px;
+    bottom:-125px;
+    border-radius:50%;
+    background:rgba(255,255,255,.30);
+    z-index:-3;
+}
+
+.discover-card:hover{
+    transform:translateY(-12px);
+    border-color:rgba(255,255,255,.95);
+    box-shadow:
+        0 32px 68px rgba(38,27,24,.145),
+        0 8px 20px rgba(38,27,24,.055),
+        inset 0 1px 0 #fff;
+}
+
+.discover-card:hover::before{
+    transform:scale(1.13) translate(-4px,4px);
+}
+
+/* Top metadata */
+.discover-card-top{
+    position:relative;
+    z-index:8;
+    width:100%;
+    height:155px;
+    display:flex;
+    align-items:flex-start;
+}
+
+/* Modern icon */
+.discover-icon{
+    position:relative;
+    width:60px;
+    height:60px;
+    flex:0 0 60px;
+    border-radius:19px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(19,17,18,.98);
+    color:#fff;
+    font-size:28px;
+    line-height:1;
+    border:1px solid rgba(255,255,255,.16);
+    box-shadow:
+        0 14px 28px rgba(18,14,14,.20),
+        inset 0 1px 0 rgba(255,255,255,.13);
+    transition:
+        transform .35s cubic-bezier(.2,.75,.25,1),
+        box-shadow .35s ease;
+}
+
+.discover-icon::before{
+    content:"";
+    position:absolute;
+    inset:7px;
+    border-radius:13px;
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.discover-card:hover .discover-icon{
+    transform:translateY(-5px) rotate(-4deg) scale(1.05);
+    box-shadow:
+        0 19px 35px rgba(18,14,14,.26),
+        inset 0 1px 0 rgba(255,255,255,.16);
+}
+
+/* Feature label in top-right */
+.discover-card-top::before{
+    content:"LOCAL / 01";
+    position:absolute;
+    right:3px;
+    top:5px;
+    padding:7px 10px;
+    border-radius:999px;
+    background:rgba(255,255,255,.36);
+    border:1px solid rgba(255,255,255,.45);
+    color:rgba(30,24,23,.50);
+    font-size:8px;
+    font-weight:800;
+    letter-spacing:.14em;
+    backdrop-filter:blur(10px);
+}
+
+.discover-card:nth-child(2) .discover-card-top::before{
+    content:"LOCAL / 02";
+}
+
+.discover-card:nth-child(3) .discover-card-top::before{
+    content:"LOCAL / 03";
+}
+
+/* Illustration */
+.discover-illustration{
+    position:absolute;
+    right:-13px;
+    top:-31px;
+    width:225px;
+    height:185px;
+    z-index:2;
+    pointer-events:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.discover-illustration::before{
+    content:"";
+    position:absolute;
+    width:185px;
+    height:122px;
+    right:0;
+    top:29px;
+    border-radius:58% 42% 50% 50%;
+    background:rgba(255,255,255,.42);
+    transform:rotate(-7deg);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.55),
+        0 8px 25px rgba(255,255,255,.13);
+}
+
+.discover-illustration::after{
+    content:"";
+    position:absolute;
+    width:126px;
+    height:126px;
+    right:29px;
+    top:25px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.40);
+    box-shadow:
+        0 0 0 12px rgba(255,255,255,.055),
+        0 0 0 24px rgba(255,255,255,.025);
+}
+
+.discover-art{
+    position:relative;
+    z-index:5;
+    width:198px;
+    height:164px;
+    overflow:visible;
+    filter:
+        drop-shadow(0 15px 13px rgba(49,33,30,.10));
+    transition:
+        transform .5s cubic-bezier(.2,.75,.25,1),
+        filter .5s ease;
+}
+
+.discover-card:hover .discover-art{
+    transform:translateY(-9px) scale(1.075);
+    filter:
+        drop-shadow(0 22px 17px rgba(49,33,30,.15));
+}
+
+.discover-card:nth-child(1) .discover-art{
+    width:212px;
+    height:168px;
+}
+
+.discover-card:nth-child(2) .discover-art{
+    width:196px;
+}
+
+.discover-card:nth-child(3) .discover-art{
+    width:204px;
+}
+
+.discover-card:nth-child(2) .discover-illustration::before{
+    background:rgba(242,158,204,.24);
+}
+
+.discover-card:nth-child(3) .discover-illustration::before{
+    background:rgba(255,211,71,.28);
+}
+
+/* Bottom glass content dock */
+.discover-card-content{
+    position:relative;
+    z-index:10;
+    margin-top:auto;
+    min-width:0;
+    padding:17px 18px 17px;
+    border-radius:21px;
+    background:rgba(255,255,255,.43);
+    border:1px solid rgba(255,255,255,.54);
+    box-shadow:
+        0 10px 25px rgba(60,42,39,.055),
+        inset 0 1px 0 rgba(255,255,255,.62);
+    backdrop-filter:blur(13px);
+    -webkit-backdrop-filter:blur(13px);
+    transition:
+        background .35s ease,
+        transform .35s ease,
+        box-shadow .35s ease;
+}
+
+.discover-card:hover .discover-card-content{
+    background:rgba(255,255,255,.55);
+    transform:translateY(-2px);
+    box-shadow:
+        0 14px 29px rgba(60,42,39,.075),
+        inset 0 1px 0 rgba(255,255,255,.75);
+}
+
+/* Number */
+.discover-number{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin:0 0 7px;
+    color:rgba(23,21,22,.50);
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:.17em;
+}
+
+.discover-number::after{
+    content:"";
+    width:22px;
+    height:2px;
+    border-radius:99px;
+    background:var(--accent);
+    opacity:.80;
+}
+
+/* Heading */
+.discover-card h3{
+    margin:0;
+    max-width:320px;
+    font-family:"Space Grotesk",sans-serif;
+    font-size:21px;
+    line-height:1.08;
+    font-weight:700;
+    letter-spacing:-.035em;
+    color:#171516;
+}
+
+/* Description */
+.discover-card p{
+    margin:7px 0 0;
+    max-width:305px;
+    color:#665b58;
+    font-size:11.8px;
+    line-height:1.45;
+}
+
+/* CTA row */
+.discover-link{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    margin-top:10px;
+    padding-bottom:2px;
+    color:#171516;
+    font-size:11px;
+    font-weight:800;
+    border-bottom:1px solid rgba(23,21,22,.18);
+    transition:
+        gap .25s ease,
+        border-color .25s ease;
+}
+
+.discover-link span{
+    font-size:15px;
+    line-height:1;
+    transition:transform .25s ease;
+}
+
+.discover-card:hover .discover-link{
+    gap:10px;
+    border-color:var(--accent);
+}
+
+.discover-card:hover .discover-link span{
+    transform:translateX(4px);
+}
+
+/* Accent micro-line */
+.discover-card-content::after{
+    content:"";
+    position:absolute;
+    left:18px;
+    bottom:-8px;
+    width:34px;
+    height:2px;
+    border-radius:99px;
+    background:var(--accent);
+    opacity:.65;
+    transition:width .3s ease;
+}
+
+.discover-card:hover .discover-card-content::after{
+    width:58px;
+}
+
+/* Circular action button */
+.discover-card-action{
+    position:absolute;
+    right:19px;
+    bottom:19px;
+    z-index:12;
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    background:var(--accent);
+    border:2px solid rgba(255,255,255,.82);
+    box-shadow:
+        0 10px 22px rgba(37,27,25,.13),
+        inset 0 1px 0 rgba(255,255,255,.32);
+    font-size:21px;
+    line-height:1;
+    transition:
+        transform .34s cubic-bezier(.2,.75,.25,1),
+        box-shadow .34s ease;
+}
+
+.discover-card:hover .discover-card-action{
+    transform:translateY(-4px) scale(1.08);
+    box-shadow:
+        0 15px 28px rgba(37,27,25,.17),
+        inset 0 1px 0 rgba(255,255,255,.38);
+}
+
+/* Keep CTA button visually integrated with the glass dock */
+.discover-card:nth-child(1) .discover-card-action{
+    background:linear-gradient(145deg,#ff715f,#f85645);
+}
+
+.discover-card:nth-child(2) .discover-card-action{
+    background:linear-gradient(145deg,#f04491,#d92878);
+}
+
+.discover-card:nth-child(3) .discover-card-action{
+    background:linear-gradient(145deg,#f6c02a,#e9a90b);
+}
+
+/* Remove legacy watermark if present */
+.discover-watermark{
+    display:none !important;
+}
+
+/* Desktop refinement */
+@media(min-width:1250px){
+    .discover-card{
+        height:348px;
+        min-height:348px;
+    }
+
+    .discover-card-top{
+        height:160px;
+    }
+
+    .discover-card-content{
+        padding:18px 19px 18px;
+    }
+}
+
+/* Tablet */
+@media(max-width:1000px){
+    .discover-grid{
+        grid-template-columns:1fr;
+        gap:20px;
+    }
+
+    .discover-card{
+        height:300px;
+        min-height:300px;
+    }
+
+    .discover-card-top{
+        height:115px;
+    }
+
+    .discover-illustration{
+        right:-12px;
+        top:-25px;
+    }
+}
+
+/* Mobile */
+@media(max-width:650px){
+    .discover-grid{
+        grid-template-columns:1fr;
+        gap:16px;
+        margin-top:32px;
+    }
+
+    .discover-card{
+        height:275px;
+        min-height:275px;
+        padding:20px;
+        border-radius:25px;
+    }
+
+    .discover-card-top{
+        height:100px;
+    }
+
+    .discover-icon{
+        width:54px;
+        height:54px;
+        flex-basis:54px;
+        border-radius:17px;
+        font-size:25px;
+    }
+
+    .discover-card-top::before{
+        top:3px;
+        right:0;
+        font-size:7px;
+    }
+
+    .discover-illustration{
+        right:-25px;
+        top:-17px;
+        transform:scale(.84);
+        transform-origin:top right;
+    }
+
+    .discover-card-content{
+        padding:15px 15px 16px;
+        border-radius:18px;
+    }
+
+    .discover-card h3{
+        font-size:19px;
+    }
+
+    .discover-card p{
+        max-width:245px;
+        font-size:11.5px;
+    }
+
+    .discover-card-action{
+        right:15px;
+        bottom:15px;
+        width:45px;
+        height:45px;
+        font-size:19px;
+    }
+}
+/* =========================================================
+   PREMIUM CATEGORY CARDS
+   Only styles the Categories section
+   ========================================================= */
+
+.categories-section .categories-grid{
+    display:grid !important;
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+    gap:20px !important;
+    margin-top:34px !important;
+}
+
+.categories-section .category-card{
+    position:relative !important;
+    min-height:205px !important;
+    height:205px !important;
+    padding:24px !important;
+    border-radius:25px !important;
+    overflow:hidden !important;
+    isolation:isolate !important;
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:space-between !important;
+    align-items:flex-start !important;
+    text-decoration:none !important;
+    color:#171516 !important;
+    background:#fff !important;
+    border:1px solid rgba(47,34,32,.08) !important;
+    box-shadow:
+        0 12px 28px rgba(38,25,23,.065),
+        inset 0 1px 0 rgba(255,255,255,.9) !important;
+    transition:
+        transform .3s cubic-bezier(.22,.61,.36,1),
+        box-shadow .3s ease,
+        border-color .3s ease !important;
+}
+
+/* Soft decorative blobs */
+.categories-section .category-card::before{
+    content:"" !important;
+    position:absolute !important;
+    width:145px !important;
+    height:145px !important;
+    right:-48px !important;
+    bottom:-48px !important;
+    border-radius:50% !important;
+    background:rgba(255,255,255,.7) !important;
+    z-index:-1 !important;
+    transition:transform .35s ease !important;
+}
+
+.categories-section .category-card::after{
+    content:"" !important;
+    position:absolute !important;
+    width:105px !important;
+    height:105px !important;
+    right:-30px !important;
+    top:-38px !important;
+    border-radius:50% !important;
+    background:rgba(255,255,255,.34) !important;
+    z-index:-1 !important;
+}
+
+/* Individual pastel themes */
+.categories-section .category-cafe{
+    background:linear-gradient(145deg,#fffaf7 0%,#ffe5dc 100%) !important;
+}
+
+.categories-section .category-food{
+    background:linear-gradient(145deg,#fff9fb 0%,#f8e2ed 100%) !important;
+}
+
+.categories-section .category-beauty{
+    background:linear-gradient(145deg,#fffaff 0%,#eee4fb 100%) !important;
+}
+
+.categories-section .category-services{
+    background:linear-gradient(145deg,#fafffc 0%,#e2f4ed 100%) !important;
+}
+
+.categories-section .category-grocery{
+    background:linear-gradient(145deg,#fffdf7 0%,#f8edcf 100%) !important;
+}
+
+.categories-section .category-hotel{
+    background:linear-gradient(145deg,#f9fbff 0%,#e3ebfb 100%) !important;
+}
+
+.categories-section .category-shooping{
+    background:linear-gradient(145deg,#fffafd 0%,#f0e4fa 100%) !important;
+}
+
+.categories-section .category-healthcare{
+    background:linear-gradient(145deg,#f8fcff 0%,#deeff7 100%) !important;
+}
+
+.categories-section .category-fitness{
+    background:linear-gradient(145deg,#fffaf8 0%,#f6e3df 100%) !important;
+}
+
+/* Hover */
+.categories-section .category-card:hover{
+    transform:translateY(-8px) !important;
+    border-color:rgba(255,105,87,.18) !important;
+    box-shadow:
+        0 22px 42px rgba(38,25,23,.13),
+        0 0 0 1px rgba(255,105,87,.06) !important;
+}
+
+.categories-section .category-card:hover::before{
+    transform:scale(1.18) !important;
+}
+
+/* Icon */
+.categories-section .category-symbol{
+    position:relative !important;
+    z-index:3 !important;
+    width:52px !important;
+    height:52px !important;
+    min-width:52px !important;
+    border-radius:16px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    background:#171516 !important;
+    color:#fff !important;
+    font-size:25px !important;
+    line-height:1 !important;
+    box-shadow:
+        0 9px 19px rgba(25,18,18,.18),
+        inset 0 1px 0 rgba(255,255,255,.1) !important;
+    transition:transform .3s ease,box-shadow .3s ease !important;
+}
+
+.categories-section .category-card:hover .category-symbol{
+    transform:translateY(-3px) rotate(-4deg) scale(1.05) !important;
+    box-shadow:
+        0 13px 24px rgba(25,18,18,.22),
+        inset 0 1px 0 rgba(255,255,255,.12) !important;
+}
+
+/* Text block */
+.categories-section .category-card > div:not(.category-symbol){
+    position:relative !important;
+    z-index:3 !important;
+    margin-top:auto !important;
+    padding-right:30px !important;
+}
+
+.categories-section .category-card h3{
+    margin:0 !important;
+    font-family:"Space Grotesk",sans-serif !important;
+    font-size:19px !important;
+    line-height:1.15 !important;
+    font-weight:700 !important;
+    letter-spacing:-.02em !important;
+    color:#171516 !important;
+}
+
+.categories-section .category-card p{
+    margin:7px 0 0 !important;
+    font-size:12.5px !important;
+    line-height:1.4 !important;
+    color:#756966 !important;
+}
+
+/* Arrow */
+.categories-section .category-card > span:last-child{
+    position:absolute !important;
+    right:20px !important;
+    bottom:19px !important;
+    z-index:4 !important;
+    width:43px !important;
+    height:43px !important;
+    border-radius:50% !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    background:rgba(255,255,255,.72) !important;
+    color:#171516 !important;
+    font-size:20px !important;
+    line-height:1 !important;
+    border:1px solid rgba(255,255,255,.85) !important;
+    box-shadow:0 7px 16px rgba(45,30,27,.09) !important;
+    transition:
+        transform .3s ease,
+        background .3s ease,
+        color .3s ease !important;
+}
+
+.categories-section .category-card:hover > span:last-child{
+    transform:translateX(3px) scale(1.08) !important;
+    background:#171516 !important;
+    color:#fff !important;
+}
+
+/* Different arrow accent colors */
+.categories-section .category-cafe > span:last-child{
+    background:#ff765f !important;
+    color:#fff !important;
+}
+.categories-section .category-food > span:last-child{
+    background:#eb4c92 !important;
+    color:#fff !important;
+}
+.categories-section .category-beauty > span:last-child{
+    background:#9b6ce5 !important;
+    color:#fff !important;
+}
+.categories-section .category-services > span:last-child{
+    background:#46a889 !important;
+    color:#fff !important;
+}
+.categories-section .category-grocery > span:last-child{
+    background:#e8ae27 !important;
+    color:#fff !important;
+}
+.categories-section .category-hotel > span:last-child{
+    background:#668fd1 !important;
+    color:#fff !important;
+}
+.categories-section .category-shooping > span:last-child{
+    background:#a16ad7 !important;
+    color:#fff !important;
+}
+.categories-section .category-healthcare > span:last-child{
+    background:#4c9ec2 !important;
+    color:#fff !important;
+}
+.categories-section .category-fitness > span:last-child{
+    background:#dd715e !important;
+    color:#fff !important;
+}
+
+/* Subtle top shine */
+.categories-section .category-card{
+    --shine:rgba(255,255,255,.48);
+}
+
+.categories-section .category-card > .category-symbol::after{
+    content:"" !important;
+    position:absolute !important;
+    left:7px !important;
+    right:7px !important;
+    top:4px !important;
+    height:1px !important;
+    border-radius:99px !important;
+    background:rgba(255,255,255,.18) !important;
+}
+
+/* Desktop spacing */
+@media(max-width:1150px){
+    .categories-section .categories-grid{
+        grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+    }
+}
+
+/* Tablet */
+@media(max-width:800px){
+    .categories-section .categories-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+        gap:16px !important;
+    }
+
+    .categories-section .category-card{
+        height:195px !important;
+        min-height:195px !important;
+        padding:21px !important;
+    }
+}
+
+/* Mobile */
+@media(max-width:540px){
+    .categories-section .categories-grid{
+        grid-template-columns:1fr !important;
+        gap:14px !important;
+    }
+
+    .categories-section .category-card{
+        height:185px !important;
+        min-height:185px !important;
+        border-radius:22px !important;
+    }
+}
+
+/* =========================================================
+   DISCOVER CARDS — CUTE REFERENCE STYLE
+   IMPORTANT:
+   - Card width/height/layout are NOT changed.
+   - Existing links and HTML are NOT changed.
+   - Only the visual styling of the three cards is changed.
+========================================================= */
+
+/* Keep the existing card dimensions exactly as they are */
+.discover-grid .discover-card {
+    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,.72);
+
+    box-shadow:
+        0 18px 38px rgba(55,35,31,.09),
+        0 3px 10px rgba(55,35,31,.035),
+        inset 0 1px 0 rgba(255,255,255,.95);
+
+    overflow: hidden;
+}
+
+/* Cute pastel backgrounds */
+.discover-grid .discover-card:nth-child(1) {
+    --accent: #ff624f;
+
+    background:
+        radial-gradient(
+            circle at 88% 14%,
+            rgba(255,255,255,.96),
+            transparent 25%
+        ),
+        linear-gradient(
+            145deg,
+            #fffaf8 0%,
+            #ffe9e3 48%,
+            #ffd8d1 100%
+        );
+}
+
+.discover-grid .discover-card:nth-child(2) {
+    --accent: #e92d82;
+
+    background:
+        radial-gradient(
+            circle at 88% 14%,
+            rgba(255,255,255,.96),
+            transparent 25%
+        ),
+        linear-gradient(
+            145deg,
+            #fffafd 0%,
+            #f8e5f2 48%,
+            #f0d3e8 100%
+        );
+}
+
+.discover-grid .discover-card:nth-child(3) {
+    --accent: #efb51a;
+
+    background:
+        radial-gradient(
+            circle at 88% 14%,
+            rgba(255,255,255,.96),
+            transparent 25%
+        ),
+        linear-gradient(
+            145deg,
+            #fffef9 0%,
+            #fff2d5 48%,
+            #ffe5ae 100%
+        );
+}
+
+
+/* Soft cute background blobs */
+.discover-grid .discover-card::before {
+    width: 225px;
+    height: 225px;
+
+    right: -82px;
+    top: -82px;
+
+    background: rgba(255,255,255,.35);
+
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,.25),
+        0 0 0 18px rgba(255,255,255,.055);
+
+    z-index: -3;
+}
+
+.discover-grid .discover-card::after {
+    width: 165px;
+    height: 165px;
+
+    left: -100px;
+    bottom: -115px;
+
+    background: rgba(255,255,255,.27);
+
+    z-index: -3;
+}
+
+
+/* Hover — gentle, not oversized */
+.discover-grid .discover-card:hover {
+    transform: translateY(-8px);
+
+    border-color: rgba(255,255,255,.95);
+
+    box-shadow:
+        0 25px 50px rgba(55,35,31,.13),
+        0 7px 16px rgba(55,35,31,.05),
+        inset 0 1px 0 #fff;
+}
+
+.discover-grid .discover-card:hover::before {
+    transform: scale(1.08);
+}
+
+
+/* ---------------------------------------------------------
+   TOP AREA
+--------------------------------------------------------- */
+
+.discover-grid .discover-card .discover-card-top {
+    position: relative;
+    z-index: 8;
+}
+
+
+/* Remove the "LOCAL / 01" pill.
+   The reference design has a clean illustration area. */
+.discover-grid .discover-card .discover-card-top::before {
+    display: none !important;
+}
+
+
+/* ---------------------------------------------------------
+   BLACK ICON TILE
+--------------------------------------------------------- */
+
+.discover-grid .discover-card .discover-icon {
+    width: 46px;
+    height: 46px;
+    flex-basis: 46px;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #252324 0%,
+            #111011 78%
+        );
+
+    color: #fff;
+
+    font-size: 21px;
+
+    border: 1px solid rgba(255,255,255,.14);
+
+    box-shadow:
+        0 9px 19px rgba(22,16,16,.19),
+        inset 0 1px 0 rgba(255,255,255,.12);
+}
+
+.discover-grid .discover-card .discover-icon::before {
+    content: "";
+
+    position: absolute;
+    inset: 6px;
+
+    border-radius: 10px;
+
+    border: 1px solid rgba(255,255,255,.07);
+}
+
+.discover-grid .discover-card .discover-icon::after {
+    content: "";
+
+    position: absolute;
+
+    left: 8px;
+    right: 8px;
+    top: 5px;
+
+    height: 1px;
+
+    border-radius: 99px;
+
+    background: rgba(255,255,255,.18);
+}
+
+.discover-grid .discover-card:hover .discover-icon {
+    transform:
+        translateY(-3px)
+        rotate(-4deg)
+        scale(1.04);
+
+    box-shadow:
+        0 13px 24px rgba(22,16,16,.24),
+        inset 0 1px 0 rgba(255,255,255,.15);
+}
+
+
+/* ---------------------------------------------------------
+   ILLUSTRATIONS
+--------------------------------------------------------- */
+
+.discover-grid .discover-card .discover-illustration {
+    right: -8px;
+    top: -17px;
+
+    width: 190px;
+    height: 158px;
+}
+
+.discover-grid .discover-card .discover-illustration::before {
+    width: 158px;
+    height: 105px;
+
+    right: 0;
+    top: 25px;
+
+    border-radius: 58% 42% 52% 48%;
+
+    background: rgba(255,255,255,.38);
+}
+
+.discover-grid .discover-card .discover-illustration::after {
+    width: 112px;
+    height: 112px;
+
+    right: 22px;
+    top: 20px;
+
+    border-color: rgba(255,255,255,.38);
+
+    box-shadow:
+        0 0 0 10px rgba(255,255,255,.045),
+        0 0 0 20px rgba(255,255,255,.025);
+}
+
+
+/* Coffee */
+.discover-grid .discover-card:nth-child(1) .discover-art {
+    width: 172px !important;
+    height: 142px;
+
+    filter:
+        drop-shadow(0 12px 12px rgba(49,33,30,.10));
+}
+
+/* Location pin */
+.discover-grid .discover-card:nth-child(2) .discover-art {
+    width: 160px !important;
+    height: 138px;
+
+    filter:
+        drop-shadow(0 12px 12px rgba(70,38,61,.10));
+}
+
+/* Reviews */
+.discover-grid .discover-card:nth-child(3) .discover-art {
+    width: 168px !important;
+    height: 140px;
+
+    filter:
+        drop-shadow(0 12px 12px rgba(90,62,22,.10));
+}
+
+
+/* Card-specific illustration glow */
+.discover-grid .discover-card:nth-child(1)
+.discover-illustration::before {
+    background: rgba(255,255,255,.42);
+}
+
+.discover-grid .discover-card:nth-child(2)
+.discover-illustration::before {
+    background: rgba(242,158,204,.25);
+}
+
+.discover-grid .discover-card:nth-child(3)
+.discover-illustration::before {
+    background: rgba(255,211,71,.28);
+}
+
+
+/* Illustration hover */
+.discover-grid .discover-card:hover .discover-art {
+    transform:
+        translateY(-6px)
+        scale(1.045);
+
+    filter:
+        drop-shadow(0 17px 15px rgba(49,33,30,.13));
+}
+
+
+/* ---------------------------------------------------------
+   CONTENT
+   No glass panel — this is the important part of the
+   reference-card style.
+--------------------------------------------------------- */
+
+.discover-grid .discover-card .discover-card-content {
+    position: relative;
+    z-index: 10;
+
+    margin-top: auto;
+
+    padding: 0 54px 0 0;
+
+    border: 0;
+    border-radius: 0;
+
+    background: transparent;
+
+    box-shadow: none;
+
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+
+    transition: transform .3s ease;
+}
+
+.discover-grid .discover-card:hover .discover-card-content {
+    background: transparent;
+
+    transform: translateY(-2px);
+
+    box-shadow: none;
+}
+
+
+/* Number */
+.discover-grid .discover-card .discover-number {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin: 0 0 7px;
+
+    color: rgba(23,21,22,.48);
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: .15em;
+}
+
+.discover-grid .discover-card .discover-number::after {
+    content: "";
+
+    width: 24px;
+    height: 2px;
+
+    border-radius: 99px;
+
+    background: var(--accent);
+
+    opacity: .82;
+}
+
+
+/* Heading */
+.discover-grid .discover-card h3 {
+    margin: 0;
+
+    max-width: 235px;
+
+    font-family:
+        "Space Grotesk",
+        sans-serif;
+
+    font-size: 23px;
+
+    line-height: 1.08;
+
+    font-weight: 700;
+
+    letter-spacing: -.035em;
+
+    color: #171516;
+}
+
+
+/* Description */
+.discover-grid .discover-card p {
+    margin: 7px 0 0;
+
+    max-width: 245px;
+
+    color: #665b58;
+
+    font-size: 12.5px;
+
+    line-height: 1.5;
+}
+
+
+/* Explore link */
+.discover-grid .discover-card .discover-link {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    width: fit-content;
+
+    margin-top: 10px;
+
+    padding-bottom: 2px;
+
+    color: #171516;
+
+    font-size: 11.5px;
+
+    font-weight: 800;
+
+    border-bottom: 1px solid rgba(23,21,22,.16);
+
+    transition:
+        gap .25s ease,
+        border-color .25s ease;
+}
+
+.discover-grid .discover-card .discover-link span {
+    font-size: 16px;
+
+    line-height: 1;
+
+    transition: transform .25s ease;
+}
+
+.discover-grid .discover-card:hover .discover-link {
+    gap: 10px;
+
+    border-color: var(--accent);
+}
+
+.discover-grid .discover-card:hover .discover-link span {
+    transform: translateX(3px);
+}
+
+
+/* Small accent line */
+.discover-grid .discover-card .discover-card-content::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    bottom: -10px;
+
+    width: 38px;
+    height: 2px;
+
+    border-radius: 99px;
+
+    background: var(--accent);
+
+    opacity: .68;
+
+    transition: width .3s ease;
+}
+
+.discover-grid .discover-card:hover .discover-card-content::after {
+    width: 58px;
+}
+
+
+/* ---------------------------------------------------------
+   ROUND ARROW
+--------------------------------------------------------- */
+
+.discover-grid .discover-card .discover-card-action {
+    position: absolute;
+
+    right: 18px;
+    bottom: 18px;
+
+    z-index: 12;
+
+    width: 43px;
+    height: 43px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: #fff;
+
+    border: 2px solid rgba(255,255,255,.85);
+
+    box-shadow:
+        0 9px 20px rgba(37,27,25,.14),
+        inset 0 1px 0 rgba(255,255,255,.32);
+
+    font-size: 19px;
+
+    line-height: 1;
+
+    transition:
+        transform .3s cubic-bezier(.2,.75,.25,1),
+        box-shadow .3s ease;
+}
+
+
+/* Arrow colors */
+.discover-grid .discover-card:nth-child(1) .discover-card-action {
+    background: linear-gradient(145deg,#ff7664,#f85746);
+}
+
+.discover-grid .discover-card:nth-child(2) .discover-card-action {
+    background: linear-gradient(145deg,#f24894,#d92a78);
+}
+
+.discover-grid .discover-card:nth-child(3) .discover-card-action {
+    background: linear-gradient(145deg,#f6c42e,#eaaa0d);
+}
+
+.discover-grid .discover-card:hover .discover-card-action {
+    transform:
+        translateY(-3px)
+        scale(1.07);
+
+    box-shadow:
+        0 13px 25px rgba(37,27,25,.18),
+        inset 0 1px 0 rgba(255,255,255,.38);
+}
+
+
+/* ---------------------------------------------------------
+   RESPONSIVE
+   Existing card sizes are deliberately left untouched.
+   Only internal visual proportions are adjusted.
+--------------------------------------------------------- */
+
+@media (max-width: 650px) {
+
+    .discover-grid .discover-card .discover-icon {
+        width: 43px;
+        height: 43px;
+        flex-basis: 43px;
+
+        border-radius: 13px;
+
+        font-size: 20px;
+    }
+
+    .discover-grid .discover-card .discover-illustration {
+        right: -14px;
+        top: -16px;
+
+        transform: scale(.90);
+        transform-origin: top right;
+    }
+
+    .discover-grid .discover-card .discover-card-content {
+        padding-right: 48px;
+    }
+
+    .discover-grid .discover-card h3 {
+        font-size: 19px;
+    }
+
+    .discover-grid .discover-card p {
+        max-width: 230px;
+        font-size: 11px;
+    }
+
+    .discover-grid .discover-card .discover-card-action {
+        right: 15px;
+        bottom: 15px;
+
+        width: 42px;
+        height: 42px;
+
+        font-size: 18px;
+    }
+}
+
+
+/* =========================================================
+   FINAL TYPOGRAPHY POLISH
+   Slightly larger, clearer card text — dimensions unchanged.
+========================================================= */
+
+.discover-grid .discover-card .discover-card-content {
+    padding-top: 2px;
+}
+
+.discover-grid .discover-card h3 {
+    text-shadow: 0 1px 0 rgba(255,255,255,.35);
+}
+
+.discover-grid .discover-card p {
+    letter-spacing: -.005em;
+}
+
+.discover-grid .discover-card .discover-link {
+    letter-spacing: -.01em;
+}
+
+@media (max-width: 650px) {
+    .discover-grid .discover-card h3 {
+        font-size: 20px;
+    }
+
+    .discover-grid .discover-card p {
+        font-size: 11.5px;
+    }
+
+    .discover-grid .discover-card .discover-link {
+        font-size: 10.5px;
+    }
+}
+
+</style>
+
+</head>
+
+
+<body class="home-page">
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<header class="home-navbar">
+
+    <div class="home-navbar-inner">
+
+
+        <!-- LOGO -->
+
+        <a
+            href="/"
+            class="home-logo"
+        >
+
+            <span class="home-logo-mark">
+                L
+            </span>
+
+            <span class="home-logo-text">
+                Local Business
+            </span>
+
+        </a>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="home-nav">
+
+            <a href="#discover">
+                Discover
+            </a>
+
+            <a href="#features">
+                Features
+            </a>
+
+            <a href="#categories">
+                Categories
+            </a>
+
+        </nav>
+
+
+        <!-- ACTIONS -->
+
+        <div class="home-nav-actions">
+
+            <a
+                href="/login"
+                class="home-login"
+            >
+                Log In
+            </a>
+
+            <a
+                href="/register"
+                class="home-get-started"
+            >
+                Get Started
+            </a>
+
+        </div>
+
+
+        <!-- MOBILE MENU BUTTON -->
+
+        <button
+            type="button"
+            class="mobile-menu-button"
+            id="mobileMenuButton"
+            aria-label="Open menu"
+        >
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+    </div>
+
+
+    <!-- MOBILE NAV -->
+
+    <div
+        class="mobile-nav"
+        id="mobileNav"
+    >
+
+        <a href="#discover">
+            Discover
+        </a>
+
+        <a href="#features">
+            Features
+        </a>
+
+        <a href="#categories">
+            Categories
+        </a>
+
+        <a href="/login">
+            Log In
+        </a>
+
+        <a
+            href="/register"
+            class="mobile-nav-button"
+        >
+            Get Started
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main>
+
+
+<!-- =========================================================
+     HERO SECTION
+========================================================= -->
+
+<section class="home-hero">
+
+    <!-- Background decoration -->
+
+    <div class="hero-glow hero-glow-one"></div>
+
+    <div class="hero-glow hero-glow-two"></div>
+
+    <div class="hero-grid"></div>
+
+
+    <div class="hero-container">
+
+
+        <!-- LEFT CONTENT -->
+
+        <div class="hero-content">
+
+
+            <div class="hero-badge">
+
+                <span class="hero-badge-dot"></span>
+
+                Discover what's around you
+
+            </div>
+
+
+            <h1>
+
+                Your city has
+
+                <span>
+                    more to offer.
+                </span>
+
+            </h1>
+
+
+            <p class="hero-description">
+
+                Find great local businesses, discover hidden
+                gems and connect with places worth knowing.
+
+            </p>
+
+
+            <!-- HERO BUTTONS -->
+
+            <div class="hero-actions">
+
+                <a
+                    href="/customer"
+                    class="hero-primary-button"
+                >
+
+                    Explore Businesses
+
+                    <span>
+                        →
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="/register"
+                    class="hero-secondary-button"
+                >
+
+                    List Your Business
+
+                </a>
+
+            </div>
+
+
+            <!-- TRUST ROW -->
+
+            <div class="hero-trust">
+
+                <div class="trust-avatars">
+
+                    <span>★</span>
+
+                    <span>★</span>
+
+                    <span>•</span>
+
+                </div>
+
+                <span>
+                    Built for local communities
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- RIGHT VISUAL -->
+
+        <div class="hero-visual">
+
+
+            <!-- Orbit -->
+
+            <div class="hero-orbit orbit-large"></div>
+
+            <div class="hero-orbit orbit-small"></div>
+
+
+            <!-- MAP CARD -->
+
+            <div class="map-card">
+
+
+                <!-- TOP -->
+
+                <div class="map-card-top">
+
+                    <span>
+                        NEAR YOU
+                    </span>
+
+                    <span class="live-indicator">
+
+                        <i></i>
+
+                        Live
+
+                    </span>
+
+                </div>
+
+
+                <!-- MAP -->
+
+                <div class="fake-map">
+
+                    <div class="map-road road-one"></div>
+
+                    <div class="map-road road-two"></div>
+
+                    <div class="map-road road-three"></div>
+
+                    <div class="map-road road-four"></div>
+
+
+                    <!-- LOCATION -->
+
+                    <div class="you-location">
+
+                        <div class="you-pulse"></div>
+
+                        <div class="you-dot"></div>
+
+                        <span>
+                            You
+                        </span>
+
+                    </div>
+
+
+                    <!-- PLACES -->
+
+                    <div class="map-place place-one">
+                        <span></span>
+                    </div>
+
+                    <div class="map-place place-two">
+                        <span></span>
+                    </div>
+
+                    <div class="map-place place-three">
+                        <span></span>
+                    </div>
+
+
+                </div>
+
+
+                <!-- MAP BOTTOM -->
+
+                <div class="map-card-bottom">
+
+                    <div>
+
+                        <strong>
+                            Local discoveries
+                        </strong>
+
+                        <span>
+                            Around your location
+                        </span>
+
+                    </div>
+
+
+                    <div class="map-arrow">
+                        →
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- DISTANCE FLOATING CARD -->
+
+            <div class="distance-card">
+
+                <span class="distance-pin">
+                    📍
+                </span>
+
+                <div>
+
+                    <strong>
+                        2.4 km
+                    </strong>
+
+                    <span>
+                        nearby
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- BUSINESS FLOATING CARD -->
+
+            <div class="favorite-card">
+
+                <div class="favorite-icon">
+                    ☕
+                </div>
+
+                <div>
+
+                    <span>
+                        CAFE
+                    </span>
+
+                    <strong>
+                        Your next favorite
+                    </strong>
+
+                    <small>
+                        ★ 4.8
+                    </small>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     DISCOVER SECTION
+========================================================= -->
+
+<section
+    class="discover-section"
+    id="discover"
+>
+
+    <div class="discover-container">
+
+
+        <!-- SECTION HEADING -->
+
+        <div class="section-heading">
+
+            <span class="section-eyebrow">
+                LOCAL DISCOVERIES
+            </span>
+
+            <h2>
+
+                Find places you'll
+
+                <span>
+                    love.
+                </span>
+
+            </h2>
+
+            <p>
+
+                From your morning coffee to your next favorite
+                restaurant, discover businesses worth knowing
+                around your city.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- DISCOVER CARDS -->
+        <div class="discover-grid">
+
+            <!-- CARD 1 -->
+            <a href="/customer?mode=discover" class="discover-card">
+
+                <div class="discover-card-top">
+                    <div class="discover-icon" aria-hidden="true">☕</div>
+
+                    <div class="discover-illustration" aria-hidden="true">
+    <svg class="discover-art discover-art-coffee" viewBox="0 0 240 190" role="presentation">
+        <defs>
+            <linearGradient id="capCup" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#fffdfb"/>
+                <stop offset="42%" stop-color="#f5eee9"/>
+                <stop offset="76%" stop-color="#ded0c9"/>
+                <stop offset="100%" stop-color="#bca9a0"/>
+            </linearGradient>
+            <linearGradient id="capCupSide" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#fffaf7"/>
+                <stop offset="58%" stop-color="#e8ddd8"/>
+                <stop offset="100%" stop-color="#c5b4ac"/>
+            </linearGradient>
+            <radialGradient id="capFoam" cx="36%" cy="25%" r="78%">
+                <stop offset="0%" stop-color="#fffdf8"/>
+                <stop offset="38%" stop-color="#f7eee4"/>
+                <stop offset="72%" stop-color="#e8d7c8"/>
+                <stop offset="100%" stop-color="#c8a995"/>
+            </radialGradient>
+            <radialGradient id="capCoffee" cx="35%" cy="25%" r="78%">
+                <stop offset="0%" stop-color="#a97962"/>
+                <stop offset="55%" stop-color="#744838"/>
+                <stop offset="100%" stop-color="#4b2b25"/>
+            </radialGradient>
+            <linearGradient id="capSaucer" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#fffaf7"/>
+                <stop offset="50%" stop-color="#eadfd9"/>
+                <stop offset="100%" stop-color="#c7b5ad"/>
+            </linearGradient>
+            <linearGradient id="capMetal" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="45%" stop-color="#cfc9c5"/>
+                <stop offset="100%" stop-color="#8f8884"/>
+            </linearGradient>
+            <filter id="capShadow" x="-30%" y="-30%" width="170%" height="190%">
+                <feDropShadow dx="0" dy="11" stdDeviation="9" flood-color="#5a4038" flood-opacity=".19"/>
+            </filter>
+            <filter id="capSmallShadow" x="-40%" y="-40%" width="180%" height="190%">
+                <feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#4e3933" flood-opacity=".15"/>
+            </filter>
+        </defs>
+
+        <!-- Ground shadow -->
+        <ellipse cx="121" cy="163" rx="77" ry="13" fill="#634b43" opacity=".11"/>
+
+        <!-- Spoon -->
+        <g transform="translate(183 104) rotate(21)" filter="url(#capSmallShadow)">
+            <ellipse cx="13" cy="-31" rx="9" ry="13" fill="url(#capMetal)"/>
+            <rect x="10.5" y="-19" width="5" height="61" rx="2.5" fill="url(#capMetal)"/>
+            <path d="M11 1h4" stroke="#fff" stroke-opacity=".55" stroke-width="1.5"/>
+        </g>
+
+        <!-- Saucer -->
+        <g filter="url(#capShadow)">
+            <ellipse cx="113" cy="139" rx="73" ry="19" fill="url(#capSaucer)"/>
+            <ellipse cx="113" cy="136" rx="59" ry="12" fill="#f7efeb"/>
+            <ellipse cx="113" cy="135" rx="48" ry="8" fill="#d7c8c1" opacity=".55"/>
+        </g>
+
+        <!-- Handle -->
+        <g filter="url(#capShadow)">
+            <path d="M159 69
+                     C190 62 208 77 208 99
+                     C208 122 188 136 159 128
+                     L159 114
+                     C178 118 191 112 191 98
+                     C191 86 180 79 159 82 Z"
+                  fill="url(#capCup)"/>
+            <path d="M164 82
+                     C181 79 191 86 191 98
+                     C191 109 181 116 164 114"
+                  fill="none"
+                  stroke="#b7a39b"
+                  stroke-width="5"
+                  stroke-linecap="round"
+                  opacity=".62"/>
+        </g>
+
+        <!-- Cappuccino cup body -->
+        <g filter="url(#capShadow)">
+            <path d="M48 65
+                     C48 59 56 55 65 55
+                     H160
+                     C168 55 174 59 174 65
+                     V105
+                     C174 132 149 146 111 146
+                     C73 146 48 132 48 105 Z"
+                  fill="url(#capCupSide)"/>
+
+            <!-- Ceramic side highlight -->
+            <path d="M61 70
+                     C60 94 65 115 81 126"
+                  fill="none"
+                  stroke="#fff"
+                  stroke-width="8"
+                  stroke-linecap="round"
+                  opacity=".72"/>
+
+            <!-- Soft ceramic reflection -->
+            <path d="M154 75
+                     C162 91 159 111 149 121"
+                  fill="none"
+                  stroke="#fff"
+                  stroke-width="5"
+                  stroke-linecap="round"
+                  opacity=".25"/>
+
+            <!-- Thick cappuccino rim -->
+            <ellipse cx="111" cy="64" rx="63" ry="20" fill="#fffaf6"/>
+            <ellipse cx="111" cy="62" rx="55" ry="17" fill="url(#capFoam)"/>
+
+            <!-- Coffee visible inside foam -->
+            <ellipse cx="111" cy="62" rx="45" ry="12.5" fill="url(#capCoffee)"/>
+
+            <!-- Thick milk foam edge -->
+            <path d="M67 61
+                     C72 51 88 47 110 47
+                     C132 47 150 52 155 61
+                     C147 54 134 53 111 53
+                     C88 53 75 55 67 61 Z"
+                  fill="#fffaf3"
+                  opacity=".95"/>
+
+            <!-- Cappuccino foam / latte pattern -->
+            <ellipse cx="111" cy="60" rx="29" ry="8.5" fill="#b67b61" opacity=".48"/>
+            <path d="M91 59
+                     C97 53 107 52 113 56
+                     C118 59 118 63 112 65
+                     C106 67 97 64 91 59 Z"
+                  fill="#f1d5bd"
+                  opacity=".94"/>
+            <path d="M102 56
+                     C108 53 114 55 117 59
+                     C114 61 109 62 103 61"
+                  fill="none"
+                  stroke="#fff0df"
+                  stroke-width="2.7"
+                  stroke-linecap="round"/>
+            <path d="M107 55
+                     C111 58 113 61 112 64"
+                  fill="none"
+                  stroke="#fff5e8"
+                  stroke-width="2.1"
+                  stroke-linecap="round"/>
+
+            <!-- Cocoa dust specks -->
+            <g fill="#80513f" opacity=".42">
+                <circle cx="78" cy="59" r="1.3"/>
+                <circle cx="84" cy="54" r="1"/>
+                <circle cx="126" cy="54" r="1.2"/>
+                <circle cx="136" cy="58" r="1"/>
+                <circle cx="143" cy="62" r="1.2"/>
+                <circle cx="96" cy="52" r=".8"/>
+            </g>
+
+            <!-- Cup contour -->
+            <path d="M62 105
+                     C75 123 92 130 112 130
+                     C134 130 151 122 162 104"
+                  fill="none"
+                  stroke="#fff"
+                  stroke-opacity=".24"
+                  stroke-width="3"
+                  stroke-linecap="round"/>
+
+            <!-- Bottom ceramic highlight -->
+            <path d="M77 135
+                     C90 141 124 144 143 134"
+                  fill="none"
+                  stroke="#b4a19a"
+                  stroke-opacity=".25"
+                  stroke-width="3"
+                  stroke-linecap="round"/>
+        </g>
+
+        <!-- Steam -->
+        <g fill="none" stroke="#9b837b" stroke-width="3.2" stroke-linecap="round" opacity=".27">
+            <path d="M79 36 C70 25 85 20 78 8"/>
+            <path d="M103 33 C94 20 109 15 102 2"/>
+            <path d="M127 35 C118 24 133 18 127 7"/>
+        </g>
+
+        <!-- Tiny premium sparkle -->
+        <g opacity=".45">
+            <path d="M190 35l2.5 7 7 2.5-7 2.5-2.5 7-2.5-7-7-2.5 7-2.5z" fill="#fff"/>
+            <circle cx="45" cy="37" r="3" fill="#fff"/>
+        </g>
+    </svg>
+</div>
+                </div>
+
+                <div class="discover-card-content">
+                    <span class="discover-number">01</span>
+                    <h3>Explore Local Businesses</h3>
+                    <p>Browse businesses, services and places around your community.</p>
+                    <span class="discover-link">
+                        Explore businesses <span>→</span>
+                    </span>
+                </div>
+
+                <span class="discover-card-action" aria-hidden="true">→</span>
+            </a>
+
+
+            <!-- CARD 2 -->
+            <a href="/customer?mode=nearby" class="discover-card">
+
+                <div class="discover-card-top">
+                    <div class="discover-icon" aria-hidden="true">📍</div>
+
+                    <div class="discover-illustration" aria-hidden="true">
+    <svg class="discover-art discover-art-pin" viewBox="0 0 220 180" role="presentation">
+        <defs>
+            <linearGradient id="pinBody" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#ff5a9a"/>
+                <stop offset="55%" stop-color="#ee2f7e"/>
+                <stop offset="100%" stop-color="#c91d69"/>
+            </linearGradient>
+            <filter id="softShadow2" x="-30%" y="-30%" width="160%" height="170%">
+                <feDropShadow dx="0" dy="10" stdDeviation="8" flood-opacity=".16"/>
+            </filter>
+        </defs>
+        <ellipse cx="108" cy="154" rx="38" ry="9" fill="rgba(92,54,75,.12)"/>
+        <g filter="url(#softShadow2)">
+            <path d="M109 26c-30 0-51 21-51 49 0 36 51 75 51 75s51-39 51-75c0-28-21-49-51-49z"
+                  fill="url(#pinBody)"/>
+            <circle cx="109" cy="74" r="17" fill="#fff4fa"/>
+            <circle cx="103" cy="67" r="6" fill="rgba(255,255,255,.75)"/>
+        </g>
+        <path d="M65 47c8-11 19-17 31-19" fill="none" stroke="rgba(255,255,255,.42)" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="158" cy="34" r="5" fill="rgba(255,255,255,.55)"/>
+        <circle cx="174" cy="52" r="3" fill="rgba(255,255,255,.42)"/>
+        <path d="M76 137c12 7 22 10 34 10" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+</div>
+                </div>
+
+                <div class="discover-card-content">
+                    <span class="discover-number">02</span>
+                    <h3>Discover Near You</h3>
+                    <p>Find businesses close to your current location with nearby discovery.</p>
+                    <span class="discover-link">
+                        Find nearby <span>→</span>
+                    </span>
+                </div>
+
+                <span class="discover-card-action" aria-hidden="true">→</span>
+            </a>
+
+
+            <!-- CARD 3 -->
+            <a href="/customer?mode=top-rated" class="discover-card">
+
+                <div class="discover-card-top">
+                    <div class="discover-icon" aria-hidden="true">⭐</div>
+
+                    <div class="discover-illustration" aria-hidden="true">
+    <svg class="discover-art discover-art-review" viewBox="0 0 230 180" role="presentation">
+        <defs>
+            <linearGradient id="starFill" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#ffe36a"/>
+                <stop offset="55%" stop-color="#f8bf18"/>
+                <stop offset="100%" stop-color="#e49d08"/>
+            </linearGradient>
+            <linearGradient id="reviewPaper" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#fffdf8"/>
+                <stop offset="100%" stop-color="#fff1d8"/>
+            </linearGradient>
+            <filter id="softShadow3" x="-30%" y="-30%" width="170%" height="180%">
+                <feDropShadow dx="0" dy="10" stdDeviation="7" flood-opacity=".15"/>
+            </filter>
+        </defs>
+        <g filter="url(#softShadow3)" transform="translate(8 6)">
+            <path d="M126 21l10 23 25 2-19 16 6 25-22-13-22 13 6-25-19-16 25-2z"
+                  fill="url(#starFill)"/>
+            <path d="M55 76c0-12 10-22 22-22h77c12 0 22 10 22 22v42c0 12-10 22-22 22H99l-22 15 5-15h-5c-12 0-22-10-22-22z"
+                  fill="url(#reviewPaper)"/>
+            <circle cx="77" cy="92" r="7" fill="#ffbd1b"/>
+            <path d="M91 91h62" stroke="#e6d6bf" stroke-width="6" stroke-linecap="round"/>
+            <path d="M91 106h49" stroke="#eadcca" stroke-width="5" stroke-linecap="round"/>
+            <g transform="translate(72 116)">
+                <path d="M7 0l2.2 4.5 5 .7-3.6 3.5.9 5-4.5-2.4L2.5 14l.9-5L-.2 5.2l5-.7z" fill="#f4b817"/>
+                <path d="M27 0l2.2 4.5 5 .7-3.6 3.5.9 5-4.5-2.4L22.5 14l.9-5-3.6-3.8 5-.7z" fill="#f4b817"/>
+                <path d="M47 0l2.2 4.5 5 .7-3.6 3.5.9 5-4.5-2.4L42.5 14l.9-5-3.6-3.8 5-.7z" fill="#f4b817"/>
+                <path d="M67 0l2.2 4.5 5 .7-3.6 3.5.9 5-4.5-2.4L62.5 14l.9-5-3.6-3.8 5-.7z" fill="#f4b817"/>
+            </g>
+        </g>
+        <circle cx="38" cy="50" r="6" fill="rgba(255,205,70,.55)"/>
+        <circle cx="52" cy="38" r="3.5" fill="rgba(255,205,70,.45)"/>
+    </svg>
+</div>
+                </div>
+
+                <div class="discover-card-content">
+                    <span class="discover-number">03</span>
+                    <h3>Read Real Reviews</h3>
+                    <p>Compare ratings and customer reviews before choosing a local business.</p>
+                    <span class="discover-link">
+                        Read reviews <span>→</span>
+                    </span>
+                </div>
+
+                <span class="discover-card-action" aria-hidden="true">→</span>
+            </a>
+
+        </div>
+
+
+        <!-- DISCOVER BOTTOM -->
+
+        <div class="discover-bottom">
+
+
+            <div class="discover-bottom-text">
+
+                <span class="section-eyebrow">
+                    MADE FOR YOUR CITY
+                </span>
+
+                <h3>
+                    Your next favorite place
+                    might be closer than you think.
+                </h3>
+
+                <p>
+                    Discover independent businesses,
+                    hidden gems and local services all
+                    in one place.
+                </p>
+
+
+                <a
+                    href="/customer"
+                    class="discover-button"
+                >
+
+                    Start Exploring
+
+                    <span>
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+
+
+            <!-- ORBIT -->
+
+            <div class="discover-orbit">
+
+                <div class="orbit-circle orbit-one"></div>
+
+                <div class="orbit-circle orbit-two"></div>
+
+                <div class="orbit-center">
+                    <span>
+                        ✦
+                    </span>
+                </div>
+
+                <div class="orbit-dot dot-one">
+                    ☕
+                </div>
+
+                <div class="orbit-dot dot-two">
+                    📍
+                </div>
+
+                <div class="orbit-dot dot-three">
+                    ⭐
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     FEATURES
+========================================================= -->
+
+<section
+    class="how-section"
+    id="features"
+>
+
+    <div class="how-container">
+
+        <div class="section-heading centered">
+
+            <span class="section-eyebrow">
+                FEATURES
+            </span>
+
+            <h2>
+                Discover more.
+                <span>
+                    Connect locally.
+                </span>
+            </h2>
+
+            <p>
+                Explore businesses, find nearby places, read real reviews,
+                browse categories, and connect with your local community.
+            </p>
+
+        </div>
+
+        <div class="how-grid">
+
+            <!-- FEATURE 1 -->
+            <div class="feature-flip-card">
+                <div class="feature-flip-inner">
+                    <div class="feature-flip-front" data-watermark="🔎">
+                        <div class="feature-front-content">
+                            <div class="feature-flip-icon">🔎</div>
+                            <h3>Explore Businesses</h3>
+                        </div>
+                    </div>
+                    <div class="feature-flip-back">
+                        <div class="feature-flip-back-icon">🔎</div>
+                        <h3>Explore Businesses</h3>
+                        <p>
+                            Browse local businesses, services and places
+                            around your community. Discover new businesses
+                            and find places that match what you are looking for.
+                        </p>
+                        <span class="feature-flip-back-hint">Click again to go back</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FEATURE 2 -->
+            <div class="feature-flip-card">
+                <div class="feature-flip-inner">
+                    <div class="feature-flip-front" data-watermark="📍">
+                        <div class="feature-front-content">
+                            <div class="feature-flip-icon">📍</div>
+                            <h3>Find Nearby</h3>
+                        </div>
+                    </div>
+                    <div class="feature-flip-back">
+                        <div class="feature-flip-back-icon">📍</div>
+                        <h3>Find Nearby</h3>
+                        <p>
+                            Discover businesses and useful places close
+                            to your location. Quickly find cafés, restaurants,
+                            services, shops and other nearby places.
+                        </p>
+                        <span class="feature-flip-back-hint">Click again to go back</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FEATURE 3 -->
+            <div class="feature-flip-card">
+                <div class="feature-flip-inner">
+                    <div class="feature-flip-front" data-watermark="⭐">
+                        <div class="feature-front-content">
+                            <div class="feature-flip-icon">⭐</div>
+                            <h3>Real Reviews</h3>
+                        </div>
+                    </div>
+                    <div class="feature-flip-back">
+                        <div class="feature-flip-back-icon">⭐</div>
+                        <h3>Real Reviews</h3>
+                        <p>
+                            Read customer ratings and reviews before choosing
+                            a business. Compare experiences from other customers
+                            and make better decisions.
+                        </p>
+                        <span class="feature-flip-back-hint">Click again to go back</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FEATURE 4 -->
+            <div class="feature-flip-card">
+                <div class="feature-flip-inner">
+                    <div class="feature-flip-front" data-watermark="📁">
+                        <div class="feature-front-content">
+                            <div class="feature-flip-icon">🗂️</div>
+                            <h3>Categories</h3>
+                        </div>
+                    </div>
+                    <div class="feature-flip-back">
+                        <div class="feature-flip-back-icon">🗂️</div>
+                        <h3>Categories</h3>
+                        <p>
+                            Browse businesses through useful categories
+                            such as cafés, restaurants, beauty, services,
+                            shopping, healthcare, hotels and more.
+                        </p>
+                        <span class="feature-flip-back-hint">Click again to go back</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FEATURE 5 -->
+            <div class="feature-flip-card">
+                <div class="feature-flip-inner">
+                    <div class="feature-flip-front" data-watermark="🏪">
+                        <div class="feature-front-content">
+                            <div class="feature-flip-icon">🏪</div>
+                            <h3>List Your Business</h3>
+                        </div>
+                    </div>
+                    <div class="feature-flip-back">
+                        <div class="feature-flip-back-icon">🏪</div>
+                        <h3>List Your Business</h3>
+                        <p>
+                            Business owners can showcase their business
+                            and make it easier for local customers to
+                            discover their products and services.
+                        </p>
+                        <span class="feature-flip-back-hint">Click again to go back</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FEATURE 6 -->
+            <div class="feature-flip-card">
+                <div class="feature-flip-inner">
+                    <div class="feature-flip-front" data-watermark="🔒">
+                        <div class="feature-front-content">
+                            <div class="feature-flip-icon">🔐</div>
+                            <h3>Business Login</h3>
+                        </div>
+                    </div>
+                    <div class="feature-flip-back">
+                        <div class="feature-flip-back-icon">🔐</div>
+                        <h3>Business Login</h3>
+                        <p>
+                            Business owners can securely access their
+                            account and manage their business information
+                            through the platform.
+                        </p>
+                        <span class="feature-flip-back-hint">Click again to go back</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FEATURE 7 -->
+            <div class="feature-flip-card">
+                <div class="feature-flip-inner">
+                    <div class="feature-flip-front" data-watermark="🧭">
+                        <div class="feature-front-content">
+                            <div class="feature-flip-icon">🧭</div>
+                            <h3>Easy Discovery</h3>
+                        </div>
+                    </div>
+                    <div class="feature-flip-back">
+                        <div class="feature-flip-back-icon">🧭</div>
+                        <h3>Easy Discovery</h3>
+                        <p>
+                            Find what you need quickly with a simple
+                            discovery experience designed to help you
+                            move from searching to finding the right place.
+                        </p>
+                        <span class="feature-flip-back-hint">Click again to go back</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FEATURE 8 -->
+            <div class="feature-flip-card">
+                <div class="feature-flip-inner">
+                    <div class="feature-flip-front" data-watermark="❤️">
+                        <div class="feature-front-content">
+                            <div class="feature-flip-icon">❤️</div>
+                            <h3>Local Community</h3>
+                        </div>
+                    </div>
+                    <div class="feature-flip-back">
+                        <div class="feature-flip-back-icon">❤️</div>
+                        <h3>Local Community</h3>
+                        <p>
+                            Connect people with local businesses and
+                            help communities discover places worth
+                            knowing, visiting and supporting.
+                        </p>
+                        <span class="feature-flip-back-hint">Click again to go back</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     CATEGORIES
+========================================================= -->
+
+<section
+    class="categories-section"
+    id="categories"
+>
+
+    <div class="categories-container">
+
+
+        <div class="categories-heading">
+
+            <div>
+
+                <span class="section-eyebrow">
+                    EXPLORE CATEGORIES
+                </span>
+
+                <h2>
+                    Something for
+                    <span>
+                        everyone.
+                    </span>
+                </h2>
+
+            </div>
+
+
+            <a
+                href="/customer"
+                class="categories-link"
+            >
+                View all businesses →
+            </a>
+
+        </div>
+
+
+
+        <div class="categories-grid">
+
+
+            <a
+                href="/customer?category=cafe"
+                class="category-card category-cafe"
+            >
+
+                <div class="category-symbol">
+                    ☕
+                </div>
+
+                <div>
+
+                    <h3>
+                        Cafés
+                    </h3>
+
+                    <p>
+                        Coffee & more
+                    </p>
+
+                </div>
+
+                <span>
+                    →
+                </span>
+
+            </a>
+
+
+
+            <a
+                href="/customer?category=restaurant"
+                class="category-card category-food"
+            >
+
+                <div class="category-symbol">
+                    🍽️
+                </div>
+
+                <div>
+
+                    <h3>
+                        Restaurants
+                    </h3>
+
+                    <p>
+                        Great food nearby
+                    </p>
+
+                </div>
+
+                <span>
+                    →
+                </span>
+
+            </a>
+
+
+
+            <a
+                href="/customer?category=saloon"
+                class="category-card category-beauty"
+            >
+
+                <div class="category-symbol">
+                    ✨
+                </div>
+
+                <div>
+
+                    <h3>
+                        Beauty
+                    </h3>
+
+                    <p>
+                        Salons & wellness
+                    </p>
+
+                </div>
+
+                <span>
+                    →
+                </span>
+
+            </a>
+
+
+
+            <a
+                href="/customer?category=service"
+                class="category-card category-services"
+            >
+
+                <div class="category-symbol">
+                    🛠️
+                </div>
+
+                <div>
+
+                    <h3>
+                        Services
+                    </h3>
+
+                    <p>
+                        Local professionals
+                    </p>
+
+                </div>
+
+                <span>
+                    →
+                </span>
+
+            </a>
+            <a
+                href="/customer?category=grocery"
+                class="category-card category-grocery"
+            >
+                <div class="category-symbol">
+                    🛒
+                </div>
+
+                <div>
+                    <h3>
+                        Grocery Stores
+                    </h3>
+
+                    <p>
+                        Everyday essentials
+                    </p>
+                </div>
+
+                <span>
+                    →
+                </span>
+            </a>
+
+
+            <a
+                href="/customer?category=hotel"
+                class="category-card category-hotel"
+            >
+                <div class="category-symbol">
+                    🏨
+                </div>
+
+                <div>
+                    <h3>
+                        Hotels & Stays
+                    </h3>
+
+                    <p>
+                        Places to stay
+                    </p>
+                </div>
+
+                <span>
+                    →
+                </span>
+            </a>
+
+
+            <a
+                href="/customer?category=shopping"
+                class="category-card category-shooping"
+            >
+                <div class="category-symbol">
+                    🛍️
+                </div>
+
+                <div>
+                    <h3>
+                        Shopping
+                    </h3>
+
+                    <p>
+                        Shops & local stores
+                    </p>
+                </div>
+
+                <span>
+                    →
+                </span>
+            </a>
+
+
+            <a
+                href="/customer?category=healthcare"
+                class="category-card category-healthcare"
+            >
+                <div class="category-symbol">
+                    🏥
+                </div>
+
+                <div>
+                    <h3>
+                        Healthcare
+                    </h3>
+
+                    <p>
+                        Clinics & pharmacies
+                    </p>
+                </div>
+
+                <span>
+                    →
+                </span>
+            </a>
+
+
+            <a
+                href="/customer?category=fitness"
+                class="category-card category-fitness"
+            >
+                <div class="category-symbol">
+                    🏋️
+                </div>
+
+                <div>
+                    <h3>
+                        Fitness & Sports
+                    </h3>
+
+                    <p>
+                        Gyms & activities
+                    </p>
+                </div>
+
+                <span>
+                    →
+                </span>
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     FINAL CTA
+========================================================= -->
+
+<section class="home-cta">
+
+    <div class="cta-glow"></div>
+
+    <div class="cta-content">
+
+        <span class="section-eyebrow">
+            YOUR CITY. YOUR DISCOVERY.
+        </span>
+
+        <h2>
+            Ready to discover
+            <span>
+                something new?
+            </span>
+        </h2>
+
+        <p>
+            Explore local businesses, discover hidden gems
+            and find places worth knowing.
+        </p>
+
+
+        <div class="cta-actions">
+
+            <a
+                href="/customer"
+                class="cta-primary"
+            >
+                Explore Businesses
+                <span>→</span>
+            </a>
+
+            <a
+                href="/register"
+                class="cta-secondary"
+            >
+                List Your Business
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+</main>
+
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer class="home-footer">
+
+    <div class="footer-container">
+
+
+        <!-- BRAND -->
+
+        <div class="footer-brand">
+
+            <a
+                href="/"
+                class="home-logo footer-logo"
+            >
+
+                <span class="home-logo-mark">
+                    L
+                </span>
+
+                <span class="home-logo-text">
+                    Local Business
+                </span>
+
+            </a>
+
+
+            <p>
+                Discover great local businesses,
+                hidden gems and places worth knowing
+                around your city.
+            </p>
+
+        </div>
+
+
+
+        <!-- EXPLORE -->
+
+        <div class="footer-column">
+
+            <h4>
+                Explore
+            </h4>
+
+            <a href="#discover">
+                Discover
+            </a>
+
+            <a href="/customer">
+                Businesses
+            </a>
+
+            <a href="/customer">
+                Nearby Places
+            </a>
+
+        </div>
+
+
+
+        <!-- BUSINESS -->
+
+        <div class="footer-column">
+
+            <h4>
+                For Business
+            </h4>
+
+            <a href="/register">
+                List Your Business
+            </a>
+
+            <a href="/login">
+                Business Login
+            </a>
+
+        </div>
+
+
+
+        <!-- COMPANY -->
+
+        <div class="footer-column">
+
+            <h4>
+                Company
+            </h4>
+
+            <a href="#features">
+                Features
+            </a>
+
+            <a href="#categories">
+                Categories
+            </a>
+
+            <a href="#discover">
+                About
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- FOOTER BOTTOM -->
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 Local Business Directory.
+            All rights reserved.
+        </p>
+
+        <p>
+            Built for local communities.
+        </p>
+
+    </div>
+
+</footer>
+
+
+
+<!-- =========================================================
+     AUTH MODAL
+========================================================= -->
+
+    <!-- TOAST MESSAGE (OUTSIDE FORM) -->
+    <div id="authToast" class="auth-toast">
+        <span class="auth-toast-icon"></span>
+        <span class="auth-toast-text"></span>
+    </div>
+
+<div class="auth-modal-overlay" id="authModal" aria-hidden="true">
+
+    <!-- LOGIN / REGISTER POPUP -->
+    <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
+
+        <button type="button" class="auth-modal-close" id="authModalClose" aria-label="Close">
+            &times;
+        </button>
+
+        <div class="auth-form-container" id="loginModalForm">
+
+            <div class="auth-modal-header">
+                <h2 id="authModalTitle">Welcome Back</h2>
+                <p>Login to your Local Business account</p>
+            </div>
+
+            <form id="modalLoginForm">
+
+                <div class="auth-input-group">
+                    <label for="modalLoginEmail">Email</label>
+                    <input type="email" id="modalLoginEmail" name="email" placeholder="Enter your email" autocomplete="email" required>
+                </div>
+
+                <div class="auth-input-group">
+                    <label for="modalLoginPassword">Password</label>
+
+                    <div class="password-field-wrapper">
+                        <input
+                            type="password"
+                            id="modalLoginPassword"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            id="toggleLoginPassword"
+                            aria-label="Show password"
+                            title="Show password"
+                        >
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                    </div>
+
+                </div>
+
+                <div class="forgot-password-row">
+                    <button type="button" id="forgotPasswordButton">
+                        Forgot Password?
+                    </button>
+                </div>
+
+                <button type="submit" class="auth-submit-button" id="modalLoginButton">
+                    Login
+                </button>
+
+            </form>
+
+            <div class="auth-switch">
+                <span>Don't have an account?</span>
+                <button type="button" id="showRegisterButton">Register here</button>
+            </div>
+
+        </div>
+
+        <div class="auth-form-container auth-hidden" id="registerModalForm">
+
+            <div class="auth-modal-header">
+                <h2>Create Account</h2>
+                <p>Join the Local Business community</p>
+            </div>
+
+            <form id="modalRegisterForm">
+
+                <div class="auth-input-group">
+                    <label for="modalRegisterName">Full Name</label>
+                    <input type="text" id="modalRegisterName" name="name" placeholder="Enter your full name" autocomplete="name" required>
+                </div>
+
+                <div class="auth-input-group">
+                    <label for="modalRegisterEmail">Email Address</label>
+                    <input type="email" id="modalRegisterEmail" name="email" placeholder="Enter your email" autocomplete="email" required>
+                </div>
+
+                <div class="auth-input-group">
+                    <label for="modalRegisterPassword">Password</label>
+
+                    <div class="password-field-wrapper">
+
+                        <input
+                            type="password"
+                            id="modalRegisterPassword"
+                            name="password"
+                            placeholder="Create a password"
+                            minlength="6"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            id="toggleRegisterPassword"
+                            aria-label="Show password"
+                            title="Show password"
+                        >
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                            >
+                                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+
+                    </div>
+                </div>
+
+                <div class="auth-input-group">
+                    <label for="modalRegisterRole">Account Type</label>
+                    <select id="modalRegisterRole" name="role">
+                        <option value="customer">Customer</option>
+                        <option value="owner">Business Owner</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="auth-submit-button" id="modalRegisterButton">
+                    Create Account
+                </button>
+
+            </form>
+
+            <div class="auth-switch">
+                <span>Already have an account?</span>
+                <button type="button" id="showLoginButton">Login here</button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     FORGOT PASSWORD MODAL
+========================================================= -->
+
+<div class="auth-modal-overlay" id="forgotPasswordModal" aria-hidden="true">
+
+    <div class="auth-modal forgot-password-modal" role="dialog" aria-modal="true" aria-labelledby="forgotPasswordTitle">
+
+        <button type="button" class="auth-modal-close" id="forgotPasswordClose" aria-label="Close">
+            &times;
+        </button>
+
+        <!-- STEP 1: EMAIL -->
+        <div class="forgot-step" id="forgotStepEmail">
+
+            <div class="auth-modal-header">
+                <h2 id="forgotPasswordTitle">Forgot Password?</h2>
+                <p>Enter your email and we'll send you a 6-digit code.</p>
+            </div>
+
+            <form id="forgotEmailForm">
+                <div class="auth-input-group">
+                    <label for="forgotEmail">Email Address</label>
+                    <input type="email" id="forgotEmail" placeholder="Enter your registered email" autocomplete="email" required>
+                </div>
+
+                <button type="submit" class="auth-submit-button" id="sendOtpButton">
+                    Send Verification Code
+                </button>
+            </form>
+
+            <div class="auth-switch">
+                <button type="button" id="backToLoginFromForgot">← Back to Login</button>
+            </div>
+
+        </div>
+
+        <!-- STEP 2: OTP -->
+        <div class="forgot-step auth-hidden" id="forgotStepOtp">
+
+            <div class="auth-modal-header">
+                <h2>Enter Verification Code</h2>
+                <p>We sent a 6-digit code to your email.</p>
+            </div>
+
+            <form id="verifyOtpForm">
+                <div class="auth-input-group">
+                    <label for="forgotOtp">Verification Code</label>
+                    <input type="text" id="forgotOtp" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" placeholder="Enter 6-digit code" autocomplete="one-time-code" required>
+                </div>
+
+                <button type="submit" class="auth-submit-button" id="verifyOtpButton">
+                    Verify Code
+                </button>
+            </form>
+
+            <div class="forgot-resend-row">
+                <span>Didn't receive the code?</span>
+                <button type="button" id="resendOtpButton">
+                    Resend Code
+                </button>
+            </div>
+
+        </div>
+
+        <!-- STEP 3: NEW PASSWORD -->
+        <div class="forgot-step auth-hidden" id="forgotStepReset">
+
+            <div class="auth-modal-header">
+                <h2>Reset Password</h2>
+                <p>Create a new password for your account.</p>
+            </div>
+
+            <form id="resetPasswordForm">
+                <div class="auth-input-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword" placeholder="Enter new password" minlength="6" autocomplete="new-password" required>
+                </div>
+
+                <div class="auth-input-group">
+                    <label for="confirmNewPassword">Confirm New Password</label>
+                    <input type="password" id="confirmNewPassword" placeholder="Confirm new password" minlength="6" autocomplete="new-password" required>
+                </div>
+
+                <button type="submit" class="auth-submit-button" id="resetPasswordButton">
+                    Reset Password
+                </button>
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+    /*
+       Register password visibility
+    */
+    const registerPassword =
+        document.getElementById("modalRegisterPassword");
+
+    const toggleRegisterPassword =
+        document.getElementById("toggleRegisterPassword");
+
+
+    if (
+        registerPassword &&
+        toggleRegisterPassword
+    ) {
+
+        toggleRegisterPassword.addEventListener(
+            "click",
+            function () {
+
+                const isHidden =
+                    registerPassword.type === "password";
+
+
+                registerPassword.type =
+                    isHidden
+                        ? "text"
+                        : "password";
+
+
+                toggleRegisterPassword.setAttribute(
+                    "aria-label",
+                    isHidden
+                        ? "Hide password"
+                        : "Show password"
+                );
+
+
+                toggleRegisterPassword.setAttribute(
+                    "title",
+                    isHidden
+                        ? "Hide password"
+                        : "Show password"
+                );
+
+            }
+        );
+
+    }
+
+
+    const mobileMenuButton =
+        document.getElementById("mobileMenuButton");
+
+    const mobileNav =
+        document.getElementById("mobileNav");
+
+
+    if (mobileMenuButton && mobileNav) {
+
+        mobileMenuButton.addEventListener(
+            "click",
+            function () {
+
+                mobileNav.classList.toggle("active");
+
+                mobileMenuButton.classList.toggle("active");
+
+            }
+        );
+
+
+        mobileNav
+            .querySelectorAll("a")
+            .forEach(function (link) {
+
+                link.addEventListener(
+                    "click",
+                    function () {
+
+                        mobileNav.classList.remove("active");
+
+                        mobileMenuButton.classList.remove("active");
+
+                    }
+                );
+
+            });
+
+    }
+
+
+
+    /*
+       Smooth scrolling
+    */
+
+    document
+        .querySelectorAll('a[href^="#"]')
+        .forEach(function (link) {
+
+            link.addEventListener(
+                "click",
+                function (event) {
+
+                    const targetId =
+                        this.getAttribute("href");
+
+                    if (
+                        !targetId ||
+                        targetId === "#"
+                    ) {
+                        return;
+                    }
+
+
+                    const target =
+                        document.querySelector(targetId);
+
+
+                    if (target) {
+
+                        event.preventDefault();
+
+
+                        target.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start"
+                        });
+
+                    }
+
+                }
+            );
+
+        });
+
+
+
+    /*
+       Navbar shadow on scroll
+    */
+
+    const navbar =
+        document.querySelector(".home-navbar");
+
+
+    window.addEventListener(
+        "scroll",
+        function () {
+
+            if (!navbar) {
+                return;
+            }
+
+
+            if (window.scrollY > 30) {
+
+                navbar.classList.add("scrolled");
+
+            } else {
+
+                navbar.classList.remove("scrolled");
+
+            }
+
+        }
+    );
+
+</script>
+
+<script src="/js/script.js"></script>
+<script src="/js/script-forgot-password.js"></script>
+
+
+</body>
+
+</html>

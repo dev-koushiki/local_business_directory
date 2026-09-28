@@ -1,0 +1,1875 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Create Account | Local Business Directory
+    </title>
+
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <style>
+
+        /* =====================================================
+           RESET
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+
+            font-family: "Inter", Arial, sans-serif;
+
+            color: #171717;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f7f5f3 0%,
+                    #eee7e3 50%,
+                    #f7f5f3 100%
+                );
+
+            min-height: 100vh;
+
+            overflow: hidden;
+        }
+
+        button,
+        input,
+        select {
+            font-family: inherit;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+
+
+        /* =====================================================
+           BACKGROUND PAGE
+           This is intentionally blurred like the homepage
+        ====================================================== */
+
+        .background-page {
+
+            position: fixed;
+
+            inset: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            overflow: hidden;
+
+            background:
+                radial-gradient(
+                    circle at 15% 25%,
+                    rgba(139, 58, 58, 0.30),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 85% 70%,
+                    rgba(111, 45, 45, 0.20),
+                    transparent 32%
+                ),
+                #f7f5f3;
+
+            filter: blur(2px);
+
+            transform: scale(1.02);
+
+            z-index: 1;
+        }
+
+
+
+        /* =====================================================
+           FAKE HOMEPAGE CONTENT BEHIND POPUP
+        ====================================================== */
+
+        .background-navbar {
+
+            height: 75px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 7%;
+
+            background: rgba(255,255,255,0.88);
+
+            border-bottom: 1px solid #e8e1dd;
+        }
+
+        .background-logo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 18px;
+
+            font-weight: 800;
+
+            color: #171717;
+        }
+
+        .background-logo-box {
+
+            width: 40px;
+
+            height: 40px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: #8b3a3a;
+
+            color: white;
+
+            font-size: 12px;
+
+            font-weight: 800;
+        }
+
+        .background-links {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 28px;
+
+            color: #555;
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+        .background-button {
+
+            padding: 12px 22px;
+
+            border-radius: 8px;
+
+            background: #8b3a3a;
+
+            color: white;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+
+        /* =====================================================
+           HERO BACKGROUND
+        ====================================================== */
+
+        .background-hero {
+
+            min-height: 510px;
+
+            padding: 100px 8%;
+
+            display: flex;
+
+            align-items: center;
+
+            background:
+                linear-gradient(
+                    120deg,
+                    rgba(255,255,255,0.92),
+                    rgba(245,239,236,0.85)
+                );
+        }
+
+        .background-hero-content {
+
+            max-width: 700px;
+        }
+
+        .background-small-title {
+
+            color: #8b3a3a;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            margin-bottom: 18px;
+        }
+
+        .background-hero h1 {
+
+            margin: 0 0 18px;
+
+            font-size: 58px;
+
+            line-height: 1.08;
+
+            letter-spacing: -2px;
+
+            color: #1b1715;
+        }
+
+        .background-hero p {
+
+            max-width: 650px;
+
+            margin: 0 0 30px;
+
+            color: #6f6965;
+
+            font-size: 17px;
+
+            line-height: 1.7;
+        }
+
+        .background-actions {
+
+            display: flex;
+
+            gap: 12px;
+        }
+
+        .background-action-main {
+
+            padding: 14px 24px;
+
+            border-radius: 8px;
+
+            background: #8b3a3a;
+
+            color: white;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+        .background-action-secondary {
+
+            padding: 14px 24px;
+
+            border-radius: 8px;
+
+            border: 1px solid #cfc5bf;
+
+            color: #5e5753;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            background: rgba(255,255,255,0.7);
+        }
+
+
+
+        /* =====================================================
+           BACKGROUND CARDS
+        ====================================================== */
+
+        .background-cards {
+
+            display: flex;
+
+            gap: 20px;
+
+            padding: 35px 8%;
+
+            background: #ffffff;
+        }
+
+        .background-card {
+
+            flex: 1;
+
+            height: 150px;
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            background: #faf9f8;
+
+            border: 1px solid #eee8e4;
+        }
+
+        .background-card h3 {
+
+            margin: 0 0 10px;
+
+            color: #27221f;
+
+            font-size: 16px;
+        }
+
+        .background-card p {
+
+            margin: 0;
+
+            color: #88817d;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+
+
+        /* =====================================================
+           DARK OVERLAY
+        ====================================================== */
+
+        .page-overlay {
+
+            position: fixed;
+
+            inset: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            background:
+                rgba(10, 8, 8, 0.57);
+
+            backdrop-filter: blur(8px);
+
+            -webkit-backdrop-filter: blur(8px);
+
+            z-index: 10;
+        }
+
+
+
+        /* =====================================================
+           REGISTER POPUP
+        ====================================================== */
+
+        .register-modal {
+
+            position: fixed;
+
+            top: 50%;
+
+            left: 50%;
+
+            width: min(460px, calc(100% - 30px));
+
+            max-height: calc(100vh - 40px);
+
+            overflow-y: auto;
+
+            padding: 32px;
+
+            transform:
+                translate(-50%, -50%);
+
+            background: #ffffff;
+
+            border-radius: 17px;
+
+            border: 1px solid #e7e0dc;
+
+            box-shadow:
+                0 30px 80px rgba(0,0,0,0.30);
+
+            z-index: 20;
+
+            animation:
+                registerPopupIn
+                0.28s
+                ease;
+        }
+
+
+        @keyframes registerPopupIn {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translate(-50%, -47%)
+                    scale(0.95);
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translate(-50%, -50%)
+                    scale(1);
+            }
+        }
+
+
+
+        /* =====================================================
+           CLOSE BUTTON
+        ====================================================== */
+
+        .register-close {
+
+            position: absolute;
+
+            top: 11px;
+
+            right: 12px;
+
+            width: 36px;
+
+            height: 36px;
+
+            border: none;
+
+            border-radius: 50%;
+
+            background: transparent;
+
+            color: #777;
+
+            font-size: 27px;
+
+            line-height: 1;
+
+            cursor: pointer;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .register-close:hover {
+
+            background: #f2eeee;
+
+            color: #8b3a3a;
+
+            transform: rotate(90deg);
+        }
+
+
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .register-modal-header {
+
+            text-align: center;
+
+            margin-bottom: 25px;
+
+            padding: 0 20px;
+        }
+
+        .register-brand {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            margin-bottom: 13px;
+
+            color: #8b3a3a;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        .register-brand::before {
+
+            content: "LB";
+
+            width: 27px;
+
+            height: 27px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 7px;
+
+            background: #8b3a3a;
+
+            color: #fff;
+
+            font-size: 8px;
+
+            letter-spacing: 0;
+        }
+
+        .register-modal-header h1 {
+
+            margin: 0 0 7px;
+
+            color: #171717;
+
+            font-size: 27px;
+
+            font-weight: 800;
+
+            letter-spacing: -0.7px;
+        }
+
+        .register-modal-header p {
+
+            margin: 0;
+
+            color: #817a76;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+
+
+        /* =====================================================
+           FORM
+        ====================================================== */
+
+        .form-group {
+
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #282422;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+        .input-wrapper {
+
+            position: relative;
+        }
+
+        .input-icon {
+
+            position: absolute;
+
+            top: 50%;
+
+            left: 13px;
+
+            transform: translateY(-50%);
+
+            color: #9a918c;
+
+            font-size: 14px;
+
+            pointer-events: none;
+        }
+
+        .form-group input,
+        .form-group select {
+
+            width: 100%;
+
+            height: 46px;
+
+            padding: 0 13px 0 38px;
+
+            border: 1px solid #d9d4d0;
+
+            border-radius: 8px;
+
+            background: #ffffff;
+
+            color: #222;
+
+            outline: none;
+
+            font-size: 13px;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .form-group select {
+
+            padding-left: 13px;
+
+            cursor: pointer;
+        }
+
+        .form-group input::placeholder {
+
+            color: #aaa29d;
+        }
+
+        .form-group input:hover,
+        .form-group select:hover {
+
+            border-color: #bbb3ae;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+
+            border-color: #8b3a3a;
+
+            box-shadow:
+                0 0 0 3px rgba(139,58,58,0.11);
+        }
+
+
+
+        /* =====================================================
+           PASSWORD HELP
+        ====================================================== */
+
+        .password-help {
+
+            margin-top: 5px;
+
+            color: #9a928d;
+
+            font-size: 10px;
+        }
+
+
+
+        /* =====================================================
+           CREATE ACCOUNT BUTTON
+        ====================================================== */
+
+        .register-button {
+
+            width: 100%;
+
+            height: 48px;
+
+            margin-top: 4px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #8b3a3a;
+
+            color: #ffffff;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 7px 18px rgba(139,58,58,0.18);
+
+            transition:
+                background 0.2s ease,
+                transform 0.15s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .register-button:hover {
+
+            background: #6f2d2d;
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 10px 23px rgba(139,58,58,0.23);
+        }
+
+        .register-button:active {
+
+            transform: translateY(0);
+        }
+
+        .register-button:disabled {
+
+            opacity: 0.65;
+
+            cursor: not-allowed;
+
+            transform: none;
+        }
+
+
+
+        /* =====================================================
+           LOGIN SWITCH
+        ====================================================== */
+
+        .login-switch {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 5px;
+
+            margin-top: 19px;
+
+            color: #77716d;
+
+            font-size: 12px;
+
+            text-align: center;
+        }
+
+        .login-switch a {
+
+            color: #8b3a3a;
+
+            font-weight: 700;
+        }
+
+        .login-switch a:hover {
+
+            color: #6f2d2d;
+
+            text-decoration: underline;
+        }
+
+
+
+        /* =====================================================
+           SEPARATE TOAST MESSAGE
+        ====================================================== */
+
+        .auth-toast {
+
+            position: fixed;
+
+            top: 30px;
+
+            left: 50%;
+
+            min-width: 300px;
+
+            max-width: 440px;
+
+            padding: 14px 18px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            border-radius: 10px;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 15px 45px rgba(0,0,0,0.28);
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            transform:
+                translate(-50%, -20px);
+
+            transition:
+                opacity 0.25s ease,
+                transform 0.25s ease,
+                visibility 0.25s ease;
+
+            z-index: 100000;
+        }
+
+        .auth-toast.show {
+
+            opacity: 1;
+
+            visibility: visible;
+
+            transform:
+                translate(-50%, 0);
+        }
+
+        .auth-toast.success {
+
+            background: #f0fdf4;
+
+            border: 1px solid #86efac;
+
+            color: #166534;
+        }
+
+        .auth-toast.error {
+
+            background: #fef2f2;
+
+            border: 1px solid #fca5a5;
+
+            color: #991b1b;
+        }
+
+        .auth-toast-icon {
+
+            width: 25px;
+
+            height: 25px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 50%;
+
+            color: #ffffff;
+
+            font-size: 15px;
+
+            font-weight: 800;
+        }
+
+        .auth-toast.success .auth-toast-icon {
+
+            background: #22c55e;
+        }
+
+        .auth-toast.error .auth-toast-icon {
+
+            background: #ef4444;
+        }
+
+        .auth-toast-text {
+
+            flex: 1;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            line-height: 1.4;
+        }
+
+
+
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .background-navbar {
+
+                padding: 0 20px;
+            }
+
+            .background-links {
+
+                display: none;
+            }
+
+            .background-hero {
+
+                padding: 70px 25px;
+            }
+
+            .background-hero h1 {
+
+                font-size: 42px;
+            }
+
+            .background-cards {
+
+                padding: 25px;
+
+                flex-direction: column;
+            }
+
+            .register-modal {
+
+                padding: 27px 21px;
+
+                border-radius: 15px;
+
+                max-height:
+                    calc(100vh - 25px);
+            }
+
+            .register-modal-header h1 {
+
+                font-size: 24px;
+            }
+
+            .auth-toast {
+
+                top: 18px;
+
+                left: 15px;
+
+                right: 15px;
+
+                min-width: 0;
+
+                max-width: none;
+
+                transform:
+                    translateY(-20px);
+            }
+
+            .auth-toast.show {
+
+                transform:
+                    translateY(0);
+            }
+        }
+
+
+        @media (max-width: 400px) {
+
+            .register-modal {
+
+                padding:
+                    25px 17px;
+            }
+
+            .register-modal-header h1 {
+
+                font-size: 22px;
+            }
+
+            .form-group {
+
+                margin-bottom: 13px;
+            }
+
+            .form-group input,
+            .form-group select {
+
+                height: 44px;
+            }
+
+            .register-button {
+
+                height: 46px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     BACKGROUND
+========================================================= -->
+
+<div class="background-page">
+
+
+    <!-- NAVBAR -->
+
+    <div class="background-navbar">
+
+        <div class="background-logo">
+
+            <span class="background-logo-box">
+                LB
+            </span>
+
+            <span>
+                Local Business
+            </span>
+
+        </div>
+
+
+        <div class="background-links">
+
+            <span>
+                Discover
+            </span>
+
+            <span>
+                How It Works
+            </span>
+
+            <span>
+                Categories
+            </span>
+
+        </div>
+
+
+        <div class="background-button">
+            Get Started
+        </div>
+
+    </div>
+
+
+
+    <!-- HERO -->
+
+    <section class="background-hero">
+
+        <div class="background-hero-content">
+
+            <div class="background-small-title">
+                DISCOVER BUSINESSES AROUND YOU
+            </div>
+
+
+            <h1>
+                Your city has more to offer.
+            </h1>
+
+
+            <p>
+                Discover trusted local businesses,
+                explore services near you, and support
+                the people who make your community special.
+            </p>
+
+
+            <div class="background-actions">
+
+                <span class="background-action-main">
+                    Explore Businesses →
+                </span>
+
+                <span class="background-action-secondary">
+                    List Your Business
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- CARDS -->
+
+    <section class="background-cards">
+
+        <div class="background-card">
+
+            <h3>
+                100+ Local Businesses
+            </h3>
+
+            <p>
+                Find trusted businesses and services
+                in your community.
+            </p>
+
+        </div>
+
+
+        <div class="background-card">
+
+            <h3>
+                20+ Categories
+            </h3>
+
+            <p>
+                Explore restaurants, shops, services
+                and more.
+            </p>
+
+        </div>
+
+
+        <div class="background-card">
+
+            <h3>
+                1K+ Happy Customers
+            </h3>
+
+            <p>
+                Connect with businesses that people
+                already trust.
+            </p>
+
+        </div>
+
+    </section>
+
+
+</div>
+
+
+
+<!-- =========================================================
+     BLURRED/DARK OVERLAY
+========================================================= -->
+
+<div class="page-overlay"></div>
+
+
+
+<!-- =========================================================
+     SUCCESS / ERROR TOAST
+     IMPORTANT: OUTSIDE THE FORM
+========================================================= -->
+
+<div
+    id="authToast"
+    class="auth-toast"
+    role="alert"
+    aria-live="polite"
+>
+
+    <span
+        class="auth-toast-icon"
+        id="authToastIcon"
+    ></span>
+
+    <span
+        class="auth-toast-text"
+        id="authToastText"
+    ></span>
+
+</div>
+
+
+
+<!-- =========================================================
+     REGISTER POPUP
+========================================================= -->
+
+<div
+    class="register-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="registerTitle"
+>
+
+
+    <!-- CLOSE BUTTON -->
+
+    <button
+        type="button"
+        class="register-close"
+        id="registerClose"
+        aria-label="Close"
+    >
+        &times;
+    </button>
+
+
+
+    <!-- HEADER -->
+
+    <div class="register-modal-header">
+
+        <div class="register-brand">
+            LOCAL BUSINESS
+        </div>
+
+
+        <h1 id="registerTitle">
+            Create your account.
+        </h1>
+
+
+        <p>
+            Join our community and discover local businesses.
+        </p>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         REGISTER FORM
+    ====================================================== -->
+
+    <form
+        id="registerForm"
+        action="/register"
+        method="POST"
+    >
+
+
+        <!-- FULL NAME -->
+
+        <div class="form-group">
+
+            <label for="name">
+                Full Name
+            </label>
+
+
+            <div class="input-wrapper">
+
+                <span class="input-icon">
+                    👤
+                </span>
+
+
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Enter your full name"
+                    autocomplete="name"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+
+        <!-- EMAIL -->
+
+        <div class="form-group">
+
+            <label for="email">
+                Email Address
+            </label>
+
+
+            <div class="input-wrapper">
+
+                <span class="input-icon">
+                    ✉
+                </span>
+
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    autocomplete="email"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PASSWORD -->
+
+        <div class="form-group">
+
+            <label for="password">
+                Password
+            </label>
+
+
+            <div class="input-wrapper">
+
+                <span class="input-icon">
+                    🔒
+                </span>
+
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Create a password"
+                    minlength="6"
+                    autocomplete="new-password"
+                    required
+                >
+
+            </div>
+
+
+            <div class="password-help">
+                Password must contain at least 6 characters.
+            </div>
+
+        </div>
+
+
+
+        <!-- ACCOUNT TYPE -->
+
+        <div class="form-group">
+
+            <label for="role">
+                Account Type
+            </label>
+
+
+            <select
+                id="role"
+                name="role"
+                required
+            >
+
+                <option
+                    value="customer"
+                    selected
+                >
+                    Customer
+                </option>
+
+
+                <option value="owner">
+                    Business Owner
+                </option>
+
+            </select>
+
+        </div>
+
+
+
+        <!-- CREATE ACCOUNT -->
+
+        <button
+            type="submit"
+            class="register-button"
+            id="registerButton"
+        >
+            Create Account
+        </button>
+
+
+    </form>
+
+
+
+    <!-- LOGIN LINK -->
+
+    <div class="login-switch">
+
+        <span>
+            Already have an account?
+        </span>
+
+
+        <a href="/login">
+            Login here →
+        </a>
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        const form =
+            document.getElementById("registerForm");
+
+
+        const button =
+            document.getElementById("registerButton");
+
+
+        const closeButton =
+            document.getElementById("registerClose");
+
+
+        const toast =
+            document.getElementById("authToast");
+
+
+        const toastIcon =
+            document.getElementById("authToastIcon");
+
+
+        const toastText =
+            document.getElementById("authToastText");
+
+
+        let toastTimer = null;
+
+
+
+        /* =====================================================
+           SHOW SUCCESS
+        ====================================================== */
+
+        function showSuccess(message) {
+
+            if (!toast) return;
+
+            clearTimeout(toastTimer);
+
+            toast.className =
+                "auth-toast success show";
+
+            toastIcon.textContent =
+                "✓";
+
+            toastText.textContent =
+                message;
+
+
+            toastTimer =
+                setTimeout(
+                    function () {
+
+                        hideToast();
+
+                    },
+                    3500
+                );
+        }
+
+
+
+        /* =====================================================
+           SHOW ERROR
+        ====================================================== */
+
+        function showError(message) {
+
+            if (!toast) return;
+
+            clearTimeout(toastTimer);
+
+            toast.className =
+                "auth-toast error show";
+
+            toastIcon.textContent =
+                "✕";
+
+            toastText.textContent =
+                message;
+
+
+            toastTimer =
+                setTimeout(
+                    function () {
+
+                        hideToast();
+
+                    },
+                    4500
+                );
+        }
+
+
+
+        /* =====================================================
+           HIDE TOAST
+        ====================================================== */
+
+        function hideToast() {
+
+            if (!toast) return;
+
+            toast.classList.remove("show");
+
+        }
+
+
+
+        /* =====================================================
+           CLOSE
+        ====================================================== */
+
+        if (closeButton) {
+
+            closeButton.addEventListener(
+                "click",
+                function () {
+
+                    window.location.href = "/";
+
+                }
+            );
+
+        }
+
+
+
+        /* =====================================================
+           LOGIN LINK
+        ====================================================== */
+
+        const loginLink =
+            document.querySelector(
+                ".login-switch a"
+            );
+
+
+        if (loginLink) {
+
+            loginLink.addEventListener(
+                "click",
+                function (event) {
+
+                    event.preventDefault();
+
+                    window.location.href =
+                        "/login";
+
+                }
+            );
+
+        }
+
+
+
+        /* =====================================================
+           FORM SUBMISSION
+        ====================================================== */
+
+        if (form) {
+
+            form.addEventListener(
+                "submit",
+                async function (event) {
+
+                    event.preventDefault();
+
+
+                    hideToast();
+
+
+
+                    const name =
+                        document
+                            .getElementById("name")
+                            .value
+                            .trim();
+
+
+                    const email =
+                        document
+                            .getElementById("email")
+                            .value
+                            .trim();
+
+
+                    const password =
+                        document
+                            .getElementById("password")
+                            .value;
+
+
+                    const role =
+                        document
+                            .getElementById("role")
+                            .value;
+
+
+
+                    /* =========================================
+                       FRONTEND VALIDATION
+                    ========================================== */
+
+                    if (
+                        !name ||
+                        !email ||
+                        !password
+                    ) {
+
+                        showError(
+                            "Please fill in all required fields."
+                        );
+
+                        return;
+                    }
+
+
+
+                    const emailPattern =
+                        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+                    if (!emailPattern.test(email)) {
+
+                        showError(
+                            "Please enter a valid email address."
+                        );
+
+                        return;
+                    }
+
+
+
+                    if (password.length < 6) {
+
+                        showError(
+                            "Password must be at least 6 characters."
+                        );
+
+                        return;
+                    }
+
+
+
+                    /* =========================================
+                       LOADING
+                    ========================================== */
+
+                    button.disabled = true;
+
+                    button.textContent =
+                        "Creating account...";
+
+
+
+                    try {
+
+
+                        /* =====================================
+                           SEND REQUEST
+                        ====================================== */
+
+                        const response =
+                            await fetch(
+                                "/register",
+                                {
+                                    method: "POST",
+
+                                    headers: {
+                                        "Content-Type":
+                                            "application/json",
+
+                                        "Accept":
+                                            "application/json",
+
+                                        "X-Requested-With":
+                                            "XMLHttpRequest"
+                                    },
+
+                                    body:
+                                        JSON.stringify({
+                                            name:
+                                                name,
+
+                                            email:
+                                                email,
+
+                                            password:
+                                                password,
+
+                                            role:
+                                                role
+                                        })
+                                }
+                            );
+
+
+
+                        /* =====================================
+                           READ RESPONSE
+                        ====================================== */
+
+                        const contentType =
+                            response.headers.get(
+                                "content-type"
+                            ) || "";
+
+
+                        let data;
+
+
+                        if (
+                            contentType.includes(
+                                "application/json"
+                            )
+                        ) {
+
+                            data =
+                                await response.json();
+
+                        } else {
+
+                            const text =
+                                await response.text();
+
+                            data = {
+                                success:
+                                    response.ok,
+
+                                message:
+                                    text ||
+                                    "Something went wrong."
+                            };
+
+                        }
+
+
+
+                        /* =====================================
+                           SUCCESS
+                        ====================================== */
+
+                        if (
+                            response.ok &&
+                            data.success !== false
+                        ) {
+
+                            showSuccess(
+                                data.message ||
+                                "Account created successfully!"
+                            );
+
+
+                            form.reset();
+
+
+                            setTimeout(
+                                function () {
+
+                                    window.location.href =
+                                        "/login";
+
+                                },
+                                1500
+                            );
+
+
+                            return;
+                        }
+
+
+
+                        /* =====================================
+                           ERROR
+                        ====================================== */
+
+                        showError(
+                            data.message ||
+                            "Registration failed. Please try again."
+                        );
+
+
+
+                    } catch (error) {
+
+                        console.error(
+                            "Registration error:",
+                            error
+                        );
+
+
+                        showError(
+                            "Unable to connect to the server. Please try again."
+                        );
+
+                    } finally {
+
+                        button.disabled =
+                            false;
+
+                        button.textContent =
+                            "Create Account";
+
+                    }
+
+                }
+            );
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

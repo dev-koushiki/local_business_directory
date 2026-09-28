@@ -1,0 +1,4919 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        <%= business && business.name
+            ? business.name
+            : "Business Details" %>
+        | Local Business
+    </title>
+
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+
+            --dark: #211e1f;
+            --dark-soft: #2b2728;
+
+            --coral: #ff655f;
+            --coral-dark: #d94d49;
+            --coral-light: #fff0ee;
+
+            --cream: #f8f5f1;
+            --white: #ffffff;
+
+            --text: #211e1f;
+            --muted: #746e6b;
+            --light-text: #99918d;
+
+            --border: #e5dfda;
+
+            --green: #238653;
+            --green-light: #edf8f1;
+
+            --red-light: #fff0f0;
+
+            --yellow: #e3a100;
+
+            --blue: #3d78c8;
+            --blue-light: #edf4ff;
+
+            --purple: #7654b8;
+            --purple-light: #f3effc;
+
+            --orange: #df772b;
+            --orange-light: #fff3e8;
+
+            --shadow:
+                0 12px 35px rgba(39, 29, 25, 0.07);
+
+            --shadow-small:
+                0 5px 18px rgba(39, 29, 25, 0.06);
+
+            --radius: 20px;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background: var(--cream);
+
+            color: var(--text);
+
+            line-height: 1.6;
+        }
+
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+
+        button,
+        input,
+        textarea,
+        select {
+            font: inherit;
+        }
+
+
+        /* =====================================================
+           NAVBAR
+        ====================================================== */
+
+        .navbar {
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 1000;
+
+            height: 72px;
+
+            background: var(--dark);
+
+            border-bottom:
+                1px solid rgba(255,255,255,.06);
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,.12);
+        }
+
+
+        .nav-inner {
+
+            width:
+                min(1240px, calc(100% - 50px));
+
+            height: 100%;
+
+            margin: auto;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 25px;
+        }
+
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            color: white;
+
+            font-size: 20px;
+
+            font-weight: 800;
+        }
+
+
+        .brand-logo {
+
+            width: 41px;
+
+            height: 41px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: var(--coral);
+
+            color: white;
+
+            border-radius: 11px;
+
+            font-size: 19px;
+
+            font-weight: 850;
+        }
+
+
+        .nav-center {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+        }
+
+
+        .nav-link {
+
+            padding: 8px 13px;
+
+            color: #d6d1cf;
+
+            border-radius: 8px;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            transition: .2s ease;
+        }
+
+
+        .nav-link:hover {
+
+            background:
+                rgba(255,255,255,.07);
+
+            color: white;
+        }
+
+
+        .back-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            min-height: 42px;
+
+            padding: 0 16px;
+
+            border:
+                1px solid rgba(255,255,255,.14);
+
+            border-radius: 9px;
+
+            background: transparent;
+
+            color: white;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition: .2s ease;
+        }
+
+
+        .back-button:hover {
+
+            border-color: var(--coral);
+
+            background:
+                rgba(255,101,95,.1);
+        }
+
+
+        /* =====================================================
+           PAGE
+        ====================================================== */
+
+        .page {
+
+            width:
+                min(1240px, calc(100% - 50px));
+
+            margin:
+                30px auto 70px;
+        }
+
+
+        /* =====================================================
+           HERO
+        ====================================================== */
+
+        .hero {
+
+            overflow: hidden;
+
+            background: white;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 23px;
+
+            box-shadow: var(--shadow);
+        }
+
+
+        /* =====================================================
+           GALLERY
+        ====================================================== */
+
+        .gallery {
+
+            position: relative;
+
+            width: 100%;
+
+            height: 430px;
+
+            overflow: hidden;
+
+            background: #ddd8d3;
+        }
+
+
+        .gallery-track {
+
+            width: 100%;
+
+            height: 100%;
+
+            display: flex;
+
+            transition:
+                transform .45s ease;
+        }
+
+
+        .gallery-slide {
+
+            position: relative;
+
+            min-width: 100%;
+
+            height: 100%;
+
+            overflow: hidden;
+        }
+
+
+        .gallery-slide img {
+
+            width: 100%;
+
+            height: 100%;
+
+            display: block;
+
+            object-fit: cover;
+        }
+
+
+        .gallery-overlay {
+
+            position: absolute;
+
+            inset: 0;
+
+            pointer-events: none;
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    rgba(0,0,0,.02) 35%,
+                    rgba(0,0,0,.25)
+                );
+        }
+
+
+        .no-image {
+
+            width: 100%;
+
+            height: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ebe7e3,
+                    #ddd8d3
+                );
+
+            color: #99918d;
+
+            font-size: 65px;
+        }
+
+
+        /* =====================================================
+           GALLERY BUTTONS
+        ====================================================== */
+
+        .gallery-arrow {
+
+            position: absolute;
+
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            width: 46px;
+
+            height: 46px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border:
+                1px solid rgba(255,255,255,.4);
+
+            border-radius: 50%;
+
+            background:
+                rgba(33,30,31,.65);
+
+            color: white;
+
+            font-size: 24px;
+
+            cursor: pointer;
+
+            z-index: 10;
+
+            backdrop-filter: blur(8px);
+
+            transition: .2s ease;
+        }
+
+
+        .gallery-arrow:hover {
+
+            background: var(--coral);
+
+            border-color: var(--coral);
+
+            transform:
+                translateY(-50%) scale(1.05);
+        }
+
+
+        .gallery-prev {
+            left: 18px;
+        }
+
+
+        .gallery-next {
+            right: 18px;
+        }
+
+
+        .photo-count {
+
+            position: absolute;
+
+            right: 18px;
+
+            bottom: 18px;
+
+            z-index: 12;
+
+            padding: 8px 13px;
+
+            background:
+                rgba(33,30,31,.82);
+
+            color: white;
+
+            border-radius: 9px;
+
+            font-size: 12px;
+
+            font-weight: 750;
+
+            backdrop-filter: blur(8px);
+        }
+
+
+        .gallery-dots {
+
+            position: absolute;
+
+            left: 50%;
+
+            bottom: 18px;
+
+            transform:
+                translateX(-50%);
+
+            z-index: 12;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            padding: 7px 10px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(33,30,31,.55);
+
+            backdrop-filter: blur(7px);
+        }
+
+
+        .gallery-dot {
+
+            width: 7px;
+
+            height: 7px;
+
+            padding: 0;
+
+            border: 0;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255,255,255,.55);
+
+            cursor: pointer;
+
+            transition: .2s ease;
+        }
+
+
+        .gallery-dot.active {
+
+            width: 22px;
+
+            border-radius: 10px;
+
+            background: var(--coral);
+        }
+
+
+        /* =====================================================
+           HERO CONTENT
+        ====================================================== */
+
+        .hero-content {
+
+            padding:
+                30px 34px 32px;
+        }
+
+
+        .hero-top {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            justify-content: space-between;
+
+            gap: 25px;
+        }
+
+
+        .category {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding: 6px 11px;
+
+            border-radius: 6px;
+
+            background: var(--coral-light);
+
+            color: var(--coral-dark);
+
+            border:
+                1px solid #f7d5d2;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: .7px;
+
+            margin-bottom: 11px;
+        }
+
+
+        .business-name {
+
+            font-size: 38px;
+
+            line-height: 1.15;
+
+            font-weight: 800;
+
+            letter-spacing: -.8px;
+
+            color: var(--dark);
+        }
+
+
+        .description {
+
+            max-width: 780px;
+
+            margin-top: 9px;
+
+            color: var(--muted);
+
+            font-size: 15px;
+        }
+
+
+        /* =====================================================
+           RATING
+        ====================================================== */
+
+        .rating-box {
+
+            flex-shrink: 0;
+
+            min-width: 140px;
+
+            padding: 14px 16px;
+
+            text-align: center;
+
+            border:
+                1px solid #eadfd4;
+
+            border-radius: 13px;
+
+            background: #fffaf5;
+        }
+
+
+        .rating-number {
+
+            font-size: 25px;
+
+            font-weight: 800;
+
+            color: var(--dark);
+        }
+
+
+        .stars {
+
+            color: var(--yellow);
+
+            font-size: 15px;
+
+            letter-spacing: 1px;
+        }
+
+
+        .rating-count {
+
+            margin-top: 1px;
+
+            color: #928a84;
+
+            font-size: 11px;
+        }
+
+
+        /* =====================================================
+           ACTIONS
+        ====================================================== */
+
+        .actions {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 9px;
+
+            margin-top: 23px;
+
+            padding-top: 21px;
+
+            border-top:
+                1px solid var(--border);
+        }
+
+
+        .action {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            min-height: 44px;
+
+            padding: 0 17px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 9px;
+
+            background: white;
+
+            color: var(--dark);
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition: .2s ease;
+        }
+
+
+        .action:hover {
+
+            border-color: var(--coral);
+
+            color: var(--coral-dark);
+
+            transform: translateY(-1px);
+
+            box-shadow: var(--shadow-small);
+        }
+
+
+        .action.primary {
+
+            background: var(--coral);
+
+            color: white;
+
+            border-color: var(--coral);
+        }
+
+
+        .action.primary:hover {
+
+            background: var(--coral-dark);
+
+            color: white;
+        }
+
+
+        /* =====================================================
+           COLORFUL FACTS
+        ====================================================== */
+
+        .facts {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4,1fr);
+
+            gap: 10px;
+
+            margin-top: 17px;
+        }
+
+
+        .fact {
+
+            position: relative;
+
+            overflow: hidden;
+
+            min-height: 76px;
+
+            padding: 14px 15px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 12px;
+        }
+
+
+        .fact::before {
+
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+
+            top: 0;
+
+            width: 4px;
+
+            height: 100%;
+        }
+
+
+        .category-fact {
+
+            background: #fff4f2;
+
+            border-color: #f3d8d5;
+        }
+
+
+        .category-fact::before {
+            background: var(--coral);
+        }
+
+
+        .category-fact .fact-value {
+            color: var(--coral-dark);
+        }
+
+
+        .price-fact {
+
+            background: var(--orange-light);
+
+            border-color: #f1dcc8;
+        }
+
+
+        .price-fact::before {
+            background: var(--orange);
+        }
+
+
+        .price-fact .fact-value {
+            color: #bd631f;
+        }
+
+
+        .review-fact {
+
+            background: var(--purple-light);
+
+            border-color: #e2d9f3;
+        }
+
+
+        .review-fact::before {
+            background: var(--purple);
+        }
+
+
+        .review-fact .fact-value {
+            color: #65469e;
+        }
+
+
+        .city-fact {
+
+            background: var(--blue-light);
+
+            border-color: #d8e5f7;
+        }
+
+
+        .city-fact::before {
+            background: var(--blue);
+        }
+
+
+        .city-fact .fact-value {
+            color: #3769ad;
+        }
+
+
+        .fact-label {
+
+            color: #938b86;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: .7px;
+
+            text-transform: uppercase;
+        }
+
+
+        .fact-value {
+
+            margin-top: 4px;
+
+            color: var(--dark);
+
+            font-size: 14px;
+
+            font-weight: 750;
+        }
+
+
+        /* =====================================================
+           CONTENT GRID
+        ====================================================== */
+
+        .content-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0,1fr) 350px;
+
+            gap: 22px;
+
+            margin-top: 22px;
+        }
+
+
+        .main-column,
+        .side-column {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 22px;
+        }
+
+
+        /* =====================================================
+           CARD
+        ====================================================== */
+
+        .card {
+
+            position: relative;
+
+            background: white;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: var(--radius);
+
+            padding: 27px;
+
+            box-shadow: var(--shadow);
+        }
+
+
+        .card-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 21px;
+        }
+
+
+        .card-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            color: var(--dark);
+
+            font-size: 20px;
+
+            font-weight: 800;
+        }
+
+
+        .card-icon {
+
+            width: 38px;
+
+            height: 38px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: var(--coral-light);
+
+            color: var(--coral-dark);
+
+            font-size: 17px;
+        }
+
+
+        .card-subtitle {
+
+            margin-top: 2px;
+
+            color: #968f8a;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           ABOUT BUSINESS
+        ====================================================== */
+
+        .about-business-card {
+
+            overflow: hidden;
+        }
+
+
+        .about-business-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+
+            left: 0;
+
+            width: 100%;
+
+            height: 4px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #ff655f,
+                    #f09a45,
+                    #7654b8,
+                    #3d78c8
+                );
+        }
+
+
+        .about-header {
+            margin-bottom: 20px;
+        }
+
+
+        .about-icon {
+
+            background: #fff0ee;
+
+            color: #ff655f;
+
+            border:
+                1px solid #f7d7d4;
+        }
+
+
+        .about-text {
+
+            margin-bottom: 22px;
+
+            color: #5f5a57;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+        }
+
+
+        .about-info-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2,minmax(0,1fr));
+
+            gap: 12px;
+        }
+
+
+        .about-info {
+
+            position: relative;
+
+            overflow: hidden;
+
+            min-height: 86px;
+
+            padding: 16px 18px;
+
+            border:
+                1px solid #e7dfda;
+
+            border-radius: 13px;
+
+            background: #fcfbfa;
+
+            transition:
+                transform .2s ease,
+                box-shadow .2s ease,
+                border-color .2s ease;
+        }
+
+
+        .about-info:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 7px 20px rgba(39,29,25,.06);
+        }
+
+
+        .about-info::before {
+
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+
+            top: 0;
+
+            width: 4px;
+
+            height: 100%;
+        }
+
+
+        /* ADDRESS */
+
+        .address-info {
+
+            background: #fff7f5;
+
+            border-color: #f0d9d5;
+        }
+
+
+        .address-info::before {
+            background: #ff655f;
+        }
+
+
+        /* CITY */
+
+        .city-info {
+
+            background: #f2f7ff;
+
+            border-color: #dbe6f7;
+        }
+
+
+        .city-info::before {
+            background: #3d78c8;
+        }
+
+
+        /* PINCODE */
+
+        .pincode-info {
+
+            background: #f5f1fc;
+
+            border-color: #e4dbf3;
+        }
+
+
+        .pincode-info::before {
+            background: #7654b8;
+        }
+
+
+        /* PHONE */
+
+        .phone-info {
+
+            background: #f0faf4;
+
+            border-color: #d9eee1;
+        }
+
+
+        .phone-info::before {
+            background: #238653;
+        }
+
+
+        /* EMAIL */
+
+        .email-info {
+
+            background: #fff8ed;
+
+            border-color: #f1e0c7;
+        }
+
+
+        .email-info::before {
+            background: #df772b;
+        }
+
+
+        /* WEBSITE */
+
+        .website-info {
+
+            background: #fff3f1;
+
+            border-color: #f1d8d5;
+        }
+
+
+        .website-info::before {
+            background: #d94d49;
+        }
+
+
+        /* ESTABLISHED */
+
+        .established-info {
+
+            background: #f6f5f4;
+
+            border-color: #e5e1de;
+        }
+
+
+        .established-info::before {
+            background: #746e6b;
+        }
+
+
+        .about-info .info-label {
+
+            color: #938b86;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: .8px;
+
+            text-transform: uppercase;
+        }
+
+
+        .about-info .info-value {
+
+            margin-top: 5px;
+
+            color: #302c2b;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            word-break: break-word;
+        }
+
+
+        /* PHONE + EMAIL ARE NORMAL DARK TEXT */
+
+        .plain-contact-link {
+
+            color: #302c2b !important;
+
+            font-weight: 600;
+
+            text-decoration: none;
+        }
+
+
+        .plain-contact-link:hover {
+
+            color: #302c2b !important;
+
+            text-decoration: underline;
+        }
+
+
+        .website-info .info-value a {
+
+            color: #d94d49;
+
+            font-weight: 750;
+
+            text-decoration: none;
+        }
+
+
+        .website-info .info-value a:hover {
+
+            color: #b93f3b;
+
+            text-decoration: underline;
+        }
+
+
+        /* =====================================================
+           TAGS
+        ====================================================== */
+
+        .tags {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+        }
+
+
+        .tag {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            padding: 8px 12px;
+
+            background: #faf7f4;
+
+            border:
+                1px solid #e7dfd9;
+
+            color: #625b57;
+
+            border-radius: 7px;
+
+            font-size: 12px;
+
+            font-weight: 650;
+        }
+
+
+        .tag::before {
+
+            content: "✓";
+
+            color: var(--coral);
+
+            font-weight: 900;
+        }
+
+
+        /* =====================================================
+           SERVICES
+        ====================================================== */
+
+        .service-list {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2,1fr);
+
+            gap: 10px;
+        }
+
+
+        .service {
+
+            padding: 15px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 11px;
+
+            background: #fcfbfa;
+
+            color: #403b39;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            transition: .2s;
+        }
+
+
+        .service:hover {
+
+            border-color: #efc6c3;
+
+            background: #fff9f8;
+
+            transform: translateY(-1px);
+        }
+
+
+        .service::before {
+
+            content: "✦";
+
+            margin-right: 8px;
+
+            color: var(--coral);
+        }
+
+
+        /* =====================================================
+           PRODUCTS
+        ====================================================== */
+
+        .item-list {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 10px;
+        }
+
+
+        .item {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding: 16px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 12px;
+
+            background: white;
+
+            transition: .2s;
+        }
+
+
+        .item:hover {
+
+            border-color: #ebc7c4;
+
+            background: #fffafa;
+        }
+
+
+        .item-name {
+
+            color: var(--dark);
+
+            font-size: 15px;
+
+            font-weight: 800;
+        }
+
+
+        .item-description {
+
+            margin-top: 2px;
+
+            color: #8d8783;
+
+            font-size: 12px;
+        }
+
+
+        .item-price {
+
+            color: var(--coral-dark);
+
+            white-space: nowrap;
+
+            font-size: 15px;
+
+            font-weight: 800;
+        }
+
+
+        /* =====================================================
+           OPENING HOURS
+        ====================================================== */
+
+        .today-status {
+
+            display: flex;
+
+            align-items: center;
+
+            padding: 13px 15px;
+
+            margin-bottom: 14px;
+
+            border-radius: 11px;
+
+            background: var(--green-light);
+
+            color: var(--green);
+        }
+
+
+        .today-status.closed {
+
+            background: var(--red-light);
+
+            color: #bf4444;
+        }
+
+
+        .status-left {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            font-size: 12px;
+
+            font-weight: 800;
+        }
+
+
+        .status-dot {
+
+            width: 8px;
+
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: currentColor;
+        }
+
+
+        .hours-list {
+
+            display: flex;
+
+            flex-direction: column;
+        }
+
+
+        .hours-row {
+
+            display: grid;
+
+            grid-template-columns:
+                105px 1fr;
+
+            gap: 10px;
+
+            padding: 12px 2px;
+
+            border-bottom:
+                1px solid #f0ece9;
+
+            font-size: 13px;
+        }
+
+
+        .hours-row:last-child {
+            border-bottom: none;
+        }
+
+
+        .hours-day {
+            font-weight: 700;
+        }
+
+
+        .hours-time {
+
+            color: #77706c;
+
+            text-align: right;
+        }
+
+
+        .hours-row.today {
+
+            color: var(--coral-dark);
+
+            font-weight: 800;
+        }
+
+
+        /* =====================================================
+           FEATURES
+        ====================================================== */
+
+        .feature-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2,1fr);
+
+            gap: 9px;
+        }
+
+
+        .feature {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 11px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 10px;
+
+            background: #fcfbfa;
+
+            color: #5e5854;
+
+            font-size: 12px;
+
+            font-weight: 650;
+        }
+
+
+        .feature-icon {
+
+            color: var(--coral);
+
+            font-weight: 900;
+        }
+
+
+        /* =====================================================
+           OFFERS
+        ====================================================== */
+
+        .offer {
+
+            padding: 17px;
+
+            margin-bottom: 10px;
+
+            border:
+                1px solid #efd7d3;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff5f3,
+                    #fffaf6
+                );
+        }
+
+
+        .offer:last-child {
+            margin-bottom: 0;
+        }
+
+
+        .offer-title {
+
+            color: var(--coral-dark);
+
+            font-size: 14px;
+
+            font-weight: 800;
+        }
+
+
+        .offer-description {
+
+            margin-top: 3px;
+
+            color: #6f6864;
+
+            font-size: 12px;
+        }
+
+
+        .offer-date {
+
+            margin-top: 7px;
+
+            color: #a19893;
+
+            font-size: 10px;
+        }
+
+
+        /* =====================================================
+           LOCATION
+        ====================================================== */
+
+        .location-box {
+
+            padding: 17px;
+
+            border:
+                1px solid #e6ded9;
+
+            border-radius: 15px;
+
+            background: #faf7f4;
+        }
+
+
+        .location-address {
+
+            color: var(--dark);
+
+            font-size: 14px;
+
+            font-weight: 800;
+        }
+
+
+        .location-city {
+
+            margin-top: 3px;
+
+            color: #7d7672;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           GOOGLE MAP
+        ====================================================== */
+
+        .map-container {
+
+            width: 100%;
+
+            height: 290px;
+
+            margin-top: 17px;
+
+            overflow: hidden;
+
+            border:
+                1px solid #ddd5d0;
+
+            border-radius: 13px;
+
+            background: #e5e1dd;
+
+            box-shadow:
+                0 5px 15px rgba(40,30,25,.06);
+        }
+
+
+        .map-container iframe {
+
+            width: 100%;
+
+            height: 100%;
+
+            display: block;
+
+            border: 0;
+        }
+
+
+        .map-coordinates {
+
+            margin-top: 8px;
+
+            color: #a09a95;
+
+            font-size: 10px;
+        }
+
+
+        .map-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            margin-top: 13px;
+
+            padding: 11px 16px;
+
+            background: var(--coral);
+
+            color: white;
+
+            border-radius: 9px;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            transition: .2s;
+        }
+
+
+        .map-button:hover {
+
+            background: var(--coral-dark);
+
+            transform: translateY(-1px);
+        }
+
+
+        /* =====================================================
+           SOCIAL
+        ====================================================== */
+
+        .social-links {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+        }
+
+
+        .social {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            padding: 9px 12px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 8px;
+
+            background: #fcfbfa;
+
+            color: #625a56;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            transition: .2s;
+        }
+
+
+        .social:hover {
+
+            border-color: #edc5c2;
+
+            color: var(--coral-dark);
+
+            background: var(--coral-light);
+        }
+
+
+        /* =====================================================
+           REVIEWS
+        ====================================================== */
+
+        .review {
+
+            padding: 18px 0;
+
+            border-bottom:
+                1px solid var(--border);
+        }
+
+
+        .review:last-child {
+            border-bottom: none;
+        }
+
+
+        .review-top {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+        }
+
+
+        .review-user {
+
+            color: var(--dark);
+
+            font-size: 14px;
+
+            font-weight: 800;
+        }
+
+
+        .review-rating {
+
+            margin-top: 3px;
+
+            color: var(--yellow);
+
+            font-size: 13px;
+        }
+
+
+        .review-date {
+
+            color: #9b938e;
+
+            font-size: 10px;
+        }
+
+
+        .review-text {
+
+            margin-top: 8px;
+
+            color: #625c58;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+
+        .review-photos {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+
+            margin-top: 12px;
+        }
+
+
+        .review-photos img {
+
+            width: 82px;
+
+            height: 62px;
+
+            object-fit: cover;
+
+            border-radius: 8px;
+
+            border:
+                1px solid var(--border);
+        }
+
+
+        /* =====================================================
+           REVIEW FORM
+        ====================================================== */
+
+        .review-form {
+
+            margin-top: 25px;
+
+            padding-top: 25px;
+
+            border-top:
+                1px solid var(--border);
+        }
+
+
+        .form-group {
+
+            margin-bottom: 15px;
+        }
+
+
+        .form-label {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: var(--dark);
+
+            font-size: 12px;
+
+            font-weight: 750;
+        }
+
+
+        .form-control {
+
+            width: 100%;
+
+            padding: 11px 13px;
+
+            border:
+                1px solid #ddd6d1;
+
+            border-radius: 9px;
+
+            background: white;
+
+            color: var(--text);
+
+            outline: none;
+
+            font-size: 13px;
+        }
+
+
+        .form-control:focus {
+
+            border-color: var(--coral);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(255,101,95,.09);
+        }
+
+
+        .review-submit {
+
+            padding: 11px 18px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background: var(--coral);
+
+            color: white;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition: .2s;
+        }
+
+
+        .review-submit:hover {
+
+            background: var(--coral-dark);
+        }
+
+
+        /* =====================================================
+           EMPTY
+        ====================================================== */
+
+        .empty {
+
+            padding: 22px;
+
+            border:
+                1px dashed #ddd5cf;
+
+            border-radius: 11px;
+
+            background: #faf8f6;
+
+            color: #99918c;
+
+            text-align: center;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ====================================================== */
+
+        .page-footer {
+
+            margin-top: 30px;
+
+            padding: 25px;
+
+            text-align: center;
+
+            color: #928b86;
+
+            font-size: 12px;
+        }
+
+
+        .page-footer strong {
+            color: var(--coral-dark);
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 1000px) {
+
+            .content-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .side-column {
+
+                display: grid;
+
+                grid-template-columns:
+                    repeat(2,1fr);
+
+                align-items: start;
+            }
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 720px) {
+
+            .navbar {
+                height: 64px;
+            }
+
+
+            .nav-inner {
+
+                width:
+                    calc(100% - 20px);
+            }
+
+
+            .nav-center {
+                display: none;
+            }
+
+
+            .brand {
+                font-size: 17px;
+            }
+
+
+            .brand-logo {
+
+                width: 38px;
+
+                height: 38px;
+            }
+
+
+            .back-button {
+
+                min-height: 38px;
+
+                padding: 0 11px;
+
+                font-size: 11px;
+            }
+
+
+            .page {
+
+                width:
+                    calc(100% - 20px);
+
+                margin:
+                    15px auto 45px;
+            }
+
+
+            .gallery {
+
+                height: 270px;
+            }
+
+
+            .gallery-arrow {
+
+                width: 39px;
+
+                height: 39px;
+
+                font-size: 19px;
+            }
+
+
+            .gallery-prev {
+                left: 10px;
+            }
+
+
+            .gallery-next {
+                right: 10px;
+            }
+
+
+            .gallery-dots {
+                bottom: 13px;
+            }
+
+
+            .photo-count {
+
+                right: 10px;
+
+                bottom: 12px;
+
+                font-size: 10px;
+
+                padding: 7px 10px;
+            }
+
+
+            .hero-content {
+                padding: 23px;
+            }
+
+
+            .hero-top {
+                flex-direction: column;
+            }
+
+
+            .business-name {
+                font-size: 29px;
+            }
+
+
+            .rating-box {
+                width: 100%;
+            }
+
+
+            .actions {
+
+                display: grid;
+
+                grid-template-columns:
+                    repeat(2,1fr);
+            }
+
+
+            .action {
+                width: 100%;
+            }
+
+
+            .facts {
+
+                grid-template-columns:
+                    repeat(2,1fr);
+            }
+
+
+            .content-grid {
+                gap: 15px;
+            }
+
+
+            .side-column {
+                display: flex;
+            }
+
+
+            .card {
+
+                padding: 21px;
+
+                border-radius: 17px;
+            }
+
+
+            .about-info-grid,
+            .service-list,
+            .feature-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .map-container {
+                height: 250px;
+            }
+
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 430px) {
+
+            .brand span {
+                display: none;
+            }
+
+
+            .back-button {
+                padding: 0 9px;
+            }
+
+
+            .gallery {
+                height: 220px;
+            }
+
+
+            .business-name {
+                font-size: 25px;
+            }
+
+
+            .facts {
+                grid-template-columns: 1fr;
+            }
+
+
+            .actions {
+                grid-template-columns: 1fr;
+            }
+
+
+            .hours-row {
+
+                grid-template-columns:
+                    88px 1fr;
+            }
+
+
+            .card-title {
+                font-size: 18px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<%
+    /* =====================================================
+       SAFE DATA
+    ====================================================== */
+
+    const safeBusiness = business || {};
+
+
+    const safeReviews =
+        Array.isArray(reviews)
+            ? reviews
+            : [];
+
+
+    const safeAverageRating =
+        averageRating !== undefined &&
+        averageRating !== null &&
+        averageRating !== ""
+            ? Number(averageRating)
+            : (
+                safeBusiness.averageRating
+                    ? Number(
+                        safeBusiness.averageRating
+                    )
+                    : 0
+            );
+
+
+    /* =====================================================
+       IMAGES
+    ====================================================== */
+
+    const gallery =
+        Array.isArray(safeBusiness.images) &&
+        safeBusiness.images.length
+            ? safeBusiness.images
+            : (
+                safeBusiness.image
+                    ? [safeBusiness.image]
+                    : []
+            );
+
+
+    /* =====================================================
+       OPTIONAL DATA
+    ====================================================== */
+
+    const specialties =
+        Array.isArray(safeBusiness.specialties)
+            ? safeBusiness.specialties
+            : [];
+
+
+    const services =
+        Array.isArray(safeBusiness.services)
+            ? safeBusiness.services
+            : [];
+
+
+    const items =
+        Array.isArray(safeBusiness.items)
+            ? safeBusiness.items
+            : [];
+
+
+    const amenities =
+        Array.isArray(safeBusiness.amenities)
+            ? safeBusiness.amenities
+            : [];
+
+
+    const paymentMethods =
+        Array.isArray(safeBusiness.paymentMethods)
+            ? safeBusiness.paymentMethods
+            : [];
+
+
+    const suitableFor =
+        Array.isArray(safeBusiness.suitableFor)
+            ? safeBusiness.suitableFor
+            : [];
+
+
+    const offers =
+        Array.isArray(safeBusiness.offers)
+            ? safeBusiness.offers
+            : [];
+
+
+    const businessHours =
+        safeBusiness.hours &&
+        typeof safeBusiness.hours === "object"
+            ? safeBusiness.hours
+            : {};
+
+
+    const social =
+        safeBusiness.socialLinks &&
+        typeof safeBusiness.socialLinks === "object"
+            ? safeBusiness.socialLinks
+            : {};
+
+
+    /* =====================================================
+       LOCATION
+    ====================================================== */
+
+    const coordinates =
+        safeBusiness.location &&
+        Array.isArray(
+            safeBusiness.location.coordinates
+        ) &&
+        safeBusiness.location.coordinates.length >= 2
+            ? safeBusiness.location.coordinates
+            : null;
+
+
+    const latitude =
+        coordinates
+            ? Number(coordinates[1])
+            : null;
+
+
+    const longitude =
+        coordinates
+            ? Number(coordinates[0])
+            : null;
+
+%>
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================== -->
+
+<header class="navbar">
+
+    <div class="nav-inner">
+
+
+        <a href="/" class="brand">
+
+            <span class="brand-logo">
+                L
+            </span>
+
+            <span>
+                Local Business
+            </span>
+
+        </a>
+
+
+        
+
+
+        <a
+            href="/customer"
+            class="back-button"
+        >
+
+            ← Dashboard
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     PAGE
+========================================================== -->
+
+<main class="page">
+
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <section class="hero">
+
+
+        <!-- IMAGE -->
+
+        <div class="gallery">
+
+
+            <% if (gallery.length > 0) { %>
+
+
+                <div
+                    class="gallery-track"
+                    id="galleryTrack"
+                >
+
+
+                    <% gallery.forEach(
+                        function(image,index)
+                    { %>
+
+
+                        <div class="gallery-slide">
+
+                            <img
+                                src="<%= image %>"
+                                alt="<%= safeBusiness.name || 'Business photo' %>"
+                                loading="<%= index === 0 ? 'eager' : 'lazy' %>"
+                            >
+
+                            <div class="gallery-overlay"></div>
+
+                        </div>
+
+
+                    <% }); %>
+
+
+                </div>
+
+
+                <!-- MULTIPLE IMAGE CONTROLS -->
+
+                <% if (gallery.length > 1) { %>
+
+
+                    <button
+                        type="button"
+                        class="gallery-arrow gallery-prev"
+                        id="galleryPrev"
+                        aria-label="Previous image"
+                    >
+                        ‹
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="gallery-arrow gallery-next"
+                        id="galleryNext"
+                        aria-label="Next image"
+                    >
+                        ›
+                    </button>
+
+
+                    <div
+                        class="gallery-dots"
+                        id="galleryDots"
+                    >
+
+
+                        <% gallery.forEach(
+                            function(image,index)
+                        { %>
+
+
+                            <button
+                                type="button"
+                                class="gallery-dot <%= index === 0 ? 'active' : '' %>"
+                                data-index="<%= index %>"
+                                aria-label="Go to image <%= index + 1 %>"
+                            ></button>
+
+
+                        <% }); %>
+
+
+                    </div>
+
+
+                    <div
+                        class="photo-count"
+                        id="photoCount"
+                    >
+                        1 / <%= gallery.length %>
+                    </div>
+
+
+                <% } %>
+
+
+            <% } else { %>
+
+
+                <div class="no-image">
+                    🏪
+                </div>
+
+
+            <% } %>
+
+
+        </div>
+
+
+        <!-- HERO INFORMATION -->
+
+        <div class="hero-content">
+
+
+            <div class="hero-top">
+
+
+                <div>
+
+
+                    <% if (safeBusiness.category) { %>
+
+
+                        <div class="category">
+
+                            ✦
+
+                            <%= safeBusiness.category %>
+
+                        </div>
+
+
+                    <% } %>
+
+
+                    <h1 class="business-name">
+
+                        <%= safeBusiness.name || "Business" %>
+
+                    </h1>
+
+
+                    <% if (safeBusiness.description) { %>
+
+
+                        <p class="description">
+
+                            <%= safeBusiness.description %>
+
+                        </p>
+
+
+                    <% } %>
+
+
+                </div>
+
+
+                <!-- RATING -->
+
+                <div class="rating-box">
+
+
+                    <div class="rating-number">
+
+                        <%= safeAverageRating.toFixed(1) %>
+
+                    </div>
+
+
+                    <div class="stars">
+
+
+                        <%
+                            const roundedRating =
+                                Math.round(
+                                    safeAverageRating
+                                );
+
+                            for (
+                                let i = 1;
+                                i <= 5;
+                                i++
+                            ) {
+                        %>
+
+
+                            <%= i <= roundedRating
+                                ? "★"
+                                : "☆" %>
+
+
+                        <% } %>
+
+
+                    </div>
+
+
+                    <div class="rating-count">
+
+                        <%= safeReviews.length %>
+                        reviews
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="actions">
+
+
+                <% if (safeBusiness.phone) { %>
+
+
+                    <a
+                        class="action primary"
+                        href="tel:<%= safeBusiness.phone %>"
+                    >
+
+                        ☎ Call
+
+                    </a>
+
+
+                <% } %>
+
+
+                <% if (coordinates) { %>
+
+
+                    <a
+                        class="action"
+                        href="https://www.google.com/maps/dir/?api=1&destination=<%= latitude %>,<%= longitude %>"
+                        target="_blank"
+                        rel="noopener"
+                    >
+
+                        🧭 Directions
+
+                    </a>
+
+
+                <% } %>
+
+
+                <% if (safeBusiness.website) { %>
+
+
+                    <a
+                        class="action"
+                        href="<%= safeBusiness.website %>"
+                        target="_blank"
+                        rel="noopener"
+                    >
+
+                        🌐 Website
+
+                    </a>
+
+
+                <% } %>
+
+
+                <% if (safeBusiness.email) { %>
+
+
+                    <a
+                        class="action"
+                        href="mailto:<%= safeBusiness.email %>"
+                    >
+
+                        ✉ Email
+
+                    </a>
+
+
+                <% } %>
+
+
+            </div>
+
+
+            <!-- COLORFUL INFORMATION -->
+
+            <div class="facts">
+
+
+                <div class="fact category-fact">
+
+                    <div class="fact-label">
+                        Category
+                    </div>
+
+                    <div class="fact-value">
+
+                        <%= safeBusiness.category || "Business" %>
+
+                    </div>
+
+                </div>
+
+
+                <div class="fact price-fact">
+
+                    <div class="fact-label">
+                        Price
+                    </div>
+
+                    <div class="fact-value">
+
+                        <%= safeBusiness.priceRange || "Not provided" %>
+
+                    </div>
+
+                </div>
+
+
+                <div class="fact review-fact">
+
+                    <div class="fact-label">
+                        Reviews
+                    </div>
+
+                    <div class="fact-value">
+
+                        <%= safeReviews.length %>
+
+                    </div>
+
+                </div>
+
+
+                <div class="fact city-fact">
+
+                    <div class="fact-label">
+                        City
+                    </div>
+
+                    <div class="fact-value">
+
+                        <%= safeBusiness.city || "Not provided" %>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         CONTENT
+    ====================================================== -->
+
+    <div class="content-grid">
+
+
+        <!-- =================================================
+             MAIN
+        ================================================== -->
+
+        <div class="main-column">
+
+
+            <!-- =================================================
+                 ABOUT BUSINESS
+            ================================================== -->
+
+            <section class="card about-business-card">
+
+
+                <div class="card-header about-header">
+
+
+                    <div>
+
+
+                        <div class="card-title">
+
+                            <span class="card-icon about-icon">
+
+                                📖
+
+                            </span>
+
+                            About This Business
+
+                        </div>
+
+
+                        <div class="card-subtitle">
+
+                            Business information
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <% if (safeBusiness.description) { %>
+
+
+                    <p class="about-text">
+
+                        <%= safeBusiness.description %>
+
+                    </p>
+
+
+                <% } %>
+
+
+                <div class="about-info-grid">
+
+
+                    <!-- ADDRESS -->
+
+                    <% if (safeBusiness.address) { %>
+
+
+                        <div
+                            class="about-info address-info"
+                        >
+
+                            <div class="info-label">
+
+                                Address
+
+                            </div>
+
+
+                            <div class="info-value">
+
+                                <%= safeBusiness.address %>
+
+                            </div>
+
+                        </div>
+
+
+                    <% } %>
+
+
+                    <!-- CITY -->
+
+                    <% if (safeBusiness.city) { %>
+
+
+                        <div
+                            class="about-info city-info"
+                        >
+
+                            <div class="info-label">
+
+                                City
+
+                            </div>
+
+
+                            <div class="info-value">
+
+                                <%= safeBusiness.city %>
+
+                            </div>
+
+                        </div>
+
+
+                    <% } %>
+
+
+                    <!-- PINCODE -->
+
+                    <% if (safeBusiness.pincode) { %>
+
+
+                        <div
+                            class="about-info pincode-info"
+                        >
+
+                            <div class="info-label">
+
+                                Pincode
+
+                            </div>
+
+
+                            <div class="info-value">
+
+                                <%= safeBusiness.pincode %>
+
+                            </div>
+
+                        </div>
+
+
+                    <% } %>
+
+
+                    <!-- PHONE -->
+
+                    <% if (safeBusiness.phone) { %>
+
+
+                        <div
+                            class="about-info phone-info"
+                        >
+
+                            <div class="info-label">
+
+                                Phone
+
+                            </div>
+
+
+                            <div class="info-value">
+
+
+                                <a
+                                    href="tel:<%= safeBusiness.phone %>"
+                                    class="plain-contact-link"
+                                >
+
+                                    <%= safeBusiness.phone %>
+
+                                </a>
+
+
+                            </div>
+
+                        </div>
+
+
+                    <% } %>
+
+
+                    <!-- EMAIL -->
+
+                    <% if (safeBusiness.email) { %>
+
+
+                        <div
+                            class="about-info email-info"
+                        >
+
+                            <div class="info-label">
+
+                                Email
+
+                            </div>
+
+
+                            <div class="info-value">
+
+
+                                <a
+                                    href="mailto:<%= safeBusiness.email %>"
+                                    class="plain-contact-link"
+                                >
+
+                                    <%= safeBusiness.email %>
+
+                                </a>
+
+
+                            </div>
+
+                        </div>
+
+
+                    <% } %>
+
+
+                    <!-- WEBSITE -->
+
+                    <% if (safeBusiness.website) { %>
+
+
+                        <div
+                            class="about-info website-info"
+                        >
+
+                            <div class="info-label">
+
+                                Website
+
+                            </div>
+
+
+                            <div class="info-value">
+
+
+                                <a
+                                    href="<%= safeBusiness.website %>"
+                                    target="_blank"
+                                    rel="noopener"
+                                >
+
+                                    Visit Website →
+
+                                </a>
+
+
+                            </div>
+
+                        </div>
+
+
+                    <% } %>
+
+
+                    <!-- ESTABLISHED -->
+
+                    <% if (safeBusiness.establishedYear) { %>
+
+
+                        <div
+                            class="about-info established-info"
+                        >
+
+                            <div class="info-label">
+
+                                Established
+
+                            </div>
+
+
+                            <div class="info-value">
+
+                                Since
+                                <%= safeBusiness.establishedYear %>
+
+                            </div>
+
+                        </div>
+
+
+                    <% } %>
+
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 HIGHLIGHTS
+            ================================================== -->
+
+            <% if (specialties.length) { %>
+
+
+                <section class="card">
+
+
+                    <div class="card-header">
+
+
+                        <div class="card-title">
+
+                            <span class="card-icon">
+                                ⭐
+                            </span>
+
+                            Highlights
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="tags">
+
+
+                        <% specialties.forEach(
+                            function(item)
+                        { %>
+
+
+                            <span class="tag">
+
+                                <%= item %>
+
+                            </span>
+
+
+                        <% }); %>
+
+
+                    </div>
+
+
+                </section>
+
+
+            <% } %>
+
+
+            <!-- =================================================
+                 SERVICES
+            ================================================== -->
+
+            <% if (services.length) { %>
+
+
+                <section class="card">
+
+
+                    <div class="card-header">
+
+
+                        <div>
+
+
+                            <div class="card-title">
+
+                                <span class="card-icon">
+                                    🛠️
+                                </span>
+
+                                Services
+
+                            </div>
+
+
+                            <div class="card-subtitle">
+
+                                Services provided by this business
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="service-list">
+
+
+                        <% services.forEach(
+                            function(service)
+                        { %>
+
+
+                            <div class="service">
+
+                                <%= service %>
+
+                            </div>
+
+
+                        <% }); %>
+
+
+                    </div>
+
+
+                </section>
+
+
+            <% } %>
+
+
+            <!-- =================================================
+                 PRODUCTS / MENU
+            ================================================== -->
+
+            <% if (items.length) { %>
+
+
+                <section class="card">
+
+
+                    <div class="card-header">
+
+
+                        <div>
+
+
+                            <div class="card-title">
+
+                                <span class="card-icon">
+                                    🛍️
+                                </span>
+
+                                Products / Menu
+
+                            </div>
+
+
+                            <div class="card-subtitle">
+
+                                Products and popular items
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="item-list">
+
+
+                        <% items.forEach(
+                            function(item)
+                        { %>
+
+
+                            <div class="item">
+
+
+                                <div>
+
+
+                                    <div class="item-name">
+
+                                        <%= item.name || "Item" %>
+
+                                    </div>
+
+
+                                    <% if (item.description) { %>
+
+
+                                        <div class="item-description">
+
+                                            <%= item.description %>
+
+                                        </div>
+
+
+                                    <% } %>
+
+
+                                </div>
+
+
+                                <% if (
+                                    item.price !== undefined &&
+                                    item.price !== null &&
+                                    item.price !== ""
+                                ) { %>
+
+
+                                    <div class="item-price">
+
+                                        ₹<%= item.price %>
+
+                                    </div>
+
+
+                                <% } %>
+
+
+                            </div>
+
+
+                        <% }); %>
+
+
+                    </div>
+
+
+                </section>
+
+
+            <% } %>
+
+
+            <!-- =================================================
+                 REVIEWS
+            ================================================== -->
+
+            <section class="card">
+
+
+                <div class="card-header">
+
+
+                    <div>
+
+
+                        <div class="card-title">
+
+                            <span class="card-icon">
+                                ⭐
+                            </span>
+
+                            Customer Reviews
+
+                        </div>
+
+
+                        <div class="card-subtitle">
+
+                            Experiences shared by customers
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <% if (safeReviews.length) { %>
+
+
+                    <% safeReviews.forEach(
+                        function(review)
+                    { %>
+
+
+                        <div class="review">
+
+
+                            <div class="review-top">
+
+
+                                <div>
+
+
+                                    <div class="review-user">
+
+                                        <%= review.user &&
+                                            review.user.name
+                                                ? review.user.name
+                                                : "Customer" %>
+
+                                    </div>
+
+
+                                    <div class="review-rating">
+
+
+                                        <%
+                                            const reviewRating =
+                                                Number(
+                                                    review.rating || 0
+                                                );
+
+                                            for (
+                                                let i = 1;
+                                                i <= 5;
+                                                i++
+                                            ) {
+                                        %>
+
+
+                                            <%= i <= reviewRating
+                                                ? "★"
+                                                : "☆" %>
+
+
+                                        <% } %>
+
+
+                                    </div>
+
+
+                                </div>
+
+
+                                <% if (review.createdAt) { %>
+
+
+                                    <div class="review-date">
+
+                                        <%= new Date(
+                                            review.createdAt
+                                        ).toLocaleDateString() %>
+
+                                    </div>
+
+
+                                <% } %>
+
+
+                            </div>
+
+
+                            <% if (review.comment) { %>
+
+
+                                <div class="review-text">
+
+                                    <%= review.comment %>
+
+                                </div>
+
+
+                            <% } %>
+
+
+                            <% if (
+                                Array.isArray(review.images) &&
+                                review.images.length
+                            ) { %>
+
+
+                                <div class="review-photos">
+
+
+                                    <% review.images.forEach(
+                                        function(image)
+                                    { %>
+
+
+                                        <img
+                                            src="<%= image %>"
+                                            alt="Customer review photo"
+                                            loading="lazy"
+                                        >
+
+
+                                    <% }); %>
+
+
+                                </div>
+
+
+                            <% } %>
+
+
+                        </div>
+
+
+                    <% }); %>
+
+
+                <% } else { %>
+
+
+                    <div class="empty">
+
+                        ⭐ No reviews yet.
+
+                        Be the first customer to
+                        review this business.
+
+                    </div>
+
+
+                <% } %>
+
+
+                <!-- WRITE REVIEW -->
+
+                <% if (currentUser) { %>
+
+
+                    <form
+                        class="review-form"
+                        action="/business/<%= safeBusiness._id %>/review"
+                        method="POST"
+                        enctype="multipart/form-data"
+                    >
+
+
+                        <h3
+                            style="
+                                margin-bottom:15px;
+                                font-size:17px;
+                            "
+                        >
+
+                            ✍️ Write a Review
+
+                        </h3>
+
+
+                        <div class="form-group">
+
+
+                            <label class="form-label">
+
+                                Your Rating
+
+                            </label>
+
+
+                            <select
+                                class="form-control"
+                                name="rating"
+                                required
+                            >
+
+                                <option value="">
+
+                                    Select rating
+
+                                </option>
+
+
+                                <option value="5">
+
+                                    ★★★★★ — Excellent
+
+                                </option>
+
+
+                                <option value="4">
+
+                                    ★★★★☆ — Very Good
+
+                                </option>
+
+
+                                <option value="3">
+
+                                    ★★★☆☆ — Good
+
+                                </option>
+
+
+                                <option value="2">
+
+                                    ★★☆☆☆ — Average
+
+                                </option>
+
+
+                                <option value="1">
+
+                                    ★☆☆☆☆ — Poor
+
+                                </option>
+
+                            </select>
+
+
+                        </div>
+
+
+                        <div class="form-group">
+
+
+                            <label class="form-label">
+
+                                Your Review
+
+                            </label>
+
+
+                            <textarea
+                                class="form-control"
+                                name="comment"
+                                rows="4"
+                                placeholder="Share your experience..."
+                                required
+                            ></textarea>
+
+
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="review-submit"
+                        >
+
+                            Submit Review
+
+                        </button>
+
+
+                    </form>
+
+
+                <% } %>
+
+
+            </section>
+
+
+        </div>
+
+
+        <!-- =================================================
+             SIDEBAR
+        ================================================== -->
+
+        <aside class="side-column">
+
+
+            <!-- =================================================
+                 OPENING HOURS
+            ================================================== -->
+
+            <section class="card">
+
+
+                <div class="card-header">
+
+
+                    <div>
+
+
+                        <div class="card-title">
+
+                            <span class="card-icon">
+                                🕐
+                            </span>
+
+                            Opening Hours
+
+                        </div>
+
+
+                        <div class="card-subtitle">
+
+                            Weekly schedule
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div
+                    class="today-status"
+                    id="todayStatus"
+                >
+
+                    <div class="status-left">
+
+                        <span class="status-dot"></span>
+
+                        <span id="todayStatusText">
+
+                            Checking...
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="hours-list">
+
+
+                    <%
+                        const hourLabels = {
+
+                            monday: "Monday",
+                            tuesday: "Tuesday",
+                            wednesday: "Wednesday",
+                            thursday: "Thursday",
+                            friday: "Friday",
+                            saturday: "Saturday",
+                            sunday: "Sunday"
+
+                        };
+                    %>
+
+
+                    <% Object.keys(hourLabels).forEach(
+                        function(day)
+                    { %>
+
+
+                        <%
+                            const hour =
+                                businessHours[day] || {};
+                        %>
+
+
+                        <div
+                            class="hours-row"
+                            data-day="<%= day %>"
+                        >
+
+
+                            <span class="hours-day">
+
+                                <%= hourLabels[day] %>
+
+                            </span>
+
+
+                            <span class="hours-time">
+
+
+                                <% if (hour.closed) { %>
+
+                                    Closed
+
+
+                                <% } else if (
+                                    hour.open &&
+                                    hour.close
+                                ) { %>
+
+                                    <%= hour.open %>
+                                    –
+                                    <%= hour.close %>
+
+
+                                <% } else { %>
+
+                                    Hours not provided
+
+                                <% } %>
+
+
+                            </span>
+
+
+                        </div>
+
+
+                    <% }); %>
+
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 AMENITIES
+            ================================================== -->
+
+            <% if (amenities.length) { %>
+
+
+                <section class="card">
+
+
+                    <div class="card-header">
+
+
+                        <div class="card-title">
+
+                            <span class="card-icon">
+                                ✨
+                            </span>
+
+                            Amenities
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="feature-grid">
+
+
+                        <% amenities.forEach(
+                            function(item)
+                        { %>
+
+
+                            <div class="feature">
+
+                                <span class="feature-icon">
+                                    ✓
+                                </span>
+
+                                <%= item %>
+
+                            </div>
+
+
+                        <% }); %>
+
+
+                    </div>
+
+
+                </section>
+
+
+            <% } %>
+
+
+            <!-- =================================================
+                 PAYMENT
+            ================================================== -->
+
+            <% if (paymentMethods.length) { %>
+
+
+                <section class="card">
+
+
+                    <div class="card-header">
+
+
+                        <div class="card-title">
+
+                            <span class="card-icon">
+                                💳
+                            </span>
+
+                            Payment Methods
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="tags">
+
+
+                        <% paymentMethods.forEach(
+                            function(item)
+                        { %>
+
+
+                            <span class="tag">
+
+                                <%= item %>
+
+                            </span>
+
+
+                        <% }); %>
+
+
+                    </div>
+
+
+                </section>
+
+
+            <% } %>
+
+
+            <!-- =================================================
+                 SUITABLE FOR
+            ================================================== -->
+
+            <% if (suitableFor.length) { %>
+
+
+                <section class="card">
+
+
+                    <div class="card-header">
+
+
+                        <div class="card-title">
+
+                            <span class="card-icon">
+                                👥
+                            </span>
+
+                            Suitable For
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="tags">
+
+
+                        <% suitableFor.forEach(
+                            function(item)
+                        { %>
+
+
+                            <span class="tag">
+
+                                <%= item %>
+
+                            </span>
+
+
+                        <% }); %>
+
+
+                    </div>
+
+
+                </section>
+
+
+            <% } %>
+
+
+            <!-- =================================================
+                 SPECIAL OFFERS
+            ================================================== -->
+
+            <% if (offers.length) { %>
+
+
+                <section class="card">
+
+
+                    <div class="card-header">
+
+
+                        <div class="card-title">
+
+                            <span class="card-icon">
+                                🔥
+                            </span>
+
+                            Special Offers
+
+                        </div>
+
+
+                    </div>
+
+
+                    <% offers.forEach(
+                        function(offer)
+                    { %>
+
+
+                        <div class="offer">
+
+
+                            <div class="offer-title">
+
+                                <%= offer.title || "Special Offer" %>
+
+                            </div>
+
+
+                            <% if (offer.description) { %>
+
+
+                                <div class="offer-description">
+
+                                    <%= offer.description %>
+
+                                </div>
+
+
+                            <% } %>
+
+
+                            <% if (offer.validUntil) { %>
+
+
+                                <div class="offer-date">
+
+                                    Valid until:
+                                    <%= offer.validUntil %>
+
+                                </div>
+
+
+                            <% } %>
+
+
+                        </div>
+
+
+                    <% }); %>
+
+
+                </section>
+
+
+            <% } %>
+
+
+            <!-- =================================================
+                 LOCATION + GOOGLE MAP
+            ================================================== -->
+
+            <section class="card">
+
+
+                <div class="card-header">
+
+
+                    <div>
+
+
+                        <div class="card-title">
+
+                            <span class="card-icon">
+                                📍
+                            </span>
+
+                            Location
+
+                        </div>
+
+
+                        <div class="card-subtitle">
+
+                            Find this business
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="location-box">
+
+
+                    <% if (safeBusiness.address) { %>
+
+
+                        <div class="location-address">
+
+                            <%= safeBusiness.address %>
+
+                        </div>
+
+
+                    <% } %>
+
+
+                    <% if (
+                        safeBusiness.city ||
+                        safeBusiness.pincode
+                    ) { %>
+
+
+                        <div class="location-city">
+
+                            <%= safeBusiness.city || "" %>
+
+
+                            <% if (
+                                safeBusiness.city &&
+                                safeBusiness.pincode
+                            ) { %>
+
+                                ,
+
+                            <% } %>
+
+
+                            <%= safeBusiness.pincode || "" %>
+
+                        </div>
+
+
+                    <% } %>
+
+
+                    <% if (coordinates) { %>
+
+
+                        <div class="map-container">
+
+
+                            <iframe
+                                src="https://www.google.com/maps?q=<%= latitude %>,<%= longitude %>&output=embed"
+                                loading="lazy"
+                                allowfullscreen
+                                referrerpolicy="no-referrer-when-downgrade"
+                                title="Business Location"
+                            ></iframe>
+
+
+                        </div>
+
+
+                        <div class="map-coordinates">
+
+                            📍
+
+                            <%= latitude.toFixed(6) %>,
+                            <%= longitude.toFixed(6) %>
+
+                        </div>
+
+
+                        <a
+                            class="map-button"
+                            href="https://www.google.com/maps/dir/?api=1&destination=<%= latitude %>,<%= longitude %>"
+                            target="_blank"
+                            rel="noopener"
+                        >
+
+                            🧭 Get Directions
+
+                        </a>
+
+
+                    <% } else { %>
+
+
+                        <div class="empty">
+
+                            📍
+
+                            Exact map location has
+                            not been provided yet.
+
+                        </div>
+
+
+                    <% } %>
+
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 SOCIAL LINKS
+            ================================================== -->
+
+            <% if (
+                social.instagram ||
+                social.facebook ||
+                social.youtube
+            ) { %>
+
+
+                <section class="card">
+
+
+                    <div class="card-header">
+
+
+                        <div class="card-title">
+
+                            <span class="card-icon">
+                                📱
+                            </span>
+
+                            Follow Us
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="social-links">
+
+
+                        <% if (social.instagram) { %>
+
+
+                            <a
+                                class="social"
+                                href="<%= social.instagram %>"
+                                target="_blank"
+                                rel="noopener"
+                            >
+
+                                📸 Instagram
+
+                            </a>
+
+
+                        <% } %>
+
+
+                        <% if (social.facebook) { %>
+
+
+                            <a
+                                class="social"
+                                href="<%= social.facebook %>"
+                                target="_blank"
+                                rel="noopener"
+                            >
+
+                                👍 Facebook
+
+                            </a>
+
+
+                        <% } %>
+
+
+                        <% if (social.youtube) { %>
+
+
+                            <a
+                                class="social"
+                                href="<%= social.youtube %>"
+                                target="_blank"
+                                rel="noopener"
+                            >
+
+                                ▶ YouTube
+
+                            </a>
+
+
+                        <% } %>
+
+
+                    </div>
+
+
+                </section>
+
+
+            <% } %>
+
+
+        </aside>
+
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <footer class="page-footer">
+
+        Powered by
+        <strong>Local Business</strong>
+
+    </footer>
+
+
+</main>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================== -->
+
+<script>
+
+
+    /* =====================================================
+       IMAGE CAROUSEL
+    ====================================================== */
+
+    const galleryTrack =
+        document.getElementById(
+            "galleryTrack"
+        );
+
+
+    const galleryPrev =
+        document.getElementById(
+            "galleryPrev"
+        );
+
+
+    const galleryNext =
+        document.getElementById(
+            "galleryNext"
+        );
+
+
+    const galleryDots =
+        document.querySelectorAll(
+            ".gallery-dot"
+        );
+
+
+    const photoCount =
+        document.getElementById(
+            "photoCount"
+        );
+
+
+    const totalImages =
+        <%= gallery.length %>;
+
+
+    let currentImage = 0;
+
+
+    function updateGallery() {
+
+
+        if (!galleryTrack) {
+            return;
+        }
+
+
+        galleryTrack.style.transform =
+            "translateX(-" +
+            (currentImage * 100) +
+            "%)";
+
+
+        galleryDots.forEach(
+            function(dot,index) {
+
+                dot.classList.toggle(
+                    "active",
+                    index === currentImage
+                );
+
+            }
+        );
+
+
+        if (photoCount) {
+
+            photoCount.textContent =
+                (currentImage + 1) +
+                " / " +
+                totalImages;
+
+        }
+
+    }
+
+
+    function nextImage() {
+
+
+        if (totalImages <= 1) {
+            return;
+        }
+
+
+        currentImage =
+            (currentImage + 1) %
+            totalImages;
+
+
+        updateGallery();
+
+    }
+
+
+    function previousImage() {
+
+
+        if (totalImages <= 1) {
+            return;
+        }
+
+
+        currentImage =
+            (currentImage - 1 +
+                totalImages) %
+            totalImages;
+
+
+        updateGallery();
+
+    }
+
+
+    if (galleryNext) {
+
+        galleryNext.addEventListener(
+            "click",
+            nextImage
+        );
+
+    }
+
+
+    if (galleryPrev) {
+
+        galleryPrev.addEventListener(
+            "click",
+            previousImage
+        );
+
+    }
+
+
+    galleryDots.forEach(
+        function(dot) {
+
+            dot.addEventListener(
+                "click",
+                function() {
+
+                    currentImage =
+                        Number(
+                            dot.dataset.index
+                        );
+
+                    updateGallery();
+
+                }
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       KEYBOARD
+    ====================================================== */
+
+    document.addEventListener(
+        "keydown",
+        function(event) {
+
+
+            if (
+                event.key === "ArrowRight"
+            ) {
+
+                nextImage();
+
+            }
+
+
+            if (
+                event.key === "ArrowLeft"
+            ) {
+
+                previousImage();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       TOUCH SWIPE
+    ====================================================== */
+
+    let touchStartX = 0;
+
+    let touchEndX = 0;
+
+
+    if (galleryTrack) {
+
+
+        galleryTrack.addEventListener(
+            "touchstart",
+            function(event) {
+
+                touchStartX =
+                    event.changedTouches[0]
+                        .screenX;
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        galleryTrack.addEventListener(
+            "touchend",
+            function(event) {
+
+                touchEndX =
+                    event.changedTouches[0]
+                        .screenX;
+
+
+                const distance =
+                    touchEndX -
+                    touchStartX;
+
+
+                if (
+                    Math.abs(distance) < 40
+                ) {
+
+                    return;
+
+                }
+
+
+                if (distance < 0) {
+
+                    nextImage();
+
+                } else {
+
+                    previousImage();
+
+                }
+
+            },
+            {
+                passive: true
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       OPEN / CLOSED
+    ====================================================== */
+
+    const businessHours =
+        <%- JSON.stringify(
+            businessHours || {}
+        ).replace(
+            /</g,
+            "\\u003c"
+        ) %>;
+
+
+    const dayNames = [
+
+        "sunday",
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday"
+
+    ];
+
+
+    const now =
+        new Date();
+
+
+    const currentDay =
+        dayNames[
+            now.getDay()
+        ];
+
+
+    const today =
+        businessHours[
+            currentDay
+        ] || {};
+
+
+    const statusBox =
+        document.getElementById(
+            "todayStatus"
+        );
+
+
+    const statusText =
+        document.getElementById(
+            "todayStatusText"
+        );
+
+
+    const todayRow =
+        document.querySelector(
+            '[data-day="' +
+            currentDay +
+            '"]'
+        );
+
+
+    if (todayRow) {
+
+        todayRow.classList.add(
+            "today"
+        );
+
+    }
+
+
+    function toMinutes(value) {
+
+
+        if (!value) {
+            return null;
+        }
+
+
+        const parts =
+            String(value)
+                .split(":")
+                .map(Number);
+
+
+        if (
+            parts.length < 2 ||
+            Number.isNaN(parts[0]) ||
+            Number.isNaN(parts[1])
+        ) {
+
+            return null;
+
+        }
+
+
+        return (
+            parts[0] * 60 +
+            parts[1]
+        );
+
+    }
+
+
+    function updateStatus() {
+
+
+        if (
+            !statusText ||
+            !statusBox
+        ) {
+
+            return;
+
+        }
+
+
+        if (today.closed) {
+
+            statusText.textContent =
+                "Closed today";
+
+            statusBox.classList.add(
+                "closed"
+            );
+
+            return;
+
+        }
+
+
+        if (
+            !today.open ||
+            !today.close
+        ) {
+
+            statusText.textContent =
+                "Hours not provided";
+
+            return;
+
+        }
+
+
+        const currentMinutes =
+            now.getHours() * 60 +
+            now.getMinutes();
+
+
+        const opening =
+            toMinutes(
+                today.open
+            );
+
+
+        const closing =
+            toMinutes(
+                today.close
+            );
+
+
+        if (
+            opening === null ||
+            closing === null
+        ) {
+
+            statusText.textContent =
+                "Hours available";
+
+            return;
+
+        }
+
+
+        let isOpen = false;
+
+
+        /* NORMAL HOURS */
+
+        if (
+            closing > opening
+        ) {
+
+            isOpen =
+                currentMinutes >= opening &&
+                currentMinutes <= closing;
+
+        }
+
+
+        /* OVERNIGHT HOURS */
+
+        else {
+
+            isOpen =
+                currentMinutes >= opening ||
+                currentMinutes <= closing;
+
+        }
+
+
+        if (isOpen) {
+
+            statusText.textContent =
+                "Open now • Closes at " +
+                today.close;
+
+        } else {
+
+            statusText.textContent =
+                "Closed now • Opens at " +
+                today.open;
+
+            statusBox.classList.add(
+                "closed"
+            );
+
+        }
+
+    }
+
+
+    updateStatus();
+
+
+</script>
+
+
+</body>
+
+</html>
